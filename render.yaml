@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: pulpiq-app
+    runtime: python
+    buildCommand: pip install -r requirements.txt && cd src/webapp && npm install && npm run build:css
+    startCommand: gunicorn wsgi:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_PATH
+        value: /opt/render/project/data/pulpiq.db
+      - key: APP_URL
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+    disk:
+      name: pulpiq-data
+      mountPath: /opt/render/project/data
+      sizeGB: 1

@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+{% block title %}{{ "Baseline" if snapshot.week_number == 0 else "Week " ~ snapshot.week_number }} Report — PulpIQ{% endblock %}
+{% block content %}
+
+<div class="mb-6">
+    <a href="/dashboard" class="text-sm text-warm-500 hover:text-warm-700">&larr; Back to Dashboard</a>
+</div>
+
+<div class="flex items-center justify-between mb-8">
+    <div>
+        <h1 class="text-2xl text-warm-800">
+            {{ "Baseline" if snapshot.week_number == 0 else "Week " ~ snapshot.week_number }} Report
+        </h1>
+        <p class="text-warm-600 text-sm">
+            {{ user.cafe_name }} &middot; {{ snapshot.date_start }} to {{ snapshot.date_end }}
+        </p>
+    </div>
+    {% if comparison %}
+    <a href="/compare/{{ snapshot.id }}"
+       class="bg-sage-600 hover:bg-sage-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors">
+        See Week-Over-Week Changes
+    </a>
+    {% endif %}
+</div>
+
+<!-- Summary Cards -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Daily Revenue</p>
+        <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(customer.summary.avg_daily_revenue) }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Avg Ticket</p>
+        <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(customer.summary.avg_ticket_size) }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Transactions/Day</p>
+        <p class="text-2xl font-semibold text-warm-800">{{ "%.0f"|format(customer.summary.avg_daily_transactions) }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Menu Items</p>
+        <p class="text-2xl font-semibold text-warm-800">{{ customer.summary.unique_items }}</p>
+    </div>
+</div>
+
+<!-- Top Items -->
+<section class="mb-10">
+    <h2 class="text-xl text-warm-800 mb-4">Top Items by Revenue</h2>
+    <div class="bg-white rounded-xl border border-warm-200 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-warm-100">
+                <tr>
+                    <th class="text-left px-5 py-3 text-warm-600 font-medium">Item</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">Revenue</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">% of Total</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">Units Sold</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-warm-100">
+                {% for item in customer.top_items[:10] %}
+                <tr class="hover:bg-warm-50">
+                    <td class="px-5 py-3 font-medium text-warm-800">{{ item.item or item.index }}</td>
+                    <td class="px-5 py-3 text-right text-warm-800">${{ "%.2f"|format(item.revenue) }}</td>
+                    <td class="px-5 py-3 text-right text-warm-600">{{ item.revenue_pct }}%</td>
+                    <td class="px-5 py-3 text-right text-warm-600">{{ item.units_sold|int }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Revenue by Category -->
+<section class="mb-10">
+    <h2 class="text-xl text-warm-800 mb-4">Revenue by Category</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for cat in customer.revenue_by_category %}
+        <div class="bg-white rounded-xl border border-warm-200 p-5">
+            <p class="font-medium text-warm-800">{{ cat.category or cat.index }}</p>
+            <p class="text-2xl font-semibold text-warm-800 mt-1">${{ "%.0f"|format(cat.revenue) }}</p>
+            <div class="mt-2 bg-warm-100 rounded-full h-2">
+                <div class="bg-terra-500 rounded-full h-2" style="width: {{ cat.revenue_pct }}%"></div>
+            </div>
+            <p class="text-xs text-warm-500 mt-1">{{ cat.revenue_pct }}% of revenue</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Payment Methods -->
+<section class="mb-10">
+    <h2 class="text-xl text-warm-800 mb-4">Payment Methods</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% for method in customer.payment_methods %}
+        <div class="bg-white rounded-xl border border-warm-200 p-5">
+            <p class="font-medium text-warm-800">{{ method.payment_method or method.index }}</p>
+            <p class="text-warm-600 text-sm">
+                {{ method.pct_of_transactions }}% of transactions &middot;
+                avg ticket ${{ "%.2f"|format(method.avg_transaction) }}
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+
+<!-- Waste Analysis -->
+{% if waste.waste_projection and waste.waste_projection['items'] %}
+<section class="mb-10">
+    <h2 class="text-xl text-warm-800 mb-4">Waste Analysis</h2>
+    <div class="bg-white rounded-xl border border-warm-200 p-6 mb-4">
+        <div class="grid grid-cols-3 gap-6 text-center">
+            <div>
+                <p class="text-xs text-warm-500 uppercase tracking-wide">Daily Waste</p>
+                <p class="text-2xl font-semibold text-warm-800">{{ "%.1f"|format(waste.waste_projection.total_daily_waste_units) }} items</p>
+            </div>
+            <div>
+                <p class="text-xs text-warm-500 uppercase tracking-wide">Monthly Waste Cost</p>
+                <p class="text-2xl font-semibold text-red-600">${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}</p>
+            </div>
+            <div>
+                <p class="text-xs text-warm-500 uppercase tracking-wide">Savings Potential</p>
+                <p class="text-2xl font-semibold text-sage-600">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}/mo</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl border border-warm-200 overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-warm-100">
+                <tr>
+                    <th class="text-left px-5 py-3 text-warm-600 font-medium">Item</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">Avg Sold/Day</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">Est. Current Order</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">Recommended</th>
+                    <th class="text-right px-5 py-3 text-warm-600 font-medium">Wasted/Mo</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-warm-100">
+                {% for item in waste.waste_projection['items'] %}
+                <tr class="hover:bg-warm-50">
+                    <td class="px-5 py-3 font-medium text-warm-800">{{ item.item }}</td>
+                    <td class="px-5 py-3 text-right text-warm-600">{{ item.avg_sold }}</td>
+                    <td class="px-5 py-3 text-right text-warm-600">{{ item.current_order }}</td>
+                    <td class="px-5 py-3 text-right font-medium text-sage-700">{{ item.recommended_order }}</td>
+                    <td class="px-5 py-3 text-right text-red-600">${{ "%.0f"|format(item.monthly_waste_cost) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+<!-- Milk Usage -->
+{% if waste.milk_usage and waste.milk_usage.by_type %}
+<section class="mb-10">
+    <h2 class="text-xl text-warm-800 mb-4">Milk Usage</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {% for type_name, data in waste.milk_usage.by_type.items() %}
+        <div class="bg-white rounded-xl border border-warm-200 p-5">
+            <p class="font-medium text-warm-800 capitalize">{{ type_name }}</p>
+            <p class="text-lg font-semibold text-warm-800">{{ data.daily_oz }} oz/day</p>
+            <p class="text-sm text-warm-600">{{ data.daily_units }} {{ data.unit_name }}</p>
+            <p class="text-xs text-warm-500 mt-1">{{ data.pct_of_milk }}% of milk usage</p>
+            <p class="text-xs text-sage-600 mt-1">Order: {{ data.recommended_units_per_day }} {{ data.unit_name }}/day</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<div class="text-center mt-8 text-sm text-warm-500">
+    Toronto industry-average cost estimates (CAD).
+    All numbers based on {{ customer.data_range.days }} days of sales data.
+</div>
+
+{% endblock %}

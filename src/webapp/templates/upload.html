@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Upload Data — PulpIQ{% endblock %}
+{% block content %}
+<div class="max-w-lg mx-auto mt-8">
+    <h1 class="text-2xl text-warm-800 mb-2">Upload Sales Data</h1>
+    <p class="text-warm-600 mb-6">
+        {{ cafe_name }} — uploading <strong>{{ upload_label }}</strong> data
+    </p>
+
+    <form method="POST" enctype="multipart/form-data" class="space-y-6" id="upload-form">
+        <div class="bg-white rounded-xl border-2 border-dashed border-warm-300 hover:border-terra-400 transition-colors p-10 text-center cursor-pointer"
+             id="drop-zone"
+             onclick="document.getElementById('csv_file').click()">
+            <div class="text-4xl mb-3 text-warm-400" id="upload-icon">&#128196;</div>
+            <p class="font-medium text-warm-700" id="file-label">
+                Drop your CSV here or click to browse
+            </p>
+            <p class="text-sm text-warm-500 mt-1">
+                Export from Square, Toast, Clover, or any POS
+            </p>
+            <input type="file" name="csv_file" id="csv_file" accept=".csv" class="hidden"
+                   onchange="handleFile(this)">
+        </div>
+
+        <button type="submit" id="submit-btn" disabled
+                class="w-full bg-terra-600 hover:bg-terra-700 disabled:bg-warm-300 disabled:cursor-not-allowed text-white font-medium py-3 px-4 rounded-lg transition-colors">
+            Analyze My Data
+        </button>
+    </form>
+
+    <div class="mt-8 bg-warm-100 rounded-lg p-5 text-sm text-warm-600">
+        <p class="font-medium text-warm-700 mb-2">What we need in your CSV:</p>
+        <ul class="space-y-1 list-disc list-inside">
+            <li>Date and time of each sale</li>
+            <li>Item name and quantity</li>
+            <li>Price/total amount</li>
+            <li>Category (optional but helpful)</li>
+        </ul>
+        <p class="mt-3 text-warm-500">Most POS exports include all of this. Just export your sales report as CSV.</p>
+    </div>
+</div>
+
+<script>
+function handleFile(input) {
+    const label = document.getElementById('file-label');
+    const icon = document.getElementById('upload-icon');
+    const btn = document.getElementById('submit-btn');
+    if (input.files.length > 0) {
+        label.textContent = input.files[0].name;
+        icon.textContent = '\u2705';
+        btn.disabled = false;
+    }
+}
+
+// Drag and drop
+const zone = document.getElementById('drop-zone');
+zone.addEventListener('dragover', (e) => { e.preventDefault(); zone.classList.add('border-terra-500'); });
+zone.addEventListener('dragleave', () => { zone.classList.remove('border-terra-500'); });
+zone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    zone.classList.remove('border-terra-500');
+    const input = document.getElementById('csv_file');
+    input.files = e.dataTransfer.files;
+    handleFile(input);
+});
+
+// Show loading on submit
+document.getElementById('upload-form').addEventListener('submit', function() {
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'Analyzing... (this takes a few seconds)';
+    btn.disabled = true;
+});
+</script>
+{% endblock %}

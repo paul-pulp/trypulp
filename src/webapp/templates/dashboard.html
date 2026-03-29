@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — PulpIQ{% endblock %}
+{% block content %}
+<div class="flex items-center justify-between mb-8">
+    <div>
+        <h1 class="text-2xl text-warm-800">{{ user.cafe_name }}</h1>
+        <p class="text-warm-600 text-sm">Your sales analytics dashboard</p>
+    </div>
+    <a href="/upload"
+       class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-5 rounded-lg transition-colors text-sm">
+        Upload New Data
+    </a>
+</div>
+
+{% if not snapshots %}
+<div class="bg-white rounded-xl border border-warm-200 p-12 text-center">
+    <div class="text-5xl mb-4">&#128202;</div>
+    <h2 class="text-xl text-warm-800 mb-2">No data yet</h2>
+    <p class="text-warm-600 mb-6">Upload your first CSV to see your baseline report.</p>
+    <a href="/upload"
+       class="inline-block bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-6 rounded-lg transition-colors">
+        Upload Your Sales Data
+    </a>
+</div>
+
+{% else %}
+
+<!-- Latest metrics card -->
+{% if latest %}
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Avg Daily Revenue</p>
+        <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_daily_revenue) }}</p>
+        {% if latest.comparison and latest.comparison.revenue.change %}
+        <p class="text-xs mt-1 {{ 'text-sage-600' if latest.comparison.revenue.change > 0 else 'text-red-500' }}">
+            {{ "+" if latest.comparison.revenue.change > 0 }}${{ "%.2f"|format(latest.comparison.revenue.change) }} vs last
+        </p>
+        {% endif %}
+    </div>
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Avg Ticket</p>
+        <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_ticket_size) }}</p>
+        {% if latest.comparison and latest.comparison.ticket.change %}
+        <p class="text-xs mt-1 {{ 'text-sage-600' if latest.comparison.ticket.change > 0 else 'text-red-500' }}">
+            {{ "+" if latest.comparison.ticket.change > 0 }}${{ "%.2f"|format(latest.comparison.ticket.change) }} vs last
+        </p>
+        {% endif %}
+    </div>
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Daily Transactions</p>
+        <p class="text-2xl font-semibold text-warm-800">{{ "%.0f"|format(latest.avg_daily_transactions) }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-warm-200 p-5">
+        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Monthly Waste Cost</p>
+        <p class="text-2xl font-semibold text-warm-800">${{ "%.0f"|format(latest.waste_monthly_cost or 0) }}</p>
+        {% if latest.waste_savings_monthly %}
+        <p class="text-xs mt-1 text-sage-600">
+            ${{ "%.0f"|format(latest.waste_savings_monthly) }}/mo savings potential
+        </p>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<!-- Upload history -->
+<h2 class="text-lg text-warm-800 mb-4">Upload History</h2>
+<div class="bg-white rounded-xl border border-warm-200 overflow-hidden">
+    <table class="w-full text-sm">
+        <thead class="bg-warm-100">
+            <tr>
+                <th class="text-left px-5 py-3 text-warm-600 font-medium">Upload</th>
+                <th class="text-left px-5 py-3 text-warm-600 font-medium">Data Range</th>
+                <th class="text-right px-5 py-3 text-warm-600 font-medium">Avg Revenue</th>
+                <th class="text-right px-5 py-3 text-warm-600 font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody class="divide-y divide-warm-100">
+            {% for snap in snapshots %}
+            <tr class="hover:bg-warm-50">
+                <td class="px-5 py-3">
+                    <span class="font-medium text-warm-800">
+                        {{ "Baseline" if snap.week_number == 0 else "Week " ~ snap.week_number }}
+                    </span>
+                    <span class="text-warm-500 text-xs ml-2">{{ snap.csv_filename }}</span>
+                </td>
+                <td class="px-5 py-3 text-warm-600">{{ snap.date_start }} to {{ snap.date_end }}</td>
+                <td class="px-5 py-3 text-right text-warm-800">${{ "%.2f"|format(snap.avg_daily_revenue) }}/day</td>
+                <td class="px-5 py-3 text-right space-x-3">
+                    <a href="/report/{{ snap.id }}" class="text-terra-600 hover:text-terra-700 font-medium">Report</a>
+                    {% if snap.comparison_results %}
+                    <a href="/compare/{{ snap.id }}" class="text-sage-600 hover:text-sage-700 font-medium">Compare</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

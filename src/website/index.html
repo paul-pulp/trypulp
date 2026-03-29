@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulpIQ — Smarter Operations for Independent Coffee Shops</title>
+  <meta name="description" content="Reduce waste. Optimize labor. Grow revenue. Weekly insights built for independent coffee shops with 2–5 locations. Free 6-week trial.">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            warm: {
+              50:  '#FEFCF9',
+              100: '#F8F5F0',
+              200: '#EFEBE4',
+              300: '#E0D8CC',
+              400: '#C4B8A8',
+              500: '#9A8E7E',
+              600: '#746A5E',
+              700: '#584F45',
+              800: '#3D352E',
+              900: '#2C2420',
+            },
+            terra: {
+              50:  '#FBF3EF',
+              100: '#F5E4DB',
+              200: '#E8C4B0',
+              400: '#D08A66',
+              500: '#B8633E',
+              600: '#9C5333',
+              700: '#7D4229',
+            },
+            sage: {
+              50:  '#F2F5EF',
+              100: '#E2EAD9',
+              200: '#C7D5BB',
+              500: '#6B8C5A',
+              600: '#577347',
+              700: '#445B38',
+            },
+          },
+          fontFamily: {
+            serif:    ['"DM Serif Display"', 'Georgia', 'serif'],
+            sans:     ['"DM Sans"', 'system-ui', 'sans-serif'],
+            body:     ['Inter', 'system-ui', 'sans-serif'],
+          },
+        }
+      }
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=DM+Serif+Display&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    h1, h2, h3 { font-family: 'DM Serif Display', Georgia, serif; }
+    .font-sans-heading { font-family: 'DM Sans', system-ui, sans-serif; }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.in { opacity: 1; transform: translateY(0); }
+
+    /* Hero load */
+    .load-in {
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+
+    /* Pill button */
+    .btn-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      font-weight: 700; border-radius: 100px;
+      transition: background 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s;
+    }
+    .btn-pill:hover  { transform: translateY(-1px); }
+    .btn-pill:active { transform: translateY(0); }
+
+    .btn-dark {
+      background: #2C2420; color: #FEFCF9;
+      box-shadow: 0 2px 8px rgba(44, 36, 32, 0.15);
+    }
+    .btn-dark:hover { background: #1A1512; box-shadow: 0 4px 16px rgba(44, 36, 32, 0.2); }
+
+    .btn-terra {
+      background: #B8633E; color: #FEFCF9;
+      box-shadow: 0 2px 8px rgba(184, 99, 62, 0.2);
+    }
+    .btn-terra:hover { background: #9C5333; box-shadow: 0 4px 16px rgba(184, 99, 62, 0.3); }
+
+    .btn-outline {
+      background: transparent; color: #2C2420;
+      border: 1.5px solid #E0D8CC;
+    }
+    .btn-outline:hover { border-color: #C4B8A8; background: #F8F5F0; }
+
+    /* Card hover */
+    .card-lift {
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                  box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-lift:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(44, 36, 32, 0.08); }
+
+    /* Nav glass */
+    #mainNav.scrolled {
+      background: rgba(254, 252, 249, 0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #E0D8CC;
+    }
+
+    /* FAQ accordion */
+    .faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+    details[open] .faq-body { grid-template-rows: 1fr; }
+    .faq-inner { overflow: hidden; }
+    details summary::-webkit-details-marker { display: none; }
+    details summary { list-style: none; }
+    .faq-chevron { transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1); }
+    details[open] .faq-chevron { transform: rotate(180deg); }
+
+    /* Form inputs */
+    .form-input { transition: border-color 0.15s, box-shadow 0.15s; }
+    .form-input:focus { outline: none; border-color: #B8633E; box-shadow: 0 0 0 3px rgba(184, 99, 62, 0.1); }
+
+    /* Thin decorative line */
+    .deco-line { width: 48px; height: 2px; background: #E0D8CC; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .load-in { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body class="bg-warm-50 text-warm-900">
+
+  <!-- ══════════════ NAV ══════════════ -->
+  <nav id="mainNav" class="fixed top-0 inset-x-0 z-50 transition-all duration-300" aria-label="Main">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-8">
+      <a href="#" aria-label="PulpIQ home">
+        <img src="PulpsitelogoV2.png" alt="PulpIQ" class="h-10 rounded" style="background:#FEFCF9">
+      </a>
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#how-it-works" class="text-sm font-medium text-warm-600 hover:text-warm-900 transition-colors">How it works</a>
+        <a href="#pricing"      class="text-sm font-medium text-warm-600 hover:text-warm-900 transition-colors">Pricing</a>
+        <a href="#faq"          class="text-sm font-medium text-warm-600 hover:text-warm-900 transition-colors">FAQ</a>
+      </div>
+      <a href="#get-started" class="hidden md:inline-flex btn-pill btn-dark text-sm px-5 py-2.5">
+        Start Free Trial
+      </a>
+      <button id="mobileToggle" class="md:hidden flex flex-col gap-1.5 p-2" aria-label="Toggle menu" aria-expanded="false">
+        <span class="block w-5 h-0.5 bg-warm-900 transition-all duration-200" id="bar1"></span>
+        <span class="block w-5 h-0.5 bg-warm-900 transition-all duration-200" id="bar2"></span>
+        <span class="block w-5 h-0.5 bg-warm-900 transition-all duration-200" id="bar3"></span>
+      </button>
+    </div>
+    <div id="mobileMenu" class="md:hidden hidden px-6 pb-6 pt-2 space-y-4 bg-warm-50 border-t border-warm-300">
+      <a href="#how-it-works" class="block text-warm-700 hover:text-warm-900 py-3">How it works</a>
+      <a href="#pricing"      class="block text-warm-700 hover:text-warm-900 py-3">Pricing</a>
+      <a href="#faq"          class="block text-warm-700 hover:text-warm-900 py-3">FAQ</a>
+      <a href="#get-started"  class="block btn-pill btn-dark text-base px-5 py-3 text-center justify-center">Start Free Trial</a>
+    </div>
+  </nav>
+
+  <!-- ══════════════ HERO ══════════════ -->
+  <section class="pt-32 pb-24 md:pt-40 md:pb-32 bg-warm-50" id="home">
+    <div class="max-w-3xl mx-auto px-6 text-center">
+      <p class="load-in text-sm font-medium text-terra-500 mb-6" style="animation-delay:0ms">
+        For independent coffee shops with 2–5 locations
+      </p>
+      <h1 class="load-in leading-[1.1] tracking-tight text-warm-900 mb-6" style="animation-delay:80ms; font-size:clamp(2.75rem, 7vw, 4.5rem)">
+        Stop guessing.<br>
+        <span class="text-terra-500">Start saving.</span>
+      </h1>
+      <p class="load-in text-warm-600 mb-10 mx-auto leading-relaxed max-w-lg" style="animation-delay:160ms; font-size:clamp(1.05rem, 2vw, 1.2rem)">
+        Weekly insights that reduce waste, optimize your labor, and grow revenue &mdash; delivered straight to your inbox. No dashboards. No complexity.
+      </p>
+      <div class="load-in flex flex-col sm:flex-row items-center justify-center gap-4 mb-6" style="animation-delay:240ms">
+        <a href="#get-started" class="btn-pill btn-terra text-sm sm:text-base px-6 sm:px-8 py-3.5 whitespace-nowrap">
+          Start your free trial
+          <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
+        </a>
+        <a href="#how-it-works" class="btn-pill btn-outline text-sm px-6 py-3">See how it works</a>
+      </div>
+      <p class="load-in text-xs text-warm-500" style="animation-delay:300ms">
+        6-week free trial · No credit card required · Cancel anytime
+      </p>
+    </div>
+
+    <!-- Stats + photos -->
+    <div class="load-in max-w-6xl mx-auto px-6 mt-16" style="animation-delay:380ms">
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        <div class="text-center">
+          <div class="mb-4">
+            <div class="text-2xl sm:text-3xl md:text-4xl font-serif text-warm-900 leading-none">Less waste</div>
+            <div class="text-xs text-warm-500 mt-1 font-medium">smarter ordering</div>
+          </div>
+          <div class="aspect-[4/3] overflow-hidden rounded-xl">
+            <img src="nafinia.jpg" alt="Independent café counter with warm lighting" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+          </div>
+        </div>
+        <div class="text-center hidden md:block">
+          <div class="mb-4">
+            <div class="text-2xl sm:text-3xl md:text-4xl font-serif text-warm-900 leading-none">Real savings</div>
+            <div class="text-xs text-warm-500 mt-1 font-medium">every month</div>
+          </div>
+          <div class="aspect-[4/3] overflow-hidden rounded-xl">
+            <img src="jarek.jpg" alt="Freshly made espresso in morning light" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="mb-4">
+            <div class="text-2xl sm:text-3xl md:text-4xl font-serif text-warm-900 leading-none">Guaranteed</div>
+            <div class="text-xs text-warm-500 mt-1 font-medium">ROI or you don't pay</div>
+          </div>
+          <div class="aspect-[4/3] overflow-hidden rounded-xl">
+            <img src="brooke.jpg" alt="Smiling barista crafting a drink" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Thin divider -->
+  <div class="max-w-6xl mx-auto px-6"><div class="border-t border-warm-200"></div></div>
+
+  <!-- ══════════════ WORKS WITH ══════════════ -->
+  <div class="py-6 bg-warm-50">
+    <div class="max-w-6xl mx-auto px-6 flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+      <span class="text-xs font-medium text-warm-500">Works with your existing POS</span>
+      <div class="flex items-center gap-4 font-sans font-bold text-warm-400 text-sm">
+        <span>Square</span>
+        <span class="text-warm-300">·</span>
+        <span>Toast</span>
+        <span class="text-warm-300">·</span>
+        <span>Clover</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6"><div class="border-t border-warm-200"></div></div>
+
+  <!-- ══════════════ PROBLEM ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-50" id="problem">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <header class="max-w-2xl mx-auto text-center mb-16 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight mb-4" style="font-size:clamp(2rem, 4.5vw, 3rem)">
+          You're losing money and you don't even know it
+        </h2>
+        <p class="text-warm-600 text-lg leading-relaxed">
+          Most independent cafés lose a significant share of inventory to waste and even more to labour inefficiency. It adds up fast.
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-6 reveal" data-delay="0">
+          <div class="text-2xl font-serif text-terra-500 mb-3 leading-none">Too much</div>
+          <h3 class="text-base font-sans font-bold text-warm-900 mb-2">Wasted inventory</h3>
+          <p class="text-sm text-warm-600 leading-relaxed">Milk spoils. Pastries go stale. You're pouring money down the drain every single day.</p>
+        </article>
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-6 reveal" data-delay="80">
+          <div class="text-2xl font-serif text-terra-500 mb-3 leading-none">Hidden</div>
+          <h3 class="text-base font-sans font-bold text-warm-900 mb-2">Labour inefficiency</h3>
+          <p class="text-sm text-warm-600 leading-relaxed">Overstaffed on Mondays, understaffed on Saturdays. You're scheduling by gut feel.</p>
+        </article>
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-6 reveal" data-delay="160">
+          <div class="text-2xl font-serif text-terra-500 mb-3 leading-none">Silent</div>
+          <h3 class="text-base font-sans font-bold text-warm-900 mb-2">Lost customers</h3>
+          <p class="text-sm text-warm-600 leading-relaxed">Your best regulars stop coming. You don't notice until it's too late &mdash; no alerts, no patterns.</p>
+        </article>
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-6 reveal" data-delay="240">
+          <div class="text-2xl font-serif text-terra-500 mb-3 leading-none">$600+</div>
+          <h3 class="text-base font-sans font-bold text-warm-900 mb-2">Priced-out tools</h3>
+          <p class="text-sm text-warm-600 leading-relaxed">Toast charges $600+/month. Square has no forecasting. The tools that could help are out of reach.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo break: outdoor café -->
+  <div class="reveal overflow-hidden" style="height:clamp(280px, 40vw, 400px)">
+    <img src="tony.jpg" alt="Inviting outdoor café seating" class="w-full h-full object-cover object-center">
+  </div>
+
+  <!-- ══════════════ SOLUTION ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-100" id="solution">
+    <div class="max-w-6xl mx-auto px-6">
+
+      <header class="max-w-2xl mx-auto text-center mb-16 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight mb-4" style="font-size:clamp(2rem, 4.5vw, 3rem)">
+          Clear recommendations, delivered weekly
+        </h2>
+        <p class="text-warm-600 text-lg leading-relaxed">
+          No complex dashboards. No expensive consultants. Just simple, actionable insights sent to your inbox every week.
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-7 reveal" data-delay="0">
+          <div class="w-10 h-10 rounded-full bg-terra-50 flex items-center justify-center mb-5">
+            <svg class="w-5 h-5 text-terra-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6L9 12.75l4.286-4.286a11.948 11.948 0 014.306 6.43l.776 2.898m0 0l3.182-5.511m-3.182 5.51l-5.511-3.181"/></svg>
+          </div>
+          <h3 class="text-lg text-warm-900 mb-2">Waste reduction</h3>
+          <p class="text-sm text-warm-600 leading-relaxed mb-5">Know exactly how much milk to order, which pastries to cut back, and what to prep based on tomorrow's forecast.</p>
+          <div class="bg-sage-50 rounded-lg px-4 py-3">
+            <span class="text-xs font-sans font-bold text-sage-700 block mb-0.5">Typical result</span>
+            <span class="text-sm text-warm-800">Meaningful reduction in wasted inventory</span>
+          </div>
+        </article>
+
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-7 reveal" data-delay="120">
+          <div class="w-10 h-10 rounded-full bg-terra-50 flex items-center justify-center mb-5">
+            <svg class="w-5 h-5 text-terra-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <h3 class="text-lg text-warm-900 mb-2">Labour optimization</h3>
+          <p class="text-sm text-warm-600 leading-relaxed mb-5">Predict busiest hours down to 15-minute intervals. Know the optimal staff count for every shift.</p>
+          <div class="bg-sage-50 rounded-lg px-4 py-3">
+            <span class="text-xs font-sans font-bold text-sage-700 block mb-0.5">Typical result</span>
+            <span class="text-sm text-warm-800">Meaningful reduction in labour costs</span>
+          </div>
+        </article>
+
+        <article class="card-lift bg-white border border-warm-200 rounded-xl p-7 reveal" data-delay="240">
+          <div class="w-10 h-10 rounded-full bg-terra-50 flex items-center justify-center mb-5">
+            <svg class="w-5 h-5 text-terra-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/></svg>
+          </div>
+          <h3 class="text-lg text-warm-900 mb-2">Customer intelligence</h3>
+          <p class="text-sm text-warm-600 leading-relaxed mb-5">Know who your regulars are and when they're drifting away. Get alerts before you lose them for good.</p>
+          <div class="bg-sage-50 rounded-lg px-4 py-3">
+            <span class="text-xs font-sans font-bold text-sage-700 block mb-0.5">Typical result</span>
+            <span class="text-sm text-warm-800">More repeat visits from your best customers</span>
+          </div>
+        </article>
+      </div>
+
+      <!-- Why PulpIQ -->
+      <div class="reveal max-w-2xl mx-auto">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
+          <div class="flex gap-3 items-start">
+            <span class="text-terra-500 mt-0.5 flex-shrink-0">&#10003;</span>
+            <span class="text-sm text-warm-700 leading-relaxed">Built specifically for coffee shops, not generic restaurants</span>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-terra-500 mt-0.5 flex-shrink-0">&#10003;</span>
+            <span class="text-sm text-warm-700 leading-relaxed">Works with your existing POS &mdash; Square, Toast, or Clover</span>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-terra-500 mt-0.5 flex-shrink-0">&#10003;</span>
+            <span class="text-sm text-warm-700 leading-relaxed">A fraction of the cost of enterprise alternatives</span>
+          </div>
+          <div class="flex gap-3 items-start">
+            <span class="text-terra-500 mt-0.5 flex-shrink-0">&#10003;</span>
+            <span class="text-sm text-warm-700 leading-relaxed">Simple email reports &mdash; nothing to install or learn</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ HOW IT WORKS ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-50" id="how-it-works">
+    <div class="max-w-5xl mx-auto px-6">
+
+      <header class="max-w-2xl mx-auto text-center mb-16 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight mb-4" style="font-size:clamp(2rem, 4.5vw, 3rem)">
+          Up and running in three steps
+        </h2>
+        <p class="text-warm-600 text-lg leading-relaxed">
+          No software to install. No training required. No long-term commitment.
+        </p>
+      </header>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-0">
+
+        <article class="text-center px-6 reveal" data-delay="0">
+          <div class="w-14 h-14 rounded-full border-2 border-warm-300 flex items-center justify-center mx-auto mb-5">
+            <span class="font-serif text-xl text-warm-900">1</span>
+          </div>
+          <h3 class="text-lg text-warm-900 mb-2">Upload your data</h3>
+          <p class="text-sm text-warm-600 leading-relaxed max-w-[240px] mx-auto">
+            Export 90 days of sales data from your POS. We'll show you exactly how &mdash; it takes about 5 minutes.
+          </p>
+        </article>
+
+        <article class="text-center px-6 reveal" data-delay="140">
+          <div class="w-14 h-14 rounded-full border-2 border-warm-300 flex items-center justify-center mx-auto mb-5">
+            <span class="font-serif text-xl text-warm-900">2</span>
+          </div>
+          <h3 class="text-lg text-warm-900 mb-2">Get your first insights</h3>
+          <p class="text-sm text-warm-600 leading-relaxed max-w-[240px] mx-auto">
+            Within 3 days, you'll receive a baseline report showing exactly where you're losing money.
+          </p>
+        </article>
+
+        <article class="text-center px-6 reveal" data-delay="280">
+          <div class="w-14 h-14 rounded-full border-2 border-warm-300 flex items-center justify-center mx-auto mb-5">
+            <span class="font-serif text-xl text-warm-900">3</span>
+          </div>
+          <h3 class="text-lg text-warm-900 mb-2">Start saving</h3>
+          <p class="text-sm text-warm-600 leading-relaxed max-w-[240px] mx-auto">
+            Every week, get actionable recommendations via email. Implement what makes sense and track your savings.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Photo break: charming café exterior -->
+  <div class="reveal overflow-hidden" style="height:clamp(280px, 40vw, 400px)">
+    <img src="claudio.jpg" alt="Charming independent café storefront" class="w-full h-full object-cover object-center">
+  </div>
+
+  <!-- ══════════════ PRICING ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-100" id="pricing">
+    <div class="max-w-5xl mx-auto px-6">
+
+      <header class="max-w-2xl mx-auto text-center mb-14 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight" style="font-size:clamp(2rem, 4.5vw, 3rem)">
+          Try it free for six weeks
+        </h2>
+      </header>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+        <!-- Trial card -->
+        <div class="reveal bg-white border border-warm-200 rounded-xl p-8 flex flex-col" data-delay="0">
+          <span class="inline-block font-sans text-xs font-bold text-terra-600 bg-terra-50 px-3 py-1 rounded-full mb-6 w-fit">Free trial</span>
+          <div class="mb-6">
+            <span class="font-serif text-5xl text-warm-900">$0</span>
+            <span class="text-warm-600 text-sm ml-2">for 6 weeks</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Weekly insights via email</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Waste reduction recommendations</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Labour optimization schedules</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Customer churn alerts</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Email support</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> No credit card required</li>
+          </ul>
+          <a href="#get-started" class="btn-pill btn-terra text-base px-6 py-3.5 justify-center w-full">
+            Start my free trial
+          </a>
+          <p class="text-xs text-warm-500 text-center mt-3">Setup in 5 minutes</p>
+        </div>
+
+        <!-- After trial -->
+        <div class="reveal bg-white border border-warm-200 rounded-xl p-8 flex flex-col gap-6" data-delay="140">
+          <div>
+            <h3 class="font-sans font-bold text-base text-warm-900 mb-2">After your trial</h3>
+            <div class="flex items-baseline gap-1 mb-1">
+              <span class="font-serif text-4xl text-warm-900">$199</span>
+              <span class="text-warm-500 text-sm">/mo per location</span>
+            </div>
+            <p class="text-xs text-warm-500">Or pay 3% of your monthly savings &mdash; whichever is less.</p>
+          </div>
+
+          <div class="flex gap-4 bg-warm-100 border border-warm-200 rounded-lg p-4">
+            <svg class="w-5 h-5 text-warm-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+            <div>
+              <strong class="text-sm font-sans font-bold text-warm-900 block mb-0.5">Our promise</strong>
+              <p class="text-xs text-warm-600 leading-relaxed">If PulpIQ doesn't pay for itself, you don't pay. Simple as that.</p>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="text-xs font-sans font-bold text-warm-500 mb-3">Compared to alternatives</h4>
+            <div class="space-y-0">
+              <div class="flex justify-between items-center py-2.5 border-b border-warm-200 text-sm">
+                <span class="text-warm-600">Toast full stack</span>
+                <span class="font-sans font-bold text-warm-400 line-through">$600+/mo</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 border-b border-warm-200 text-sm">
+                <span class="text-warm-600">Square + add-ons</span>
+                <span class="font-sans font-bold text-warm-400 line-through">$225/mo</span>
+              </div>
+              <div class="flex justify-between items-center py-2.5 text-sm">
+                <span class="font-sans font-bold text-warm-900">PulpIQ</span>
+                <span class="font-sans font-bold text-terra-500">$199/mo</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ SIGNUP FORM ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-50" id="get-started">
+    <div class="max-w-xl mx-auto px-6">
+
+      <header class="text-center mb-10 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight mb-3" style="font-size:clamp(1.75rem, 4vw, 2.5rem)">
+          Get started free
+        </h2>
+        <p class="text-warm-600 text-lg leading-relaxed">
+          No credit card. No commitment. Just better operations.
+        </p>
+      </header>
+
+      <div class="reveal bg-white border border-warm-200 rounded-xl p-5 sm:p-8" id="formWrapper">
+        <form id="signupForm" name="signup" method="POST" data-netlify="true" class="space-y-5">
+          <input type="hidden" name="form-name" value="signup" />
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="name" class="block text-sm font-sans font-bold text-warm-800 mb-1.5">Your name <span class="text-terra-500">*</span></label>
+              <input type="text" id="name" name="name" placeholder="Jane Smith" required autocomplete="name"
+                class="form-input w-full border border-warm-300 rounded-lg px-4 py-3 text-sm text-warm-900 bg-warm-50 placeholder:text-warm-400" />
+            </div>
+            <div>
+              <label for="email" class="block text-sm font-sans font-bold text-warm-800 mb-1.5">Email <span class="text-terra-500">*</span></label>
+              <input type="email" id="email" name="email" placeholder="jane@ourcafe.com" required autocomplete="email"
+                class="form-input w-full border border-warm-300 rounded-lg px-4 py-3 text-sm text-warm-900 bg-warm-50 placeholder:text-warm-400" />
+            </div>
+          </div>
+
+          <div>
+            <label for="cafe_name" class="block text-sm font-sans font-bold text-warm-800 mb-1.5">Café name <span class="text-terra-500">*</span></label>
+            <input type="text" id="cafe_name" name="cafe_name" placeholder="Our Coffee Co." required
+              class="form-input w-full border border-warm-300 rounded-lg px-4 py-3 text-sm text-warm-900 bg-warm-50 placeholder:text-warm-400" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label for="num_locations" class="block text-sm font-sans font-bold text-warm-800 mb-1.5">Locations <span class="text-terra-500">*</span></label>
+              <select id="num_locations" name="num_locations" required
+                class="form-input w-full border border-warm-300 rounded-lg px-4 py-3 text-sm text-warm-900 bg-warm-50 appearance-none cursor-pointer">
+                <option value="" disabled selected>Select&hellip;</option>
+                <option value="2">2 locations</option>
+                <option value="3">3 locations</option>
+                <option value="4">4 locations</option>
+                <option value="5">5 locations</option>
+                <option value="6+">6+ locations</option>
+              </select>
+            </div>
+            <div>
+              <label for="pos_system" class="block text-sm font-sans font-bold text-warm-800 mb-1.5">POS system <span class="text-terra-500">*</span></label>
+              <select id="pos_system" name="pos_system" required
+                class="form-input w-full border border-warm-300 rounded-lg px-4 py-3 text-sm text-warm-900 bg-warm-50 appearance-none cursor-pointer">
+                <option value="" disabled selected>Select&hellip;</option>
+                <option value="Square">Square</option>
+                <option value="Toast">Toast</option>
+                <option value="Clover">Clover</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-pill btn-terra w-full justify-center text-base px-6 py-3.5">
+            Start free trial
+          </button>
+
+          <p class="text-xs text-warm-500 text-center">
+            We'll never share your data. <a href="#" class="underline hover:text-warm-700 transition-colors">Privacy policy</a>
+          </p>
+        </form>
+
+        <div id="successMsg" class="text-center py-8" style="display:none">
+          <div class="w-14 h-14 rounded-full bg-sage-50 flex items-center justify-center mx-auto mb-5">
+            <svg class="w-6 h-6 text-sage-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          </div>
+          <h3 class="font-serif text-2xl text-warm-900 mb-2">You're in.</h3>
+          <p class="text-warm-600 mb-1">Check your inbox &mdash; we'll send export instructions within 5 minutes.</p>
+          <p class="text-warm-600">Questions? <a href="mailto:Hello@trypulp.co" class="text-terra-500 font-medium hover:text-terra-600 underline">Hello@trypulp.co</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ WHO IT'S FOR ══════════════ -->
+  <section class="py-20 bg-warm-100" id="for-who">
+    <div class="max-w-3xl mx-auto px-6">
+      <header class="text-center mb-12 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight" style="font-size:clamp(1.75rem, 4vw, 2.5rem)">
+          Is PulpIQ right for you?
+        </h2>
+      </header>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="reveal bg-white border border-warm-200 rounded-xl p-7" data-delay="0">
+          <h3 class="font-sans font-bold text-sm text-warm-900 mb-4">Great fit</h3>
+          <ul class="space-y-3 text-sm text-warm-700 leading-relaxed">
+            <li class="flex gap-2.5"><span class="text-sage-600 flex-shrink-0">&#10003;</span> 2–5 locations</li>
+            <li class="flex gap-2.5"><span class="text-sage-600 flex-shrink-0">&#10003;</span> Using Square, Toast, or Clover</li>
+            <li class="flex gap-2.5"><span class="text-sage-600 flex-shrink-0">&#10003;</span> Frustrated with waste and inefficiency</li>
+            <li class="flex gap-2.5"><span class="text-sage-600 flex-shrink-0">&#10003;</span> Want insights without the complexity</li>
+            <li class="flex gap-2.5"><span class="text-sage-600 flex-shrink-0">&#10003;</span> Can't justify $600/month for Toast</li>
+          </ul>
+        </div>
+        <div class="reveal bg-warm-50 border border-warm-200 rounded-xl p-7" data-delay="120">
+          <h3 class="font-sans font-bold text-sm text-warm-500 mb-4">Not the right fit</h3>
+          <ul class="space-y-3 text-sm text-warm-500 leading-relaxed">
+            <li class="flex gap-2.5"><span class="flex-shrink-0">&mdash;</span> Single-location café (too small right now)</li>
+            <li class="flex gap-2.5"><span class="flex-shrink-0">&mdash;</span> 20+ location chain (we're too simple)</li>
+            <li class="flex gap-2.5"><span class="flex-shrink-0">&mdash;</span> No modern POS system</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ TESTIMONIALS ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-50" id="testimonials">
+    <div class="max-w-6xl mx-auto px-6">
+      <header class="max-w-2xl mx-auto text-center mb-14 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight" style="font-size:clamp(1.75rem, 4.5vw, 2.75rem)">
+          What café owners are saying
+        </h2>
+      </header>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
+        <figure class="card-lift bg-white border border-warm-200 rounded-xl p-7 reveal" data-delay="0">
+          <blockquote class="text-sm text-warm-700 leading-relaxed mb-6">
+            "PulpIQ saved us a significant amount in the first month just by optimizing our milk orders. Wish we'd found this sooner."
+          </blockquote>
+          <figcaption class="flex items-center gap-3 border-t border-warm-200 pt-5">
+            <div class="w-9 h-9 rounded-full bg-warm-200 flex items-center justify-center text-xs font-sans font-bold text-warm-600 flex-shrink-0">SC</div>
+            <div>
+              <strong class="block text-sm font-sans font-bold text-warm-900">Sarah Chen</strong>
+              <span class="text-xs text-warm-500">Found Coffee, 3 locations</span>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="card-lift bg-white border border-warm-200 rounded-xl p-7 reveal" data-delay="100">
+          <blockquote class="text-sm text-warm-700 leading-relaxed mb-6">
+            "The labour scheduling alone paid for itself. We cut hours of overstaffing every week."
+          </blockquote>
+          <figcaption class="flex items-center gap-3 border-t border-warm-200 pt-5">
+            <div class="w-9 h-9 rounded-full bg-warm-200 flex items-center justify-center text-xs font-sans font-bold text-warm-600 flex-shrink-0">MR</div>
+            <div>
+              <strong class="block text-sm font-sans font-bold text-warm-900">Marcus Rodriguez</strong>
+              <span class="text-xs text-warm-500">Balzac's Coffee</span>
+            </div>
+          </figcaption>
+        </figure>
+
+        <figure class="card-lift bg-white border border-warm-200 rounded-xl p-7 reveal" data-delay="200">
+          <blockquote class="text-sm text-warm-700 leading-relaxed mb-6">
+            "Finally, a tool built for coffee shops &mdash; not generic restaurants. PulpIQ actually gets our business."
+          </blockquote>
+          <figcaption class="flex items-center gap-3 border-t border-warm-200 pt-5">
+            <div class="w-9 h-9 rounded-full bg-warm-200 flex items-center justify-center text-xs font-sans font-bold text-warm-600 flex-shrink-0">JD</div>
+            <div>
+              <strong class="block text-sm font-sans font-bold text-warm-900">Jennifer Davis</strong>
+              <span class="text-xs text-warm-500">De Mello Palheta</span>
+            </div>
+          </figcaption>
+        </figure>
+      </div>
+      <p class="text-center text-xs text-warm-400 italic">Placeholder testimonials &mdash; to be replaced after pilot program</p>
+    </div>
+  </section>
+
+  <!-- ══════════════ FAQ ══════════════ -->
+  <section class="py-16 sm:py-24 bg-warm-100" id="faq">
+    <div class="max-w-2xl mx-auto px-6">
+      <header class="text-center mb-12 reveal">
+        <div class="deco-line mx-auto mb-6"></div>
+        <h2 class="text-warm-900 leading-tight" style="font-size:clamp(1.75rem, 4.5vw, 2.75rem)">
+          Frequently asked questions
+        </h2>
+      </header>
+
+      <div class="space-y-2 reveal">
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">Do I need to switch POS systems?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">No. PulpIQ works with your existing Square, Toast, or Clover. Nothing to replace.</p></div></div>
+        </details>
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">Is my data secure?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Yes. We encrypt all data, never share it with third parties, and you can request deletion at any time.</p></div></div>
+        </details>
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">What if I can't export my data?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">We'll help. We have step-by-step guides for every major POS. Still stuck? Book a 10-minute call and we'll walk you through it.</p></div></div>
+        </details>
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">What happens after 6 weeks?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">You decide. If PulpIQ saved you money, continue for $199/month. If not, cancel &mdash; no hard feelings, no hidden fees.</p></div></div>
+        </details>
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">How is this different from Toast or Square?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Toast is $600+/month and requires switching your entire POS. Square has no forecasting. PulpIQ is coffee-specific, works with what you have, and costs a fraction of the price.</p></div></div>
+        </details>
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">Do I need to be technical?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Not at all. If you can export a CSV (we'll show you how), you're good. Everything comes to you via email.</p></div></div>
+        </details>
+
+        <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
+          <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
+            <span class="font-sans font-bold text-sm text-warm-900">What results can I expect?</span>
+            <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          </summary>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Pilot cafés have seen meaningful savings through waste reduction and labour optimization. Results vary by current efficiency.</p></div></div>
+        </details>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ FINAL CTA ══════════════ -->
+  <section class="relative py-28 overflow-hidden" id="cta">
+    <!-- Background image with overlay -->
+    <div class="absolute inset-0" aria-hidden="true">
+      <img src="shawn.jpg" alt="" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-warm-900/85"></div>
+    </div>
+    <div class="relative z-10 max-w-2xl mx-auto px-6 text-center">
+      <h2 class="reveal text-warm-100 leading-tight mb-5" style="font-size:clamp(2.25rem, 6vw, 3.5rem)">
+        Ready to stop<br>wasting money?
+      </h2>
+      <p class="reveal text-warm-400 text-lg leading-relaxed mb-10 max-w-md mx-auto">
+        Join independent coffee shops across Toronto using PulpIQ to run smarter, leaner operations.
+      </p>
+      <a href="#get-started" class="reveal btn-pill btn-terra text-base sm:text-lg px-8 sm:px-10 py-4 mb-6 inline-flex">
+        Start your free trial
+        <svg class="w-5 h-5 hidden sm:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
+      </a>
+      <div class="reveal flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-warm-500">
+        <span>6-week free trial</span>
+        <span>No credit card</span>
+        <span>Cancel anytime</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════ FOOTER ══════════════ -->
+  <footer class="bg-warm-900 border-t border-warm-800">
+    <div class="max-w-6xl mx-auto px-6 py-14">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div class="md:col-span-2">
+          <a href="#" class="inline-block mb-4" aria-label="PulpIQ home">
+            <img src="PulpsitelogoV2.png" alt="PulpIQ" class="h-10 rounded" style="background:#FEFCF9; filter:brightness(0) invert(1)">
+          </a>
+          <p class="text-sm text-warm-500 leading-relaxed mb-1">Smarter operations for independent coffee shops.</p>
+          <p class="text-sm text-warm-500 mb-4">Based in Toronto, ON.</p>
+          <a href="mailto:hello@pulpiq.io" class="text-sm text-terra-400 hover:text-terra-300 transition-colors">hello@pulpiq.io</a>
+        </div>
+        <nav>
+          <h4 class="text-xs font-sans font-bold text-warm-500 mb-4">Product</h4>
+          <div class="space-y-2.5">
+            <a href="#how-it-works" class="block text-sm text-warm-400 hover:text-warm-200 transition-colors">How it works</a>
+            <a href="#pricing"      class="block text-sm text-warm-400 hover:text-warm-200 transition-colors">Pricing</a>
+            <a href="#faq"          class="block text-sm text-warm-400 hover:text-warm-200 transition-colors">FAQ</a>
+          </div>
+        </nav>
+        <nav>
+          <h4 class="text-xs font-sans font-bold text-warm-500 mb-4">Company</h4>
+          <div class="space-y-2.5">
+            <a href="mailto:hello@pulpiq.io" class="block text-sm text-warm-400 hover:text-warm-200 transition-colors">Contact</a>
+            <a href="#" class="block text-sm text-warm-400 hover:text-warm-200 transition-colors">Privacy policy</a>
+            <a href="#" class="block text-sm text-warm-400 hover:text-warm-200 transition-colors">Terms of service</a>
+          </div>
+        </nav>
+      </div>
+    </div>
+    <div class="border-t border-warm-800">
+      <div class="max-w-6xl mx-auto px-6 py-5 flex flex-wrap items-center justify-between gap-4">
+        <p class="text-xs text-warm-600">&copy; 2026 PulpIQ. All rights reserved.</p>
+        <div class="flex gap-5">
+          <a href="https://instagram.com/pulpiq" target="_blank" rel="noopener noreferrer" class="text-xs text-warm-500 hover:text-warm-300 transition-colors">Instagram</a>
+          <a href="https://linkedin.com/company/pulpiq" target="_blank" rel="noopener noreferrer" class="text-xs text-warm-500 hover:text-warm-300 transition-colors">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav
+    const nav = document.getElementById('mainNav');
+    const toggle = document.getElementById('mobileToggle');
+    const menu = document.getElementById('mobileMenu');
+    let open = false;
+
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+
+    toggle.addEventListener('click', () => {
+      open = !open;
+      toggle.setAttribute('aria-expanded', open);
+      menu.classList.toggle('hidden', !open);
+      if (open) nav.classList.add('scrolled'); else if (scrollY <= 20) nav.classList.remove('scrolled');
+      bar1.style.transform = open ? 'rotate(45deg) translate(5px,5px)' : '';
+      bar2.style.opacity   = open ? '0' : '1';
+      bar3.style.transform = open ? 'rotate(-45deg) translate(5px,-5px)' : '';
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      open = false; menu.classList.add('hidden'); toggle.setAttribute('aria-expanded', false);
+      if (scrollY <= 20) nav.classList.remove('scrolled');
+      bar1.style.transform = ''; bar2.style.opacity = '1'; bar3.style.transform = '';
+    }));
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const d = parseInt(e.target.dataset.delay) || 0;
+          setTimeout(() => e.target.classList.add('in'), d);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -32px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Form — submit via fetch, show inline success
+    const form = document.getElementById('signupForm');
+    const successMsg = document.getElementById('successMsg');
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      btn.textContent = 'Sending\u2026';
+      btn.disabled = true;
+      fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(form)).toString()
+      }).then(res => {
+        if (!res.ok) throw new Error('Submit failed');
+        form.style.display = 'none';
+        successMsg.style.display = 'block';
+        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }).catch(() => {
+        btn.textContent = 'Start free trial';
+        btn.disabled = false;
+        alert('Something went wrong. Please try again.');
+      });
+    });
+  </script>
+</body>
+</html>

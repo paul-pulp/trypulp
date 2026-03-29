@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Week {{ snapshot.week_number }} Comparison — PulpIQ{% endblock %}
+{% block content %}
+
+<div class="mb-6">
+    <a href="/dashboard" class="text-sm text-warm-500 hover:text-warm-700">&larr; Back to Dashboard</a>
+</div>
+
+<h1 class="text-2xl text-warm-800 mb-2">Week-Over-Week Comparison</h1>
+<p class="text-warm-600 text-sm mb-8">
+    {{ user.cafe_name }} &middot; Week {{ snapshot.week_number }} vs Week {{ snapshot.week_number - 1 if snapshot.week_number > 1 else "Baseline" }}
+</p>
+
+{% macro metric_card(label, current, previous, change, prefix="$", suffix="", invert=false) %}
+<div class="bg-white rounded-xl border border-warm-200 p-5">
+    <p class="text-xs text-warm-500 uppercase tracking-wide mb-2">{{ label }}</p>
+    <p class="text-2xl font-semibold text-warm-800">{{ prefix }}{{ "%.2f"|format(current) }}{{ suffix }}</p>
+    <div class="flex items-center gap-2 mt-2">
+        {% set is_good = (change < 0 if invert else change > 0) %}
+        {% set is_bad = (change > 0 if invert else change < 0) %}
+        {% if change != 0 %}
+        <span class="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full
+            {{ 'bg-sage-50 text-sage-700' if is_good else 'bg-red-50 text-red-600' if is_bad else 'bg-warm-100 text-warm-600' }}">
+            {{ "+" if change > 0 }}{{ prefix }}{{ "%.2f"|format(change) }}{{ suffix }}
+        </span>
+        {% else %}
+        <span class="text-xs text-warm-500">No change</span>
+        {% endif %}
+        <span class="text-xs text-warm-500">vs previous</span>
+    </div>
+    <p class="text-xs text-warm-500 mt-1">Previous: {{ prefix }}{{ "%.2f"|format(previous) }}{{ suffix }}</p>
+</div>
+{% endmacro %}
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+    {{ metric_card("Avg Daily Revenue",
+        comparison.revenue.current,
+        comparison.revenue.previous,
+        comparison.revenue.change) }}
+    {{ metric_card("Avg Ticket Size",
+        comparison.ticket.current,
+        comparison.ticket.previous,
+        comparison.ticket.change) }}
+    {{ metric_card("Daily Transactions",
+        comparison.transactions.current,
+        comparison.transactions.previous,
+        comparison.transactions.change,
+        prefix="", suffix="") }}
+    {{ metric_card("Daily Waste (items)",
+        comparison.waste_units.current,
+        comparison.waste_units.previous,
+        comparison.waste_units.change,
+        prefix="", suffix=" items", invert=true) }}
+    {{ metric_card("Monthly Waste Cost",
+        comparison.waste_cost.current,
+        comparison.waste_cost.previous,
+        comparison.waste_cost.change,
+        invert=true) }}
+</div>
+
+<div class="flex gap-4">
+    <a href="/report/{{ snapshot.id }}"
+       class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2 px-5 rounded-lg text-sm transition-colors">
+        View Full Report
+    </a>
+    <a href="/upload"
+       class="bg-warm-200 hover:bg-warm-300 text-warm-800 font-medium py-2 px-5 rounded-lg text-sm transition-colors">
+        Upload Next Week
+    </a>
+</div>
+
+{% endblock %}
