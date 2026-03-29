@@ -26,10 +26,14 @@ def send_magic_link_email(email, magic_link):
     smtp_user = current_app.config["SMTP_USER"]
     smtp_pass = current_app.config["SMTP_PASS"]
 
-    # In development, just print the link
+    # Always log the magic link (visible in Render logs)
+    print(f"[AUTH] Magic link for {email}: {magic_link}", flush=True)
+    print(f"[AUTH] SMTP_USER configured: {'yes' if smtp_user else 'no'}", flush=True)
+    print(f"[AUTH] SMTP_PASS configured: {'yes' if smtp_pass else 'no'}", flush=True)
+
+    # In development, skip email
     if not smtp_user or not smtp_pass:
-        print(f"\n  [DEV MODE] Magic link for {email}:")
-        print(f"  {magic_link}\n")
+        print(f"[AUTH] No SMTP credentials — skipping email send", flush=True)
         return True
 
     msg = MIMEText(
@@ -45,12 +49,16 @@ def send_magic_link_email(email, magic_link):
     msg["To"] = email
 
     try:
+        print(f"[AUTH] Connecting to {current_app.config['SMTP_HOST']}:{current_app.config['SMTP_PORT']}...", flush=True)
         with smtplib.SMTP(current_app.config["SMTP_HOST"],
                           current_app.config["SMTP_PORT"]) as server:
             server.starttls()
+            print(f"[AUTH] Logging in as {smtp_user}...", flush=True)
             server.login(smtp_user, smtp_pass)
             server.send_message(msg)
+        print(f"[AUTH] Email sent successfully to {email}", flush=True)
         return True
     except Exception as e:
-        print(f"  Email send failed: {e}")
+        print(f"[AUTH] Email send FAILED: {e}", flush=True)
+        # Still log the link so user can find it in logs
         return False
