@@ -2,8 +2,8 @@ services:
   - type: web
     name: pulpiq-app
     runtime: python
-    buildCommand: pip install -r requirements.txt && cd src/webapp && npm install && npm run build:css
-    startCommand: gunicorn wsgi:app
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT
     envVars:
       - key: SECRET_KEY
         generateValue: true

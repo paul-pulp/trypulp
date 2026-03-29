@@ -24,6 +24,11 @@ def create_app():
 
     os.makedirs(app.instance_path, exist_ok=True)
 
+    # Ensure database directory exists (for Render persistent disk)
+    db_dir = os.path.dirname(app.config["DATABASE"])
+    if db_dir:
+        os.makedirs(db_dir, exist_ok=True)
+
     # Initialize database
     with app.app_context():
         init_db(app)
