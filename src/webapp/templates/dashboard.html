@@ -1,22 +1,28 @@
 {% extends "base.html" %}
 {% block title %}Dashboard — PulpIQ{% endblock %}
 {% block content %}
-<div class="flex items-center justify-between mb-8">
+<div class="flex items-center justify-between mb-8 load-in">
     <div>
         <h1 class="text-2xl text-warm-800">{{ user.cafe_name }}</h1>
-        <p class="text-warm-600 text-sm">Your sales analytics dashboard</p>
+        <p class="text-warm-500 text-sm">Your sales analytics dashboard</p>
     </div>
     <a href="/upload"
-       class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-5 rounded-lg transition-colors text-sm">
+       class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-5 rounded-lg transition-colors text-sm flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         Upload New Data
     </a>
 </div>
 
 {% if not snapshots %}
-<div class="bg-white rounded-xl border border-warm-200 p-12 text-center">
-    <div class="text-5xl mb-4">&#128202;</div>
+<div class="card p-12 text-center load-in load-in-1">
+    <div class="w-16 h-16 bg-warm-100 rounded-full flex items-center justify-center mx-auto mb-5">
+        <svg class="w-7 h-7 text-warm-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+    </div>
     <h2 class="text-xl text-warm-800 mb-2">No data yet</h2>
-    <p class="text-warm-600 mb-6">Upload your first CSV to see your baseline report.</p>
+    <p class="text-warm-500 mb-1">Upload your first CSV to see your baseline report.</p>
+    <p class="text-sm text-warm-400 mb-6">Most POS systems let you export 90 days in under a minute.</p>
     <a href="/upload"
        class="inline-block bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-6 rounded-lg transition-colors">
         Upload Your Sales Data
@@ -25,37 +31,37 @@
 
 {% else %}
 
-<!-- Latest metrics card -->
+<!-- Latest metrics -->
 {% if latest %}
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-    <div class="bg-white rounded-xl border border-warm-200 p-5">
-        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Avg Daily Revenue</p>
+    <div class="card p-5 load-in load-in-1">
+        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Avg Daily Revenue</p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_daily_revenue) }}</p>
         {% if latest.comparison and latest.comparison.revenue.change %}
-        <p class="text-xs mt-1 {{ 'text-sage-600' if latest.comparison.revenue.change > 0 else 'text-red-500' }}">
+        <p class="text-xs mt-1.5 font-medium {{ 'text-sage-600' if latest.comparison.revenue.change > 0 else 'text-red-500' }}">
             {{ "+" if latest.comparison.revenue.change > 0 }}${{ "%.2f"|format(latest.comparison.revenue.change) }} vs last
         </p>
         {% endif %}
     </div>
-    <div class="bg-white rounded-xl border border-warm-200 p-5">
-        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Avg Ticket</p>
+    <div class="card p-5 load-in load-in-2">
+        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Avg Ticket</p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_ticket_size) }}</p>
         {% if latest.comparison and latest.comparison.ticket.change %}
-        <p class="text-xs mt-1 {{ 'text-sage-600' if latest.comparison.ticket.change > 0 else 'text-red-500' }}">
+        <p class="text-xs mt-1.5 font-medium {{ 'text-sage-600' if latest.comparison.ticket.change > 0 else 'text-red-500' }}">
             {{ "+" if latest.comparison.ticket.change > 0 }}${{ "%.2f"|format(latest.comparison.ticket.change) }} vs last
         </p>
         {% endif %}
     </div>
-    <div class="bg-white rounded-xl border border-warm-200 p-5">
-        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Daily Transactions</p>
+    <div class="card p-5 load-in load-in-3">
+        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Daily Transactions</p>
         <p class="text-2xl font-semibold text-warm-800">{{ "%.0f"|format(latest.avg_daily_transactions) }}</p>
     </div>
-    <div class="bg-white rounded-xl border border-warm-200 p-5">
-        <p class="text-xs text-warm-500 uppercase tracking-wide mb-1">Monthly Waste Cost</p>
-        <p class="text-2xl font-semibold text-warm-800">${{ "%.0f"|format(latest.waste_monthly_cost or 0) }}</p>
-        {% if latest.waste_savings_monthly %}
-        <p class="text-xs mt-1 text-sage-600">
-            ${{ "%.0f"|format(latest.waste_savings_monthly) }}/mo savings potential
+    <div class="card p-5 load-in load-in-4 !bg-sage-50 !border-sage-100">
+        <p class="text-xs text-sage-600 uppercase tracking-wide mb-1">Savings Potential</p>
+        <p class="text-2xl font-semibold text-sage-700">${{ "%.0f"|format(latest.waste_savings_monthly or 0) }}<span class="text-sm font-normal">/mo</span></p>
+        {% if latest.waste_monthly_cost %}
+        <p class="text-xs mt-1.5 text-sage-500">
+            from ${{ "%.0f"|format(latest.waste_monthly_cost) }} monthly waste
         </p>
         {% endif %}
     </div>
@@ -63,29 +69,30 @@
 {% endif %}
 
 <!-- Upload history -->
-<h2 class="text-lg text-warm-800 mb-4">Upload History</h2>
-<div class="bg-white rounded-xl border border-warm-200 overflow-hidden">
+<h2 class="text-lg text-warm-800 mb-4 load-in load-in-5">Upload History</h2>
+<div class="card-static overflow-hidden load-in load-in-6">
     <table class="w-full text-sm">
-        <thead class="bg-warm-100">
+        <thead class="bg-warm-50">
             <tr>
-                <th class="text-left px-5 py-3 text-warm-600 font-medium">Upload</th>
-                <th class="text-left px-5 py-3 text-warm-600 font-medium">Data Range</th>
-                <th class="text-right px-5 py-3 text-warm-600 font-medium">Avg Revenue</th>
-                <th class="text-right px-5 py-3 text-warm-600 font-medium">Actions</th>
+                <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Upload</th>
+                <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Data Range</th>
+                <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Revenue</th>
+                <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Uploaded</th>
+                <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Actions</th>
             </tr>
         </thead>
         <tbody class="divide-y divide-warm-100">
             {% for snap in snapshots %}
-            <tr class="hover:bg-warm-50">
-                <td class="px-5 py-3">
+            <tr class="hover:bg-warm-50/50 transition-colors">
+                <td class="px-5 py-3.5">
                     <span class="font-medium text-warm-800">
                         {{ "Baseline" if snap.week_number == 0 else "Week " ~ snap.week_number }}
                     </span>
-                    <span class="text-warm-500 text-xs ml-2">{{ snap.csv_filename }}</span>
                 </td>
-                <td class="px-5 py-3 text-warm-600">{{ snap.date_start }} to {{ snap.date_end }}</td>
-                <td class="px-5 py-3 text-right text-warm-800">${{ "%.2f"|format(snap.avg_daily_revenue) }}/day</td>
-                <td class="px-5 py-3 text-right space-x-3">
+                <td class="px-5 py-3.5 text-warm-500">{{ snap.date_start }} to {{ snap.date_end }}</td>
+                <td class="px-5 py-3.5 text-right text-warm-800 font-medium">${{ "%.2f"|format(snap.avg_daily_revenue) }}/day</td>
+                <td class="px-5 py-3.5 text-right text-warm-400 text-xs">{{ snap.created_at[:10] if snap.created_at else '' }}</td>
+                <td class="px-5 py-3.5 text-right space-x-3">
                     <a href="/report/{{ snap.id }}" class="text-terra-600 hover:text-terra-700 font-medium">Report</a>
                     {% if snap.comparison_results %}
                     <a href="/compare/{{ snap.id }}" class="text-sage-600 hover:text-sage-700 font-medium">Compare</a>

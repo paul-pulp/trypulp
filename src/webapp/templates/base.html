@@ -7,30 +7,47 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
-<body class="bg-warm-50 text-warm-900 min-h-screen">
-    <nav class="bg-white border-b border-warm-200 px-6 py-3">
+<body class="bg-warm-50 text-warm-900 min-h-screen flex flex-col">
+    <nav class="bg-white border-b border-warm-200 px-6 py-3 no-print">
         <div class="max-w-5xl mx-auto flex items-center justify-between">
-            <a href="/dashboard" class="font-serif text-xl text-warm-800">PulpIQ</a>
+            <div class="flex items-center gap-2">
+                <a href="/dashboard" class="font-serif text-xl text-warm-800">PulpIQ</a>
+                {% if current_user %}
+                <span class="text-warm-300 text-sm">/</span>
+                <span class="text-sm text-warm-500">{{ current_user.cafe_name }}</span>
+                {% endif %}
+            </div>
             {% if session.get('user_id') %}
-            <div class="flex items-center gap-4 text-sm">
-                <a href="/upload" class="text-terra-600 hover:text-terra-700 font-medium">Upload Data</a>
-                <a href="/dashboard" class="text-warm-600 hover:text-warm-800">Dashboard</a>
-                <a href="/logout" class="text-warm-500 hover:text-warm-700">Sign Out</a>
+            <div class="flex items-center gap-1 text-sm">
+                <a href="/upload" class="text-terra-600 hover:text-terra-700 font-medium px-3 py-1.5 rounded-lg hover:bg-terra-500/5 transition-colors">Upload Data</a>
+                <a href="/dashboard" class="text-warm-600 hover:text-warm-800 px-3 py-1.5 rounded-lg hover:bg-warm-100 transition-colors">Dashboard</a>
+                <span class="w-px h-4 bg-warm-200 mx-1"></span>
+                <a href="/logout" class="text-warm-400 hover:text-warm-600 px-3 py-1.5 rounded-lg hover:bg-warm-100 transition-colors flex items-center gap-1.5">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                    Sign Out
+                </a>
             </div>
             {% endif %}
         </div>
     </nav>
 
-    <main class="max-w-5xl mx-auto px-6 py-8">
+    <main class="max-w-5xl mx-auto px-6 py-8 flex-1 w-full">
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
-        <div class="mb-6 space-y-2">
+        <div class="mb-6 space-y-2 load-in">
             {% for category, message in messages %}
-            <div class="px-4 py-3 rounded-lg text-sm
+            <div class="px-4 py-3 rounded-xl text-sm flex items-start gap-3
                 {% if category == 'error' %}bg-red-50 text-red-800 border border-red-200
                 {% elif category == 'warning' %}bg-amber-50 text-amber-800 border border-amber-200
                 {% else %}bg-sage-50 text-sage-700 border border-sage-100{% endif %}">
-                {{ message }}
+                {% if category == 'error' %}
+                <svg class="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                {% elif category == 'warning' %}
+                <svg class="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+                {% else %}
+                <svg class="w-4 h-4 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                {% endif %}
+                <span>{{ message }}</span>
             </div>
             {% endfor %}
         </div>
@@ -40,8 +57,14 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="border-t border-warm-200 mt-12 py-6 text-center text-sm text-warm-500">
-        PulpIQ — Stop Guessing. Start Saving.
+    <footer class="border-t border-warm-200 py-6 no-print">
+        <div class="max-w-5xl mx-auto px-6 flex items-center justify-between text-sm text-warm-400">
+            <span>PulpIQ — Stop Guessing. Start Saving.</span>
+            <div class="flex items-center gap-4">
+                <a href="mailto:hello@pulpiq.io" class="hover:text-warm-600 transition-colors">hello@pulpiq.io</a>
+                <a href="https://pulpiq.io" class="hover:text-warm-600 transition-colors">pulpiq.io</a>
+            </div>
+        </div>
     </footer>
 </body>
 </html>

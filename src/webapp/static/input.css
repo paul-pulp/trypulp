@@ -34,3 +34,109 @@ body {
 h1, h2, h3 {
     font-family: var(--font-serif);
 }
+
+/* ── Entrance animations ───────────────────────────────── */
+
+@keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.load-in {
+    animation: fade-up 0.4s ease-out both;
+}
+.load-in-1 { animation-delay: 0.05s; }
+.load-in-2 { animation-delay: 0.1s; }
+.load-in-3 { animation-delay: 0.15s; }
+.load-in-4 { animation-delay: 0.2s; }
+.load-in-5 { animation-delay: 0.25s; }
+.load-in-6 { animation-delay: 0.3s; }
+
+/* ── Card component ────────────────────────────────────── */
+
+.card {
+    background: white;
+    border: 1px solid var(--color-warm-200);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(90, 68, 56, 0.04);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+    box-shadow: 0 4px 12px rgba(90, 68, 56, 0.08);
+    transform: translateY(-1px);
+}
+
+.card-static {
+    background: white;
+    border: 1px solid var(--color-warm-200);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(90, 68, 56, 0.04);
+}
+
+/* ── Insight callouts ──────────────────────────────────── */
+
+.insight-callout {
+    border-left: 3px solid var(--color-sage-500);
+    background: var(--color-sage-50);
+    padding: 0.875rem 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.insight-callout-warn {
+    border-left: 3px solid var(--color-terra-500);
+    background: #fef7f4;
+    padding: 0.875rem 1rem;
+    border-radius: 0 0.5rem 0.5rem 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+/* ── Loading spinner ───────────────────────────────────── */
+
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-left: 6px;
+}
+
+.spinner-dark {
+    border-color: rgba(90, 68, 56, 0.15);
+    border-top-color: var(--color-terra-600);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ── Inline percentage bar (for tables) ────────────────── */
+
+.pct-bar {
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-warm-100);
+    margin-top: 4px;
+}
+
+.pct-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--color-terra-500);
+}
+
+/* ── Print styles ──────────────────────────────────────── */
+
+@media print {
+    nav, footer, .no-print { display: none !important; }
+    .card, .card-static { box-shadow: none !important; border: 1px solid #ddd !important; }
+    body { background: white !important; }
+    main { max-width: 100% !important; padding: 0 !important; }
+}

@@ -4,8 +4,8 @@ Self-serve cafe analytics — upload CSV, see instant results.
 """
 
 import os
-from flask import Flask
-from .models import init_db
+from flask import Flask, session
+from .models import init_db, get_user_by_id
 
 
 def create_app():
@@ -41,6 +41,17 @@ def create_app():
     app.register_blueprint(auth_bp)
     app.register_blueprint(upload_bp)
     app.register_blueprint(dashboard_bp)
+
+    # Inject current_user into all templates
+    @app.context_processor
+    def inject_user():
+        user = None
+        if "user_id" in session:
+            try:
+                user = get_user_by_id(session["user_id"])
+            except Exception:
+                pass
+        return {"current_user": user}
 
     # Root redirect
     @app.route("/")
