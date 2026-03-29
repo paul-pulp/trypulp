@@ -117,15 +117,21 @@
 
     <div class="grid grid-cols-3 gap-4 mb-5">
         <div class="card p-5 text-center">
-            <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Daily Waste</p>
+            <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
+                <span class="tooltip" data-tip="The estimated number of perishable items that go unsold each day, based on the gap between your peak ordering and average sales.">Daily Waste<i class="info-icon">?</i></span>
+            </p>
             <p class="text-2xl font-semibold text-warm-800">{{ "%.1f"|format(waste.waste_projection.total_daily_waste_units) }} <span class="text-sm font-normal text-warm-500">items</span></p>
         </div>
         <div class="card p-5 text-center">
-            <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Monthly Waste Cost</p>
+            <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
+                <span class="tooltip" data-tip="Daily waste units multiplied by each item's ingredient cost (30% of menu price) over 30 days. This is what unsold perishables cost you each month.">Monthly Waste Cost<i class="info-icon">?</i></span>
+            </p>
             <p class="text-2xl font-semibold text-red-600">${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}</p>
         </div>
         <div class="card p-5 text-center !bg-sage-50 !border-sage-100">
-            <p class="text-xs text-sage-600 uppercase tracking-wide mb-1">Savings Potential</p>
+            <p class="text-xs text-sage-600 uppercase tracking-wide mb-1">
+                <span class="tooltip" data-tip="If you adjust orders to our recommended quantities, this is how much you'd save. Includes reduced perishable waste plus an estimated 6% reduction in milk over-ordering.">Savings Potential<i class="info-icon">?</i></span>
+            </p>
             <p class="text-2xl font-semibold text-sage-700">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal">/mo</span></p>
         </div>
     </div>
@@ -135,10 +141,18 @@
             <thead class="bg-warm-50">
                 <tr>
                     <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Item</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Sold/Day</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Current Order</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Recommended</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Wasted/Mo</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
+                        <span class="tooltip" data-tip="How many units of this item sell on an average day, based on your full data range.">Avg Sold/Day<i class="info-icon">?</i></span>
+                    </th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
+                        <span class="tooltip" data-tip="Our estimate of how many you're currently ordering, based on your peak sales day. Cafes tend to order for their busiest day.">Current Order<i class="info-icon">?</i></span>
+                    </th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
+                        <span class="tooltip" data-tip="The quantity we recommend ordering: your average daily sales plus a small buffer for variance. Enough to cover most days without over-ordering.">Recommended<i class="info-icon">?</i></span>
+                    </th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
+                        <span class="tooltip" data-tip="Monthly cost of unsold units at current ordering levels. Calculated as: (current order - avg sold) × ingredient cost × 30 days.">Wasted/Mo<i class="info-icon">?</i></span>
+                    </th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-warm-100">
