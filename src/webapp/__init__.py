@@ -4,6 +4,8 @@ Self-serve cafe analytics — upload CSV, see instant results.
 """
 
 import os
+import threading
+import time
 from flask import Flask, session
 from .models import init_db, get_user_by_id
 
@@ -52,6 +54,35 @@ def create_app():
             except Exception:
                 pass
         return {"current_user": user}
+
+    # Admin backup route (secret — only you know the URL)
+    backup_key = os.environ.get("BACKUP_KEY", "dev-backup-key")
+
+    @app.route(f"/admin/backup/{backup_key}")
+    def admin_backup():
+        from flask import jsonify
+        from .backup import run_backup
+        path = run_backup(app)
+        if path:
+            return jsonify({"status": "ok", "file": os.path.basename(path)})
+        return jsonify({"status": "error", "message": "backup failed"}), 500
+
+    # Daily automatic backup (background thread)
+    def _daily_backup_loop():
+        time.sleep(60)  # wait for app to fully start
+        while True:
+            try:
+                with app.app_context():
+                    from .backup import run_backup
+                    run_backup(app)
+            except Exception as e:
+                print(f"[BACKUP] Auto-backup error: {e}", flush=True)
+            time.sleep(86400)  # 24 hours
+
+    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN"):
+        # Only start in the main process (not the reloader)
+        backup_thread = threading.Thread(target=_daily_backup_loop, daemon=True)
+        backup_thread.start()
 
     # Root redirect
     @app.route("/")
