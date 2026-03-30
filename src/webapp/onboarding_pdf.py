@@ -253,11 +253,11 @@ def generate(cafe_name="Your Cafe"):
         spaceAfter=8,
     ))
     story.append(Paragraph(
-        "Questions? Reply to this email or reach us at hello@pulpiq.io",
+        "Questions? Reply to this email or reach us at hello@trypulp.co",
         styles["footer"],
     ))
     story.append(Paragraph(
-        "PulpIQ — Stop Guessing. Start Saving. | pulpiq.io",
+        "PulpIQ — Stop Guessing. Start Saving. | trypulp.co",
         styles["footer"],
     ))
 

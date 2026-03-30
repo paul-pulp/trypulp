@@ -94,14 +94,59 @@ def compare(snapshot_id):
 @login_required
 def feedback():
     user_id = session["user_id"]
+    user = get_user_by_id(user_id)
     feedback_type = request.form.get("feedback_type", "feedback")
     message = request.form.get("message", "").strip()
 
     if message:
         insert_feedback(user_id, feedback_type, message)
         print(f"[FEEDBACK] {feedback_type} from user {user_id}: {message[:100]}", flush=True)
+
+        # Email feedback to hello@trypulp.co
+        _email_feedback(user, feedback_type, message)
+
         flash("Thanks for your feedback!", "success")
     else:
         flash("Please enter a message.", "error")
 
     return redirect(url_for("dashboard.dashboard"))
+
+
+def _email_feedback(user, feedback_type, message):
+    """Send feedback notification to hello@trypulp.co."""
+    import smtplib
+    from email.mime.text import MIMEText
+    from flask import current_app
+
+    smtp_user = current_app.config.get("SMTP_USER", "")
+    smtp_pass = current_app.config.get("SMTP_PASS", "")
+
+    if not smtp_user or not smtp_pass:
+        return
+
+    cafe = user["cafe_name"] if user else "Unknown"
+    email = user["email"] if user else "Unknown"
+
+    type_label = feedback_type.replace("_", " ").title()
+
+    body = (
+        f"New {type_label} from {cafe} ({email}):\n\n"
+        f"{message}\n\n"
+        f"---\n"
+        f"View all feedback: {current_app.config['APP_URL']}/admin/feedback"
+    )
+
+    msg = MIMEText(body, "plain")
+    msg["Subject"] = f"[PulpIQ {type_label}] {cafe}"
+    msg["From"] = smtp_user
+    msg["To"] = "hello@trypulp.co"
+
+    try:
+        with smtplib.SMTP(current_app.config["SMTP_HOST"],
+                          current_app.config["SMTP_PORT"]) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+        print(f"[FEEDBACK] Email sent to hello@trypulp.co", flush=True)
+    except Exception as e:
+        print(f"[FEEDBACK] Email failed: {e}", flush=True)

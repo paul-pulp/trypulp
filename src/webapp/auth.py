@@ -56,7 +56,7 @@ def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name=""):
             f"Questions? Just reply to this email.\n\n"
             f"— Paul\n"
             f"Founder, PulpIQ\n"
-            f"hello@pulpiq.io"
+            f"hello@trypulp.co"
         )
     else:
         subject = "Your PulpIQ Sign-In Link"
