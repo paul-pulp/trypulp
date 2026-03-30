@@ -17,7 +17,9 @@
             </div>
             <div class="text-right text-sm text-warm-500">
                 <p><strong class="text-warm-800">{{ users|length }}</strong> total users</p>
-                <p><strong class="text-warm-800">{{ users|selectattr('upload_count', 'gt', 0)|list|length }}</strong> have uploaded data</p>
+                {% set active_count = [] %}
+                {% for u in users %}{% if u.upload_count and u.upload_count > 0 %}{% if active_count.append(1) %}{% endif %}{% endif %}{% endfor %}
+                <p><strong class="text-warm-800">{{ active_count|length }}</strong> have uploaded data</p>
             </div>
         </div>
 

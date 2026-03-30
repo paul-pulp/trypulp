@@ -83,10 +83,15 @@ def create_app():
     @app.route("/admin/users")
     def admin_users():
         _check_admin_key()
-        from flask import render_template
+        from flask import render_template, jsonify
         from .models import get_all_users_with_stats
-        users = get_all_users_with_stats()
-        return render_template("admin_users.html", users=users)
+        try:
+            users = get_all_users_with_stats()
+            return render_template("admin_users.html", users=users)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return jsonify({"error": str(e)}), 500
 
     # Daily automatic backup (background thread)
     def _daily_backup_loop():
