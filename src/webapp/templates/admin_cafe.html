@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ user.cafe_name }} — PulpIQ Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-warm-50 text-warm-900 min-h-screen">
+    <div class="max-w-5xl mx-auto px-6 py-8">
+
+        <!-- Back link -->
+        <a href="/admin/users" class="text-sm text-warm-400 hover:text-warm-600 transition-colors flex items-center gap-1 mb-6">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Back to All Users
+        </a>
+
+        <!-- Profile Card -->
+        <div class="card p-6 mb-8 load-in">
+            <div class="flex items-start justify-between">
+                <div>
+                    <h1 class="font-serif text-2xl text-warm-800 mb-1">{{ user.cafe_name }}</h1>
+                    <p class="text-warm-500">{{ user.email }}</p>
+                </div>
+                <div class="text-right text-sm text-warm-500">
+                    <p>Signed up: {{ user.created_at|string|truncate(10, True, '') if user.created_at else '—' }}</p>
+                    <p>Total uploads: <strong class="text-warm-800">{{ snapshots|length }}</strong></p>
+                </div>
+            </div>
+        </div>
+
+        {% if snapshots %}
+
+        <!-- Latest Metrics -->
+        {% set latest = snapshots[0] %}
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8 load-in load-in-1">
+            <div class="card p-5">
+                <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Daily Revenue</p>
+                <p class="text-xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_daily_revenue or 0) }}</p>
+            </div>
+            <div class="card p-5">
+                <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Avg Ticket</p>
+                <p class="text-xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_ticket_size or 0) }}</p>
+            </div>
+            <div class="card p-5">
+                <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Transactions/Day</p>
+                <p class="text-xl font-semibold text-warm-800">{{ "%.0f"|format(latest.avg_daily_transactions or 0) }}</p>
+            </div>
+            <div class="card p-5">
+                <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Monthly Waste</p>
+                <p class="text-xl font-semibold text-red-600">${{ "%.0f"|format(latest.waste_monthly_cost or 0) }}</p>
+            </div>
+            <div class="card p-5 !bg-sage-50 !border-sage-100">
+                <p class="text-xs text-sage-600 uppercase tracking-wide mb-1">Savings Potential</p>
+                <p class="text-xl font-semibold text-sage-700">${{ "%.0f"|format(latest.waste_savings_monthly or 0) }}/mo</p>
+            </div>
+        </div>
+
+        <!-- Trends Over Time -->
+        {% if snapshots|length > 1 %}
+        <h2 class="font-serif text-lg text-warm-800 mb-4 load-in load-in-2">Trends Over Time</h2>
+        <div class="card-static overflow-hidden mb-8 load-in load-in-2">
+            <table class="w-full text-sm">
+                <thead class="bg-warm-50">
+                    <tr>
+                        <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Week</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Revenue</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Change</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Ticket</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Waste Cost</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Waste Change</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Savings</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-warm-100">
+                    {% set prev_rev = [0] %}
+                    {% set prev_waste = [0] %}
+                    {% for snap in snapshots|reverse %}
+                    <tr class="hover:bg-warm-50/50 transition-colors">
+                        <td class="px-5 py-3 font-medium text-warm-800">
+                            {{ "Baseline" if snap.week_number == 0 else "Week " ~ snap.week_number }}
+                        </td>
+                        <td class="px-5 py-3 text-right text-warm-800 font-medium">
+                            ${{ "%.2f"|format(snap.avg_daily_revenue or 0) }}
+                        </td>
+                        <td class="px-5 py-3 text-right text-xs font-medium">
+                            {% if prev_rev[0] and snap.avg_daily_revenue %}
+                            {% set change = snap.avg_daily_revenue - prev_rev[0] %}
+                            <span class="{{ 'text-sage-600' if change > 0 else 'text-red-500' if change < 0 else 'text-warm-400' }}">
+                                {{ "+" if change > 0 }}${{ "%.2f"|format(change) }}
+                            </span>
+                            {% else %}
+                            <span class="text-warm-300">—</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-5 py-3 text-right text-warm-600">
+                            ${{ "%.2f"|format(snap.avg_ticket_size or 0) }}
+                        </td>
+                        <td class="px-5 py-3 text-right text-warm-600">
+                            ${{ "%.0f"|format(snap.waste_monthly_cost or 0) }}
+                        </td>
+                        <td class="px-5 py-3 text-right text-xs font-medium">
+                            {% if prev_waste[0] and snap.waste_monthly_cost %}
+                            {% set wchange = snap.waste_monthly_cost - prev_waste[0] %}
+                            <span class="{{ 'text-sage-600' if wchange < 0 else 'text-red-500' if wchange > 0 else 'text-warm-400' }}">
+                                {{ "+" if wchange > 0 }}${{ "%.0f"|format(wchange) }}
+                            </span>
+                            {% else %}
+                            <span class="text-warm-300">—</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-5 py-3 text-right font-medium text-sage-700">
+                            {% if snap.waste_savings_monthly %}
+                            ${{ "%.0f"|format(snap.waste_savings_monthly) }}/mo
+                            {% else %}
+                            <span class="text-warm-300">—</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% if snap.avg_daily_revenue %}{% if prev_rev.append(snap.avg_daily_revenue) %}{% endif %}{% endif %}
+                    {% if snap.waste_monthly_cost %}{% if prev_waste.append(snap.waste_monthly_cost) %}{% endif %}{% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
+
+        <!-- All Snapshots -->
+        <h2 class="font-serif text-lg text-warm-800 mb-4 load-in load-in-3">Upload History</h2>
+        <div class="card-static overflow-hidden load-in load-in-3">
+            <table class="w-full text-sm">
+                <thead class="bg-warm-50">
+                    <tr>
+                        <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Upload</th>
+                        <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Data Range</th>
+                        <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">File</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Revenue</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Waste</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Uploaded</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-warm-100">
+                    {% for snap in snapshots %}
+                    <tr class="hover:bg-warm-50/50 transition-colors">
+                        <td class="px-5 py-3 font-medium text-warm-800">
+                            {{ "Baseline" if snap.week_number == 0 else "Week " ~ snap.week_number }}
+                        </td>
+                        <td class="px-5 py-3 text-warm-500">{{ snap.date_start }} to {{ snap.date_end }}</td>
+                        <td class="px-5 py-3 text-warm-400 text-xs">{{ snap.csv_filename }}</td>
+                        <td class="px-5 py-3 text-right text-warm-800 font-medium">${{ "%.2f"|format(snap.avg_daily_revenue or 0) }}/day</td>
+                        <td class="px-5 py-3 text-right text-warm-600">${{ "%.0f"|format(snap.waste_monthly_cost or 0) }}/mo</td>
+                        <td class="px-5 py-3 text-right text-warm-500 text-xs">
+                            {{ snap.created_at|string|truncate(10, True, '') if snap.created_at else '' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% else %}
+        <div class="card p-12 text-center">
+            <p class="text-warm-500">This cafe hasn't uploaded any data yet.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>

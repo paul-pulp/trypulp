@@ -8,7 +8,7 @@
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body class="bg-warm-50 text-warm-900 min-h-screen">
-    <div class="max-w-5xl mx-auto px-6 py-8">
+    <div class="max-w-6xl mx-auto px-6 py-8">
 
         <div class="flex items-center justify-between mb-8">
             <div>
@@ -30,18 +30,22 @@
                         <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Cafe</th>
                         <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Email</th>
                         <th class="text-center px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Uploads</th>
-                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Latest Revenue</th>
-                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Last Upload</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Revenue</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Savings Potential</th>
                         <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Signed Up</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-warm-100">
                     {% for user in users %}
                     <tr class="hover:bg-warm-50/50 transition-colors">
-                        <td class="px-5 py-3.5 font-medium text-warm-800">{{ user.cafe_name }}</td>
+                        <td class="px-5 py-3.5">
+                            <a href="/admin/cafe/{{ user.id }}" class="font-medium text-terra-600 hover:text-terra-700 hover:underline">
+                                {{ user.cafe_name }}
+                            </a>
+                        </td>
                         <td class="px-5 py-3.5 text-warm-600">{{ user.email }}</td>
                         <td class="px-5 py-3.5 text-center">
-                            {% if user.upload_count > 0 %}
+                            {% if user.upload_count and user.upload_count > 0 %}
                             <span class="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full bg-sage-50 text-sage-700">
                                 {{ user.upload_count }}
                             </span>
@@ -58,8 +62,12 @@
                             <span class="text-warm-300">—</span>
                             {% endif %}
                         </td>
-                        <td class="px-5 py-3.5 text-right text-warm-500 text-xs">
-                            {{ user.last_upload|string|truncate(10, True, '') if user.last_upload else '—' }}
+                        <td class="px-5 py-3.5 text-right">
+                            {% if user.best_savings and user.best_savings > 0 %}
+                            <span class="font-medium text-sage-700">${{ "%.0f"|format(user.best_savings) }}/mo</span>
+                            {% else %}
+                            <span class="text-warm-300">—</span>
+                            {% endif %}
                         </td>
                         <td class="px-5 py-3.5 text-right text-warm-500 text-xs">
                             {{ user.created_at|string|truncate(10, True, '') if user.created_at else '' }}

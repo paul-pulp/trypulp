@@ -74,11 +74,13 @@ def get_all_users_with_stats():
             u.id, u.email, u.cafe_name, u.created_at,
             COUNT(s.id) as upload_count,
             MAX(s.created_at) as last_upload,
-            MAX(s.avg_daily_revenue) as latest_revenue
+            MAX(s.avg_daily_revenue) as latest_revenue,
+            MAX(s.waste_savings_monthly) as best_savings,
+            MAX(s.waste_monthly_cost) as latest_waste_cost
         FROM users u
         LEFT JOIN snapshots s ON u.id = s.user_id
         GROUP BY u.id
-        ORDER BY u.created_at DESC
+        ORDER BY MAX(s.waste_savings_monthly) DESC NULLS LAST
     """).fetchall()
 
 

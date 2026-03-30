@@ -103,6 +103,24 @@ def create_app():
             traceback.print_exc()
             return jsonify({"error": str(e)}), 500
 
+    @app.route("/admin/cafe/<int:user_id>")
+    def admin_cafe_detail(user_id):
+        denied = _check_admin_auth()
+        if denied:
+            return denied
+        from flask import render_template, abort, jsonify
+        from .models import get_user_by_id, get_snapshots_for_user
+        try:
+            user = get_user_by_id(user_id)
+            if user is None:
+                abort(404)
+            snapshots = get_snapshots_for_user(user_id)
+            return render_template("admin_cafe.html", user=user, snapshots=snapshots)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return jsonify({"error": str(e)}), 500
+
     # Daily automatic backup (background thread)
     def _daily_backup_loop():
         time.sleep(60)  # wait for app to fully start
