@@ -79,22 +79,23 @@ def upload():
         # Store snapshot
         customer = result["customer"]
         waste = result["waste"]
-        summary = customer["summary"]
-        waste_proj = waste.get("waste_projection", {})
+        summary = customer.get("summary") or {}
+        waste_proj = waste.get("waste_projection") or {}
+        waste_savings = waste.get("savings") or {}
 
         snapshot_id = insert_snapshot(
             user_id=user_id,
             week_number=week_number,
             csv_filename=file.filename,
-            date_start=customer["data_range"]["start"],
-            date_end=customer["data_range"]["end"],
-            avg_daily_revenue=summary["avg_daily_revenue"],
-            avg_ticket_size=summary["avg_ticket_size"],
-            avg_daily_transactions=summary["avg_daily_transactions"],
-            total_revenue=summary["total_revenue"],
+            date_start=(customer.get("data_range") or {}).get("start", ""),
+            date_end=(customer.get("data_range") or {}).get("end", ""),
+            avg_daily_revenue=summary.get("avg_daily_revenue", 0),
+            avg_ticket_size=summary.get("avg_ticket_size", 0),
+            avg_daily_transactions=summary.get("avg_daily_transactions", 0),
+            total_revenue=summary.get("total_revenue", 0),
             waste_units_daily=waste_proj.get("total_daily_waste_units", 0),
             waste_monthly_cost=waste_proj.get("total_monthly_waste_cost", 0),
-            waste_savings_monthly=waste["savings"].get("total_savings_monthly", 0),
+            waste_savings_monthly=waste_savings.get("total_savings_monthly", 0),
             customer_results_json=json.dumps(serialize_results(customer)),
             waste_results_json=json.dumps(serialize_results(waste)),
             comparison_results_json=comparison_json,
@@ -118,24 +119,31 @@ def upload():
 
 def _build_comparison(current_result, prev_snapshot):
     """Build a simple comparison dict between current results and previous snapshot."""
-    curr_summary = current_result["customer"]["summary"]
-    curr_waste = current_result["waste"].get("waste_projection", {})
+    curr_summary = (current_result.get("customer") or {}).get("summary") or {}
+    curr_waste = (current_result.get("waste") or {}).get("waste_projection") or {}
+
+    rev = curr_summary.get("avg_daily_revenue", 0) or 0
+    prev_rev = prev_snapshot["avg_daily_revenue"] or 0
+    ticket = curr_summary.get("avg_ticket_size", 0) or 0
+    prev_ticket = prev_snapshot["avg_ticket_size"] or 0
+    txns = curr_summary.get("avg_daily_transactions", 0) or 0
+    prev_txns = prev_snapshot["avg_daily_transactions"] or 0
 
     return {
         "revenue": {
-            "current": curr_summary["avg_daily_revenue"],
-            "previous": prev_snapshot["avg_daily_revenue"],
-            "change": round(curr_summary["avg_daily_revenue"] - prev_snapshot["avg_daily_revenue"], 2),
+            "current": rev,
+            "previous": prev_rev,
+            "change": round(rev - prev_rev, 2),
         },
         "ticket": {
-            "current": curr_summary["avg_ticket_size"],
-            "previous": prev_snapshot["avg_ticket_size"],
-            "change": round(curr_summary["avg_ticket_size"] - prev_snapshot["avg_ticket_size"], 2),
+            "current": ticket,
+            "previous": prev_ticket,
+            "change": round(ticket - prev_ticket, 2),
         },
         "transactions": {
-            "current": curr_summary["avg_daily_transactions"],
-            "previous": prev_snapshot["avg_daily_transactions"],
-            "change": round(curr_summary["avg_daily_transactions"] - prev_snapshot["avg_daily_transactions"], 1),
+            "current": txns,
+            "previous": prev_txns,
+            "change": round(txns - prev_txns, 1),
         },
         "waste_units": {
             "current": curr_waste.get("total_daily_waste_units", 0),
