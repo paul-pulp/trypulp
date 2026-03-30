@@ -87,11 +87,27 @@ def create_app():
     # Serve landing page images from src/website/
     import pathlib
     website_dir = str(pathlib.Path(__file__).resolve().parent.parent / "website")
+    print(f"[APP] Website dir: {website_dir}", flush=True)
+    print(f"[APP] Website dir exists: {os.path.isdir(website_dir)}", flush=True)
+    if os.path.isdir(website_dir):
+        print(f"[APP] Website files: {os.listdir(website_dir)}", flush=True)
 
     @app.route("/site/<path:filename>")
     def website_static(filename):
         from flask import send_from_directory
         return send_from_directory(website_dir, filename)
+
+    # Debug route to check what's being served
+    @app.route("/debug/info")
+    def debug_info():
+        from flask import jsonify
+        files = os.listdir(website_dir) if os.path.isdir(website_dir) else "DIR NOT FOUND"
+        return jsonify({
+            "website_dir": website_dir,
+            "exists": os.path.isdir(website_dir),
+            "files": files,
+            "index_exists": os.path.isfile(os.path.join(website_dir, "index.html")),
+        })
 
     # Root: landing page for visitors, dashboard for logged-in users
     @app.route("/")
