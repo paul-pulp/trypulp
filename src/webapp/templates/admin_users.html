@@ -59,10 +59,10 @@
                             {% endif %}
                         </td>
                         <td class="px-5 py-3.5 text-right text-warm-500 text-xs">
-                            {{ user.last_upload.strftime('%Y-%m-%d') if user.last_upload else '—' }}
+                            {{ user.last_upload|string|truncate(10, True, '') if user.last_upload else '—' }}
                         </td>
                         <td class="px-5 py-3.5 text-right text-warm-500 text-xs">
-                            {{ user.created_at.strftime('%Y-%m-%d') if user.created_at else '' }}
+                            {{ user.created_at|string|truncate(10, True, '') if user.created_at else '' }}
                         </td>
                     </tr>
                     {% endfor %}

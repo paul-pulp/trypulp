@@ -62,17 +62,25 @@ def create_app():
         routes = [rule.rule for rule in app.url_map.iter_rules() if "static" not in rule.rule]
         return jsonify({"status": "ok", "routes": sorted(routes)})
 
-    # Admin routes (protected by BACKUP_KEY query param)
-    def _check_admin_key():
-        from flask import request, abort
-        key = request.args.get("key", "")
-        expected = os.environ.get("BACKUP_KEY", "dev-backup-key")
-        if key != expected:
-            abort(404)
+    # Admin routes (protected by username/password)
+    def _check_admin_auth():
+        from flask import request, Response
+        auth = request.authorization
+        admin_user = os.environ.get("ADMIN_USER", "admin")
+        admin_pass = os.environ.get("ADMIN_PASS", "pulpiq")
+        if not auth or auth.username != admin_user or auth.password != admin_pass:
+            return Response(
+                "Admin login required.",
+                401,
+                {"WWW-Authenticate": 'Basic realm="PulpIQ Admin"'},
+            )
+        return None
 
     @app.route("/admin/backup")
     def admin_backup():
-        _check_admin_key()
+        denied = _check_admin_auth()
+        if denied:
+            return denied
         from flask import jsonify
         from .backup import run_backup
         path = run_backup(app)
@@ -82,7 +90,9 @@ def create_app():
 
     @app.route("/admin/users")
     def admin_users():
-        _check_admin_key()
+        denied = _check_admin_auth()
+        if denied:
+            return denied
         from flask import render_template, jsonify
         from .models import get_all_users_with_stats
         try:
