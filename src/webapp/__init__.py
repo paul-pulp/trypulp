@@ -67,6 +67,13 @@ def create_app():
             return jsonify({"status": "ok", "file": os.path.basename(path)})
         return jsonify({"status": "error", "message": "backup failed"}), 500
 
+    @app.route(f"/admin/users/{backup_key}")
+    def admin_users():
+        from flask import render_template
+        from .models import get_all_users_with_stats
+        users = get_all_users_with_stats()
+        return render_template("admin_users.html", users=users)
+
     # Daily automatic backup (background thread)
     def _daily_backup_loop():
         time.sleep(60)  # wait for app to fully start

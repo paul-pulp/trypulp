@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — PulpIQ Users</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
+</head>
+<body class="bg-warm-50 text-warm-900 min-h-screen">
+    <div class="max-w-5xl mx-auto px-6 py-8">
+
+        <div class="flex items-center justify-between mb-8">
+            <div>
+                <h1 class="font-serif text-2xl text-warm-800">PulpIQ Admin</h1>
+                <p class="text-sm text-warm-500">User signups and activity</p>
+            </div>
+            <div class="text-right text-sm text-warm-500">
+                <p><strong class="text-warm-800">{{ users|length }}</strong> total users</p>
+                <p><strong class="text-warm-800">{{ users|selectattr('upload_count', 'gt', 0)|list|length }}</strong> have uploaded data</p>
+            </div>
+        </div>
+
+        <div class="card-static overflow-hidden">
+            <table class="w-full text-sm">
+                <thead class="bg-warm-50">
+                    <tr>
+                        <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Cafe</th>
+                        <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Email</th>
+                        <th class="text-center px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Uploads</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Latest Revenue</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Last Upload</th>
+                        <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Signed Up</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-warm-100">
+                    {% for user in users %}
+                    <tr class="hover:bg-warm-50/50 transition-colors">
+                        <td class="px-5 py-3.5 font-medium text-warm-800">{{ user.cafe_name }}</td>
+                        <td class="px-5 py-3.5 text-warm-600">{{ user.email }}</td>
+                        <td class="px-5 py-3.5 text-center">
+                            {% if user.upload_count > 0 %}
+                            <span class="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full bg-sage-50 text-sage-700">
+                                {{ user.upload_count }}
+                            </span>
+                            {% else %}
+                            <span class="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full bg-warm-100 text-warm-400">
+                                0
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="px-5 py-3.5 text-right text-warm-600">
+                            {% if user.latest_revenue %}
+                            ${{ "%.2f"|format(user.latest_revenue) }}/day
+                            {% else %}
+                            <span class="text-warm-300">—</span>
+                            {% endif %}
+                        </td>
+                        <td class="px-5 py-3.5 text-right text-warm-500 text-xs">
+                            {{ user.last_upload[:10] if user.last_upload else '—' }}
+                        </td>
+                        <td class="px-5 py-3.5 text-right text-warm-500 text-xs">
+                            {{ user.created_at[:10] if user.created_at else '' }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% if not users %}
+        <div class="card p-12 text-center mt-4">
+            <p class="text-warm-500">No users yet.</p>
+        </div>
+        {% endif %}
+
+    </div>
+</body>
+</html>
