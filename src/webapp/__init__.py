@@ -55,11 +55,17 @@ def create_app():
                 pass
         return {"current_user": user}
 
-    # Admin backup route (secret — only you know the URL)
-    backup_key = os.environ.get("BACKUP_KEY", "dev-backup-key")
+    # Admin routes (protected by BACKUP_KEY query param)
+    def _check_admin_key():
+        from flask import request, abort
+        key = request.args.get("key", "")
+        expected = os.environ.get("BACKUP_KEY", "dev-backup-key")
+        if key != expected:
+            abort(404)
 
-    @app.route(f"/admin/backup/{backup_key}")
+    @app.route("/admin/backup")
     def admin_backup():
+        _check_admin_key()
         from flask import jsonify
         from .backup import run_backup
         path = run_backup(app)
@@ -67,8 +73,9 @@ def create_app():
             return jsonify({"status": "ok", "file": os.path.basename(path)})
         return jsonify({"status": "error", "message": "backup failed"}), 500
 
-    @app.route(f"/admin/users/{backup_key}")
+    @app.route("/admin/users")
     def admin_users():
+        _check_admin_key()
         from flask import render_template
         from .models import get_all_users_with_stats
         users = get_all_users_with_stats()
