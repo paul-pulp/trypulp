@@ -2,9 +2,13 @@
 Magic link authentication — no passwords.
 """
 
+import os
 import secrets
 import smtplib
+from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.base import MIMEBase
+from email import encoders
 from datetime import datetime, timedelta
 from flask import current_app
 
@@ -21,44 +25,90 @@ def generate_magic_link(user_id):
     return f"{app_url}/verify?token={token}"
 
 
-def send_magic_link_email(email, magic_link):
-    """Send the magic link via SMTP."""
+def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name=""):
+    """Send the magic link via SMTP. Attaches onboarding PDF for new users."""
     smtp_user = current_app.config["SMTP_USER"]
     smtp_pass = current_app.config["SMTP_PASS"]
 
     # Always log the magic link (visible in Render logs)
     print(f"[AUTH] Magic link for {email}: {magic_link}", flush=True)
-    print(f"[AUTH] SMTP_USER configured: {'yes' if smtp_user else 'no'}", flush=True)
-    print(f"[AUTH] SMTP_PASS configured: {'yes' if smtp_pass else 'no'}", flush=True)
+    print(f"[AUTH] New user: {is_new_user}", flush=True)
 
     # In development, skip email
     if not smtp_user or not smtp_pass:
         print(f"[AUTH] No SMTP credentials — skipping email send", flush=True)
         return True
 
-    msg = MIMEText(
-        f"Hi!\n\n"
-        f"Click this link to sign in to PulpIQ:\n\n"
-        f"{magic_link}\n\n"
-        f"This link expires in 15 minutes.\n\n"
-        f"— PulpIQ",
-        "plain",
-    )
-    msg["Subject"] = "Your PulpIQ Sign-In Link"
+    # Build the email
+    if is_new_user:
+        subject = "Welcome to PulpIQ — Here's How to Get Started"
+        body = (
+            f"Hi!\n\n"
+            f"Welcome to PulpIQ. We're excited to help you see what's working "
+            f"and what's wasting at {cafe_name or 'your cafe'}.\n\n"
+            f"Click this link to sign in:\n\n"
+            f"{magic_link}\n\n"
+            f"We've attached a quick guide showing how to export your sales data "
+            f"from Square, Toast, Clover, or any POS system. The whole process "
+            f"takes about 2 minutes.\n\n"
+            f"Once you're logged in, just drag in your CSV and you'll see your "
+            f"first insights instantly.\n\n"
+            f"Questions? Just reply to this email.\n\n"
+            f"— Paul\n"
+            f"Founder, PulpIQ\n"
+            f"hello@pulpiq.io"
+        )
+    else:
+        subject = "Your PulpIQ Sign-In Link"
+        body = (
+            f"Hi!\n\n"
+            f"Click this link to sign in to PulpIQ:\n\n"
+            f"{magic_link}\n\n"
+            f"This link expires in 15 minutes.\n\n"
+            f"— PulpIQ"
+        )
+
+    msg = MIMEMultipart()
+    msg["Subject"] = subject
     msg["From"] = smtp_user
     msg["To"] = email
+    msg.attach(MIMEText(body, "plain"))
+
+    # Attach onboarding PDF for new users
+    pdf_path = None
+    if is_new_user:
+        try:
+            from .onboarding_pdf import generate
+            pdf_path = generate(cafe_name)
+            with open(pdf_path, "rb") as f:
+                part = MIMEBase("application", "octet-stream")
+                part.set_payload(f.read())
+                encoders.encode_base64(part)
+                part.add_header(
+                    "Content-Disposition",
+                    "attachment; filename=PulpIQ-Getting-Started.pdf",
+                )
+                msg.attach(part)
+            print(f"[AUTH] Onboarding PDF attached", flush=True)
+        except Exception as e:
+            print(f"[AUTH] PDF generation failed (sending without it): {e}", flush=True)
 
     try:
-        print(f"[AUTH] Connecting to {current_app.config['SMTP_HOST']}:{current_app.config['SMTP_PORT']}...", flush=True)
+        print(f"[AUTH] Sending to {email}...", flush=True)
         with smtplib.SMTP(current_app.config["SMTP_HOST"],
                           current_app.config["SMTP_PORT"]) as server:
             server.starttls()
-            print(f"[AUTH] Logging in as {smtp_user}...", flush=True)
             server.login(smtp_user, smtp_pass)
             server.send_message(msg)
-        print(f"[AUTH] Email sent successfully to {email}", flush=True)
+        print(f"[AUTH] Email sent successfully", flush=True)
         return True
     except Exception as e:
         print(f"[AUTH] Email send FAILED: {e}", flush=True)
-        # Still log the link so user can find it in logs
         return False
+    finally:
+        # Clean up temp PDF
+        if pdf_path:
+            try:
+                os.unlink(pdf_path)
+            except OSError:
+                pass

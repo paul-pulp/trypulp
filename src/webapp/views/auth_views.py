@@ -24,15 +24,16 @@ def login():
 
     # Find or create user
     user = get_user_by_email(email)
-    if user is None:
+    is_new = user is None
+    if is_new:
         if not cafe_name:
             # New user needs a cafe name — show the full form
             return render_template("login.html", email=email, needs_cafe_name=True)
         user = create_user(email, cafe_name)
 
-    # Generate and send magic link
+    # Generate and send magic link (with onboarding PDF for new users)
     link = generate_magic_link(user["id"])
-    send_magic_link_email(email, link)
+    send_magic_link_email(email, link, is_new_user=is_new, cafe_name=user["cafe_name"])
 
     return render_template("check_email.html", email=email)
 
