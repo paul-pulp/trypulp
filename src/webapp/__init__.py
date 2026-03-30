@@ -84,12 +84,21 @@ def create_app():
         backup_thread = threading.Thread(target=_daily_backup_loop, daemon=True)
         backup_thread.start()
 
-    # Root redirect
+    # Serve landing page images from src/website/
+    import pathlib
+    website_dir = str(pathlib.Path(__file__).resolve().parent.parent / "website")
+
+    @app.route("/site/<path:filename>")
+    def website_static(filename):
+        from flask import send_from_directory
+        return send_from_directory(website_dir, filename)
+
+    # Root: landing page for visitors, dashboard for logged-in users
     @app.route("/")
     def index():
-        from flask import session, redirect, url_for
+        from flask import session, redirect, url_for, send_from_directory
         if "user_id" in session:
             return redirect(url_for("dashboard.dashboard"))
-        return redirect(url_for("auth.login"))
+        return send_from_directory(website_dir, "index.html")
 
     return app
