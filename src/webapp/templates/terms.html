@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Terms of Service — PulpIQ{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto load-in">
+
+    <h1 class="text-3xl text-warm-800 mb-2">Terms of Service</h1>
+    <p class="text-warm-500 mb-8">Last updated: March 2026</p>
+
+    <div class="prose-warm space-y-8 text-sm text-warm-700 leading-relaxed">
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">1. What PulpIQ Is</h2>
+            <p>PulpIQ is a self-serve analytics tool that analyzes cafe sales data to provide insights about revenue, product performance, and waste patterns. You upload your POS export data and receive analysis reports.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">2. What PulpIQ Is Not</h2>
+            <p>PulpIQ is <strong>not</strong> a financial advisor, accountant, or business consultant. The analysis, projections, and recommendations provided are <strong>informational estimates only</strong>. They are based on your sales data combined with industry-average cost assumptions and should not be treated as financial advice or guaranteed outcomes.</p>
+            <p class="mt-2">You are solely responsible for any business decisions you make based on PulpIQ's analysis. We strongly recommend verifying any significant operational changes with your own cost data and business knowledge.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">3. Savings Estimates</h2>
+            <p>Savings projections shown in reports are <strong>estimates</strong> based on:</p>
+            <ul class="list-disc list-inside mt-2 space-y-1 text-warm-600">
+                <li>Your actual sales data (quantities, prices, dates)</li>
+                <li>Toronto, Canada industry-average ingredient costs</li>
+                <li>Standard assumptions about ordering patterns (detailed on our <a href="/methodology" class="text-terra-600 hover:underline">How We Calculate</a> page)</li>
+            </ul>
+            <p class="mt-2">Actual savings will vary based on your specific supplier costs, your current ordering practices, local market conditions, and how you choose to implement changes. PulpIQ does not guarantee any specific level of savings.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">4. Your Data</h2>
+            <p><strong>What we store:</strong> Your email address, cafe name, and the analysis results from each CSV you upload. We process your CSV to extract analysis results, then discard the raw file. We do not store your raw CSV data.</p>
+            <p class="mt-2"><strong>What we don't do:</strong> We never sell, share, or provide your data to third parties. Your business data is yours.</p>
+            <p class="mt-2"><strong>Deletion:</strong> You can request deletion of your account and all associated data at any time by emailing <a href="mailto:hello@pulpiq.io" class="text-terra-600 hover:underline">hello@pulpiq.io</a>. We will delete your data within 7 business days.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">5. Your Account</h2>
+            <p>You access PulpIQ via email-based magic links. You are responsible for maintaining access to your email account. We are not responsible for unauthorized access resulting from compromised email accounts.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">6. Accuracy</h2>
+            <p>The quality of your analysis depends on the quality of your data. If your CSV contains errors, incomplete records, or unusual data patterns, the analysis may produce inaccurate results. PulpIQ validates data on upload and flags common issues, but cannot guarantee the accuracy of analysis based on problematic source data.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">7. Limitation of Liability</h2>
+            <p>PulpIQ is provided "as is" without warranties of any kind, express or implied. To the maximum extent permitted by law, PulpIQ and its founders shall not be liable for any indirect, incidental, special, consequential, or punitive damages, including but not limited to loss of profits, revenue, or business opportunities, arising from your use of the service or reliance on its analysis.</p>
+            <p class="mt-2">Our total liability for any claim related to the service shall not exceed the amount you have paid us in the 12 months preceding the claim (which may be $0 if you are on the free tier).</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">8. Service Availability</h2>
+            <p>We aim to keep PulpIQ available and reliable, but we do not guarantee uninterrupted access. The service may be temporarily unavailable for maintenance, updates, or due to circumstances beyond our control.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">9. Changes to These Terms</h2>
+            <p>We may update these terms from time to time. If we make significant changes, we'll note the update date at the top of this page. Continued use of PulpIQ after changes constitutes acceptance of the updated terms.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">10. Governing Law</h2>
+            <p>These terms are governed by the laws of the Province of Ontario, Canada. Any disputes shall be resolved in the courts of Ontario.</p>
+        </section>
+
+        <section>
+            <h2 class="text-lg text-warm-800 mb-3">Contact</h2>
+            <p>Questions about these terms? Email us at <a href="mailto:hello@pulpiq.io" class="text-terra-600 hover:underline">hello@pulpiq.io</a>.</p>
+        </section>
+
+    </div>
+
+    <p class="text-xs text-warm-400 mt-8 mb-4">PulpIQ is operated by Paul Spry. Based in Toronto, Ontario, Canada.</p>
+
+</div>
+{% endblock %}

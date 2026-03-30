@@ -121,6 +121,17 @@ def create_app():
             traceback.print_exc()
             return jsonify({"error": str(e)}), 500
 
+    # Public pages (methodology, terms)
+    @app.route("/methodology")
+    def methodology():
+        from flask import render_template
+        return render_template("methodology.html")
+
+    @app.route("/terms")
+    def terms():
+        from flask import render_template
+        return render_template("terms.html")
+
     # Daily automatic backup (background thread)
     def _daily_backup_loop():
         time.sleep(60)  # wait for app to fully start

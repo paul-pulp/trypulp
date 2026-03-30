@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}How We Calculate — PulpIQ{% endblock %}
+{% block content %}
+<div class="max-w-3xl mx-auto load-in">
+
+    <h1 class="text-3xl text-warm-800 mb-2">How We Calculate Your Numbers</h1>
+    <p class="text-warm-500 mb-8">Full transparency on every number in your PulpIQ report.</p>
+
+    <!-- Revenue Metrics -->
+    <section class="mb-10">
+        <h2 class="text-xl text-warm-800 mb-4">Revenue Metrics</h2>
+        <div class="card-static p-6 space-y-4 text-sm text-warm-700">
+            <div>
+                <p class="font-medium text-warm-800">Average Daily Revenue</p>
+                <p>Your total revenue from the CSV divided by the number of unique days in the data. If you upload 90 days of data showing $42,000 total, your average daily revenue is $467.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Average Ticket Size</p>
+                <p>Total revenue divided by the number of unique transactions. We define a transaction as a unique date + time combination in your POS data.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Daily Transactions</p>
+                <p>The total number of unique transactions divided by the number of days. Each unique date + time stamp counts as one transaction.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waste Analysis -->
+    <section class="mb-10">
+        <h2 class="text-xl text-warm-800 mb-4">Waste Analysis</h2>
+        <div class="card-static p-6 space-y-4 text-sm text-warm-700">
+            <div>
+                <p class="font-medium text-warm-800">Estimated Current Order</p>
+                <p>We estimate what you're currently ordering by looking at the <strong>maximum quantity sold on any single day</strong> for each perishable item. The reasoning: most cafes order based on their busiest day to avoid running out.</p>
+                <p class="text-warm-500 mt-1">This is an estimate. Your actual ordering may be different.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Recommended Order Quantity</p>
+                <p>Your <strong>average daily sales + half a standard deviation</strong> as a buffer. This covers the majority of days without over-ordering. For example, if you sell an average of 3.3 croissants/day with some variance, we might recommend ordering 5.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Daily Waste (items)</p>
+                <p>The gap between estimated current order and average daily sales. If we estimate you order 9 croissants but sell 3.3 on average, that's ~5.7 items potentially unsold per day.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Monthly Waste Cost</p>
+                <p>Daily waste units multiplied by each item's <strong>ingredient cost</strong> (not menu price), multiplied by 30 days. We estimate ingredient cost at <strong>30% of menu price</strong> — the industry average for a beverage-heavy cafe.</p>
+                <p class="text-warm-500 mt-1">If your actual COGS is higher or lower, the dollar amounts will differ.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Savings Potential</p>
+                <p>The difference between your current estimated waste cost and what it would be if you ordered our recommended quantities. We also add an estimated <strong>6% reduction in milk waste</strong> (assuming cafes currently over-order milk by ~10% and can cut 60% of that waste).</p>
+                <p class="text-warm-500 mt-1">Savings are capped at 15% of your monthly revenue to prevent unrealistic projections.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Milk Usage -->
+    <section class="mb-10">
+        <h2 class="text-xl text-warm-800 mb-4">Milk Usage</h2>
+        <div class="card-static p-6 space-y-4 text-sm text-warm-700">
+            <div>
+                <p class="font-medium text-warm-800">How We Detect Milk Type</p>
+                <p>We scan your item names for keywords. "Oat Milk Latte" is classified as oat milk. "Latte" without a modifier is classified as dairy. "Almond Milk Cappuccino" is almond. If your POS doesn't include the milk type in the item name, we default to dairy.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Milk Quantity Estimates</p>
+                <p>We estimate ounces per drink based on drink type: a latte uses ~10 oz of milk, a cappuccino ~6 oz, an iced latte ~12 oz. These are standard recipe amounts — your recipes may vary.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cost Assumptions -->
+    <section class="mb-10">
+        <h2 class="text-xl text-warm-800 mb-4">Cost Assumptions</h2>
+        <div class="card-static p-6 text-sm text-warm-700">
+            <p class="mb-4">All costs are <strong>Toronto, Canada (CAD)</strong> industry averages for independent cafes, sourced from foodservice distributors and wholesale pricing as of 2025-2026:</p>
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-warm-200">
+                        <th class="text-left py-2 text-warm-500 font-medium">Item</th>
+                        <th class="text-right py-2 text-warm-500 font-medium">Cost</th>
+                        <th class="text-right py-2 text-warm-500 font-medium">Source</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-warm-100">
+                    <tr><td class="py-2">Dairy milk</td><td class="text-right">$0.04/oz (~$5.10/gal)</td><td class="text-right text-warm-500">Saputo foodservice</td></tr>
+                    <tr><td class="py-2">Oat milk</td><td class="text-right">$0.15/oz (~$4.50/946mL)</td><td class="text-right text-warm-500">Oatly Barista case</td></tr>
+                    <tr><td class="py-2">Almond milk</td><td class="text-right">$0.14/oz (~$4.62/946mL)</td><td class="text-right text-warm-500">Pacific Barista case</td></tr>
+                    <tr><td class="py-2">Soy milk</td><td class="text-right">$0.12/oz (~$3.83/946mL)</td><td class="text-right text-warm-500">Pacific Barista case</td></tr>
+                    <tr><td class="py-2">Coconut milk</td><td class="text-right">$0.15/oz (~$4.75/946mL)</td><td class="text-right text-warm-500">Pacific Barista case</td></tr>
+                    <tr><td class="py-2">Perishable COGS</td><td class="text-right">30% of menu price</td><td class="text-right text-warm-500">Industry average</td></tr>
+                </tbody>
+            </table>
+            <p class="text-warm-500 mt-4">If your costs are significantly different from these averages, the dollar amounts in your report will be proportionally off. The ordering recommendations (quantities) are based on your sales volume and are not affected by cost assumptions.</p>
+        </div>
+    </section>
+
+    <!-- Product Classification -->
+    <section class="mb-10">
+        <h2 class="text-xl text-warm-800 mb-4">How We Classify Your Products</h2>
+        <div class="card-static p-6 space-y-4 text-sm text-warm-700">
+            <div>
+                <p class="font-medium text-warm-800">Category Detection</p>
+                <p>If your CSV has a "Category" column, we use it directly. If not, we classify items by scanning their names for keywords: "latte", "cappuccino", "cold brew" → Beverage. "Croissant", "muffin", "sandwich" → Perishable Food. This covers most cafe menus automatically.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Column Mapping</p>
+                <p>We auto-detect 40+ column name variations. "Sale Date", "Transaction Date", "Order Date" all map to our date field. "Total", "Amount", "Sale Amount", "Revenue" all map to price. If your POS uses a name we don't recognize, the upload will tell you which column is missing.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Week-over-week -->
+    <section class="mb-10">
+        <h2 class="text-xl text-warm-800 mb-4">Week-Over-Week Comparisons</h2>
+        <div class="card-static p-6 space-y-4 text-sm text-warm-700">
+            <div>
+                <p class="font-medium text-warm-800">How Comparisons Work</p>
+                <p>Each time you upload, we run the full analysis independently. Then we compare the results to your previous upload and your baseline (first upload). Changes are shown as absolute values and percentages.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Cumulative Savings</p>
+                <p>The "Estimated Savings Since You Started" number is a rough projection: we sum the savings potential from each week's analysis, divided by ~4.3 to convert monthly estimates to weekly. This is directional — it shows the trend, not an exact accounting of money saved.</p>
+            </div>
+            <div>
+                <p class="font-medium text-warm-800">Item Movers</p>
+                <p>We compare each item's total revenue between this upload and the last. Items with 5%+ change are shown as "movers." Revenue changes can be driven by price changes, quantity changes, or both.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="card-static p-6 mb-10 text-sm text-warm-600">
+        <p class="font-medium text-warm-800 mb-2">Important</p>
+        <p>PulpIQ provides data analysis and estimates to help you make better-informed decisions about your cafe operations. We are not financial advisors. Savings projections are estimates based on industry averages and your sales data — actual results will vary based on your specific costs, suppliers, implementation, and market conditions.</p>
+        <p class="mt-2">Always use your own judgment and knowledge of your business when making operational changes. See our <a href="/terms" class="text-terra-600 hover:underline">Terms of Service</a> for more details.</p>
+    </div>
+
+    <p class="text-sm text-warm-400 mb-4">Questions about how we calculate anything? <a href="mailto:hello@pulpiq.io" class="text-terra-600 hover:underline">hello@pulpiq.io</a></p>
+
+</div>
+{% endblock %}
