@@ -4,7 +4,7 @@ Authentication views — login, verify magic link, logout.
 
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 
-from ..models import get_user_by_email, create_user, verify_token, get_user_by_id
+from ..models import get_user_by_email, create_user, verify_token, get_user_by_id, count_snapshots
 from ..auth import generate_magic_link, send_magic_link_email
 
 auth_bp = Blueprint("auth", __name__)
@@ -49,6 +49,10 @@ def verify():
 
     session.clear()
     session["user_id"] = user_id
+
+    # New users go straight to upload, returning users go to dashboard
+    if count_snapshots(user_id) == 0:
+        return redirect(url_for("upload.upload"))
     return redirect(url_for("dashboard.dashboard"))
 
 

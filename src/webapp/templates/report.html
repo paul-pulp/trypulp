@@ -18,12 +18,19 @@
             {{ snapshot.date_start }} to {{ snapshot.date_end }} &middot; {{ customer.data_range.days }} days of data
         </p>
     </div>
-    {% if comparison %}
-    <a href="/compare/{{ snapshot.id }}"
-       class="bg-sage-600 hover:bg-sage-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors no-print">
-        See Week-Over-Week Changes
-    </a>
-    {% endif %}
+    <div class="flex items-center gap-3 no-print">
+        {% if comparison %}
+        <a href="/compare/{{ snapshot.id }}"
+           class="bg-sage-600 hover:bg-sage-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors">
+            See Week-Over-Week Changes
+        </a>
+        {% endif %}
+        <button onclick="window.print()"
+                class="bg-warm-200 hover:bg-warm-300 text-warm-700 font-medium py-2 px-4 rounded-lg text-sm transition-colors flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+            Print
+        </button>
+    </div>
 </div>
 
 <!-- Summary Cards -->
@@ -46,6 +53,27 @@
     </div>
 </div>
 
+<!-- ═══ KEY FINDINGS ═══ -->
+<div class="insight-callout mb-10 load-in load-in-3">
+    <p class="font-medium text-warm-800 mb-2">Key Findings</p>
+    <ul class="space-y-1.5 text-warm-700">
+        {% if customer.top_items and customer.top_items|length > 0 %}
+        {% set top = customer.top_items[0] %}
+        <li>Your biggest revenue driver is <strong>{{ top.item or top.index }}</strong> ({{ top.revenue_pct }}% of revenue)</li>
+        {% endif %}
+        {% if waste.waste_projection and waste.waste_projection.total_monthly_waste_cost %}
+        <li>You're wasting an estimated <strong>${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}/month</strong> on over-ordering perishables</li>
+        {% endif %}
+        {% if waste.waste_projection and waste.waste_projection['items'] and waste.waste_projection['items']|length > 0 %}
+        {% set tw = waste.waste_projection['items'][0] %}
+        <li>Reducing <strong>{{ tw.item }}</strong> orders alone could save <strong>${{ "%.0f"|format(tw.monthly_waste_cost) }}/month</strong></li>
+        {% endif %}
+        {% if waste.savings and waste.savings.total_savings_monthly %}
+        <li>Total savings potential: <strong>${{ "%.0f"|format(waste.savings.total_savings_monthly) }}/month</strong> with optimized ordering</li>
+        {% endif %}
+    </ul>
+</div>
+
 <!-- ═══ ALL ITEMS WITH CATEGORY FILTER ═══ -->
 <section class="mb-10 load-in load-in-3">
     <div class="flex items-center justify-between mb-4">
@@ -55,10 +83,11 @@
 
     <!-- Category filter pills -->
     <div class="flex flex-wrap gap-2 mb-4" id="category-filters">
-        <button class="filter-pill active" data-category="all">All</button>
+        <button class="filter-pill active" data-category="all">All ({{ customer.all_items|length }})</button>
         {% set categories = customer.all_items | map(attribute='category') | unique | sort %}
         {% for cat in categories %}
-        <button class="filter-pill" data-category="{{ cat }}">{{ cat }}</button>
+        {% set cat_count = customer.all_items | selectattr('category', 'equalto', cat) | list | length %}
+        <button class="filter-pill" data-category="{{ cat }}">{{ cat }} ({{ cat_count }})</button>
         {% endfor %}
     </div>
 
