@@ -99,7 +99,7 @@
                 </td>
                 <td class="px-5 py-3.5 text-warm-500">{{ snap.date_start }} to {{ snap.date_end }}</td>
                 <td class="px-5 py-3.5 text-right text-warm-800 font-medium">${{ "%.2f"|format(snap.avg_daily_revenue) }}/day</td>
-                <td class="px-5 py-3.5 text-right text-warm-400 text-xs">{{ snap.created_at[:10] if snap.created_at else '' }}</td>
+                <td class="px-5 py-3.5 text-right text-warm-400 text-xs">{{ snap.created_at|string|truncate(10, True, '') if snap.created_at else '' }}</td>
                 <td class="px-5 py-3.5 text-right space-x-3">
                     <a href="/report/{{ snap.id }}" class="text-terra-600 hover:text-terra-700 font-medium">Report</a>
                     {% if snap.comparison_results %}
