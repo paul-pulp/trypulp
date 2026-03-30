@@ -134,14 +134,13 @@ def _send_welcome_email(user):
         f"  {current_app.config['APP_URL']}/dashboard\n\n"
         f"If you ever need help or have questions, just reply to this email.\n\n"
         f"Thanks for trusting us with your data.\n\n"
-        f"— Paul\n"
-        f"Founder, PulpIQ\n"
+        f"— The PulpIQ Team\n"
         f"hello@trypulp.co"
     )
 
     msg = MIMEText(body, "plain")
     msg["Subject"] = f"Welcome to PulpIQ Pro, {cafe}!"
-    msg["From"] = smtp_user
+    msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = email
 
     try:

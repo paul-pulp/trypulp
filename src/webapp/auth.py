@@ -54,8 +54,7 @@ def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name=""):
             f"Once you're logged in, just drag in your CSV and you'll see your "
             f"first insights instantly.\n\n"
             f"Questions? Just reply to this email.\n\n"
-            f"— Paul\n"
-            f"Founder, PulpIQ\n"
+            f"— The PulpIQ Team\n"
             f"hello@trypulp.co"
         )
     else:
@@ -70,7 +69,7 @@ def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name=""):
 
     msg = MIMEMultipart()
     msg["Subject"] = subject
-    msg["From"] = smtp_user
+    msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = email
     msg.attach(MIMEText(body, "plain"))
 

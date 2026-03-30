@@ -56,7 +56,7 @@ def email_backup(backup_path, smtp_host, smtp_port, smtp_user, smtp_pass, to_ema
 
     msg = MIMEMultipart()
     msg["Subject"] = f"PulpIQ Database Backup — {timestamp}"
-    msg["From"] = smtp_user
+    msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = to_email
 
     body = (

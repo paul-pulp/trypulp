@@ -138,7 +138,7 @@ def _email_feedback(user, feedback_type, message):
 
     msg = MIMEText(body, "plain")
     msg["Subject"] = f"[PulpIQ {type_label}] {cafe}"
-    msg["From"] = smtp_user
+    msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = "hello@trypulp.co"
 
     try:
