@@ -50,6 +50,8 @@ def upload():
         file.save(tmp.name)
         tmp.close()
 
+        print(f"[UPLOAD] Processing {file.filename} ({os.path.getsize(tmp.name) / 1024:.1f} KB)", flush=True)
+
         # Run analysis
         result = run_analysis(tmp.name)
 
@@ -100,8 +102,18 @@ def upload():
 
         return redirect(url_for("dashboard.report", snapshot_id=snapshot_id))
 
+    except Exception as e:
+        import traceback
+        print(f"[UPLOAD] ERROR: {e}", flush=True)
+        traceback.print_exc()
+        flash(f"Analysis failed: {e}", "error")
+        return redirect(url_for("upload.upload"))
+
     finally:
-        os.unlink(tmp.name)
+        try:
+            os.unlink(tmp.name)
+        except OSError:
+            pass
 
 
 def _build_comparison(current_result, prev_snapshot):
