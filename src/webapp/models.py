@@ -154,6 +154,13 @@ def get_latest_snapshot(user_id):
     ).fetchone()
 
 
+def get_baseline_snapshot(user_id):
+    return get_db().execute(
+        "SELECT * FROM snapshots WHERE user_id = ? AND week_number = 0",
+        (user_id,),
+    ).fetchone()
+
+
 def count_snapshots(user_id):
     row = get_db().execute(
         "SELECT COUNT(*) as cnt FROM snapshots WHERE user_id = ?", (user_id,)

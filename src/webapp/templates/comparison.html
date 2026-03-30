@@ -14,11 +14,11 @@
     Week {{ snapshot.week_number }} vs {{ "Baseline" if snapshot.week_number == 1 else "Week " ~ (snapshot.week_number - 1) }}
 </p>
 
-<!-- Headline callout -->
+<!-- ═══ HEADLINE CALLOUT ═══ -->
 {% set rev_change = comparison.revenue.change %}
 {% set rev_pct = ((rev_change / comparison.revenue.previous) * 100) if comparison.revenue.previous else 0 %}
 {% if rev_change != 0 %}
-<div class="load-in load-in-2 mb-8 {{ 'insight-callout' if rev_change > 0 else 'insight-callout-warn' }}">
+<div class="load-in load-in-2 mb-6 {{ 'insight-callout' if rev_change > 0 else 'insight-callout-warn' }}">
     <strong>
         {% if rev_change > 0 %}Revenue is up {{ "+%.1f"|format(rev_pct) }}% this week.
         {% else %}Revenue is down {{ "%.1f"|format(rev_pct) }}% this week.{% endif %}
@@ -27,11 +27,27 @@
 </div>
 {% endif %}
 
-{% macro metric_card(label, current, previous, change, prefix="$", suffix="", invert=false, delay="3") %}
+<!-- ═══ CUMULATIVE SAVINGS TRACKER ═══ -->
+{% if comparison.cumulative_savings and comparison.cumulative_savings.total > 0 %}
+<div class="card p-6 !bg-sage-50 !border-sage-100 mb-8 load-in load-in-2 text-center">
+    <p class="text-xs text-sage-600 uppercase tracking-wide mb-2">Estimated Savings Since You Started</p>
+    <p class="text-4xl font-semibold text-sage-700">${{ "%.0f"|format(comparison.cumulative_savings.total) }}</p>
+    <p class="text-sm text-sage-600 mt-1">
+        across {{ comparison.cumulative_savings.weeks }} week{{ "s" if comparison.cumulative_savings.weeks != 1 }}
+        &middot; saving ~${{ "%.0f"|format(comparison.cumulative_savings.monthly_rate) }}/month at current rate
+    </p>
+</div>
+{% endif %}
+
+<!-- ═══ METRIC CARDS (with baseline) ═══ -->
+{% macro metric_card(label, current, previous, change, baseline=None, baseline_change=None, prefix="$", suffix="", invert=false, delay="3") %}
 {% set pct_change = ((change / previous) * 100) if previous and previous != 0 else 0 %}
+{% set base_pct = ((baseline_change / baseline) * 100) if baseline and baseline != 0 and baseline_change is not none else None %}
 <div class="card p-5 load-in load-in-{{ delay }}">
     <p class="text-xs text-warm-400 uppercase tracking-wide mb-2">{{ label }}</p>
     <p class="text-2xl font-semibold text-warm-800">{{ prefix }}{{ "%.2f"|format(current) }}{{ suffix }}</p>
+
+    <!-- vs last week -->
     <div class="flex items-center gap-2 mt-2">
         {% set is_good = (change < 0 if invert else change > 0) %}
         {% set is_bad = (change > 0 if invert else change < 0) %}
@@ -41,40 +57,121 @@
             {{ "+" if change > 0 }}{{ prefix }}{{ "%.2f"|format(change) }}{{ suffix }}
             ({{ "+" if pct_change > 0 }}{{ "%.1f"|format(pct_change) }}%)
         </span>
+        <span class="text-xs text-warm-400">vs last</span>
         {% else %}
-        <span class="text-xs text-warm-400">No change</span>
+        <span class="text-xs text-warm-400">No change vs last</span>
         {% endif %}
     </div>
-    <p class="text-xs text-warm-400 mt-1.5">Previous: {{ prefix }}{{ "%.2f"|format(previous) }}{{ suffix }}</p>
+
+    <!-- vs baseline -->
+    {% if baseline_change is not none and baseline is not none %}
+    {% set base_good = (baseline_change < 0 if invert else baseline_change > 0) %}
+    {% set base_bad = (baseline_change > 0 if invert else baseline_change < 0) %}
+    <div class="flex items-center gap-2 mt-1.5">
+        {% if baseline_change != 0 %}
+        <span class="inline-flex items-center text-xs px-2 py-0.5 rounded-full
+            {{ 'bg-sage-50/50 text-sage-600' if base_good else 'bg-red-50/50 text-red-500' if base_bad else 'bg-warm-50 text-warm-500' }}">
+            {{ "+" if baseline_change > 0 }}{{ prefix }}{{ "%.2f"|format(baseline_change) }}{{ suffix }}
+            {% if base_pct is not none %}({{ "+" if base_pct > 0 }}{{ "%.1f"|format(base_pct) }}%){% endif %}
+        </span>
+        <span class="text-xs text-warm-400">vs baseline</span>
+        {% else %}
+        <span class="text-xs text-warm-400">Same as baseline</span>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
 {% endmacro %}
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
     {{ metric_card("Avg Daily Revenue",
         comparison.revenue.current,
         comparison.revenue.previous,
-        comparison.revenue.change, delay="3") }}
+        comparison.revenue.change,
+        comparison.revenue.baseline,
+        comparison.revenue.baseline_change,
+        delay="3") }}
     {{ metric_card("Avg Ticket Size",
         comparison.ticket.current,
         comparison.ticket.previous,
-        comparison.ticket.change, delay="4") }}
+        comparison.ticket.change,
+        comparison.ticket.baseline,
+        comparison.ticket.baseline_change,
+        delay="3") }}
     {{ metric_card("Daily Transactions",
         comparison.transactions.current,
         comparison.transactions.previous,
         comparison.transactions.change,
-        prefix="", suffix="", delay="5") }}
+        prefix="", suffix="", delay="4") }}
     {{ metric_card("Daily Waste (items)",
         comparison.waste_units.current,
         comparison.waste_units.previous,
         comparison.waste_units.change,
-        prefix="", suffix=" items", invert=true, delay="6") }}
+        comparison.waste_units.baseline,
+        comparison.waste_units.baseline_change,
+        prefix="", suffix=" items", invert=true, delay="4") }}
     {{ metric_card("Monthly Waste Cost",
         comparison.waste_cost.current,
         comparison.waste_cost.previous,
         comparison.waste_cost.change,
-        invert=true, delay="6") }}
+        comparison.waste_cost.baseline,
+        comparison.waste_cost.baseline_change,
+        invert=true, delay="5") }}
 </div>
 
+<!-- ═══ ITEM-LEVEL MOVERS ═══ -->
+{% if comparison.movers and comparison.movers|length > 0 %}
+<section class="mb-8 load-in load-in-5">
+    <h2 class="text-lg text-warm-800 mb-4">Biggest Movers This Week</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {% for mover in comparison.movers %}
+        <div class="card p-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                {% if mover.direction == 'up' %}
+                <div class="w-8 h-8 rounded-full bg-sage-50 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-sage-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+                </div>
+                {% else %}
+                <div class="w-8 h-8 rounded-full bg-red-50 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+                </div>
+                {% endif %}
+                <div>
+                    <p class="font-medium text-warm-800 text-sm">{{ mover.item }}</p>
+                    <p class="text-xs text-warm-500">${{ "%.0f"|format(mover.previous_revenue) }} → ${{ "%.0f"|format(mover.current_revenue) }}</p>
+                </div>
+            </div>
+            <span class="text-sm font-semibold {{ 'text-sage-600' if mover.direction == 'up' else 'text-red-500' }}">
+                {{ "+" if mover.change_pct > 0 }}{{ "%.1f"|format(mover.change_pct) }}%
+            </span>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ═══ WEEKLY ACTION ITEMS ═══ -->
+{% if comparison.actions and comparison.actions|length > 0 %}
+<section class="mb-8 load-in load-in-6">
+    <h2 class="text-lg text-warm-800 mb-4">Your Focus This Week</h2>
+    <div class="space-y-3">
+        {% for action in comparison.actions %}
+        <div class="{{ 'insight-callout' if action.type == 'progress' else 'insight-callout-warn' if action.type == 'waste' else 'insight-callout' }}">
+            {% if action.type == 'waste' %}
+            <span class="text-xs font-medium text-terra-600 uppercase tracking-wide">Waste Reduction</span>
+            {% elif action.type == 'revenue' %}
+            <span class="text-xs font-medium text-warm-600 uppercase tracking-wide">Revenue</span>
+            {% elif action.type == 'progress' %}
+            <span class="text-xs font-medium text-sage-600 uppercase tracking-wide">Progress</span>
+            {% endif %}
+            <p class="text-warm-700 mt-1">{{ action.text }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- ═══ ACTIONS ═══ -->
 <div class="flex gap-3 load-in load-in-6">
     <a href="/report/{{ snapshot.id }}"
        class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-5 rounded-lg text-sm transition-colors">
