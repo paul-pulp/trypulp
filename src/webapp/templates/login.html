@@ -1,11 +1,97 @@
 {% extends "base.html" %}
-{% block title %}Sign In — PulpIQ{% endblock %}
+{% block title %}PulpIQ — See What's Selling, What's Wasting, and What to Change{% endblock %}
 {% block content %}
-<div class="max-w-md mx-auto mt-12 load-in">
-    <div class="text-center mb-8">
-        <h1 class="text-3xl text-warm-800 mb-2">Welcome to PulpIQ</h1>
-        <p class="text-warm-500">Upload your cafe's sales data. See what's working and what's wasting.</p>
+
+<!-- Hero -->
+<div class="max-w-3xl mx-auto text-center mt-8 mb-12 load-in">
+    <h1 class="text-4xl md:text-5xl text-warm-800 leading-tight mb-4">
+        Stop guessing.<br>Start saving.
+    </h1>
+    <p class="text-lg text-warm-500 max-w-xl mx-auto">
+        Upload your POS sales data and instantly see what's selling, what's wasting money, and exactly what to change. Built for independent cafes.
+    </p>
+</div>
+
+<!-- How it works -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto mb-14">
+    <div class="text-center load-in load-in-1">
+        <div class="w-12 h-12 bg-terra-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+        </div>
+        <h3 class="text-warm-800 font-semibold mb-1" style="font-family: 'Inter', sans-serif;">1. Upload your CSV</h3>
+        <p class="text-sm text-warm-500">Export from Square, Toast, Clover, or any POS. Takes 2 minutes.</p>
     </div>
+    <div class="text-center load-in load-in-2">
+        <div class="w-12 h-12 bg-terra-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+        </div>
+        <h3 class="text-warm-800 font-semibold mb-1" style="font-family: 'Inter', sans-serif;">2. See instant insights</h3>
+        <p class="text-sm text-warm-500">Revenue breakdown, waste analysis, and savings estimate in seconds.</p>
+    </div>
+    <div class="text-center load-in load-in-3">
+        <div class="w-12 h-12 bg-terra-600 rounded-xl flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/></svg>
+        </div>
+        <h3 class="text-warm-800 font-semibold mb-1" style="font-family: 'Inter', sans-serif;">3. Track weekly progress</h3>
+        <p class="text-sm text-warm-500">Upload each week to see what's improving and where to focus next.</p>
+    </div>
+</div>
+
+<!-- What you'll see -->
+<div class="max-w-3xl mx-auto mb-14 load-in load-in-4">
+    <div class="card-static p-8">
+        <h2 class="text-xl text-warm-800 mb-5 text-center">What you'll see in your report</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3 text-sm">
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Top sellers</strong> — which items drive the most revenue</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Product mix</strong> — beverage vs food vs pastry breakdown</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Waste analysis</strong> — items going unsold and costing you money</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Order recommendations</strong> — exactly how many to prep each day</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Milk breakdown</strong> — dairy vs oat vs almond usage and costs</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Peak hours</strong> — when revenue is highest and when it dips</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Best & worst days</strong> — day-of-week revenue patterns</span>
+            </div>
+            <div class="flex items-start gap-2.5">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                <span class="text-warm-700"><strong class="text-warm-800">Savings estimate</strong> — how much you could save per month</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Why it matters -->
+<div class="max-w-3xl mx-auto mb-14 load-in load-in-5">
+    <div class="bg-warm-800 text-white rounded-xl p-8 text-center">
+        <h2 class="text-xl mb-3" style="color: white;">The average indie cafe wastes $500–1,500/month on over-ordering alone.</h2>
+        <p class="text-warm-300 max-w-lg mx-auto">
+            Most owners know something's off but don't have time to dig through spreadsheets.
+            PulpIQ does the analysis in seconds — so you know exactly where the money's going.
+        </p>
+    </div>
+</div>
+
+<!-- Signup form -->
+<div class="max-w-md mx-auto mb-16 load-in load-in-6" id="get-started">
+    <h2 class="text-2xl text-warm-800 text-center mb-6">Get started — it's free</h2>
 
     <div class="card p-8">
         <form method="POST" action="/login" class="space-y-4" id="login-form">
@@ -28,15 +114,20 @@
             {% endif %}
 
             <button type="submit" id="login-btn"
-                    class="w-full bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors">
-                Send Sign-In Link
+                    class="w-full bg-terra-600 hover:bg-terra-700 text-white font-medium py-3 px-4 rounded-lg transition-colors text-base">
+                Get My Free Report
             </button>
         </form>
 
         <p class="text-xs text-warm-400 mt-4 text-center">
-            No password needed. We'll email you a secure sign-in link.
+            No password needed. No credit card. We'll email you a sign-in link.
         </p>
     </div>
+</div>
+
+<!-- Already have an account? -->
+<div class="text-center mb-8 text-sm text-warm-400">
+    Already have an account? Enter your email above — we'll send you a sign-in link.
 </div>
 
 <script>
