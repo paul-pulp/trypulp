@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PulpIQ — Smarter Operations for Independent Coffee Shops</title>
-  <meta name="description" content="Reduce waste. Optimize labor. Grow revenue. Weekly insights built for independent coffee shops with 2–5 locations. Free 6-week trial.">
+  <meta name="description" content="Free sales analytics for independent cafes. Upload your POS data, see where your money's going in under 5 minutes. Reduce waste and track savings weekly.">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -194,7 +194,7 @@
         <a href="#how-it-works" class="btn-pill btn-outline text-sm px-6 py-3">See how it works</a>
       </div>
       <p class="load-in text-xs text-warm-500" style="animation-delay:300ms">
-        100% free · No credit card · Results in under 5 minutes
+        Free to start · No credit card · First report in under 5 minutes
       </p>
     </div>
 
@@ -427,33 +427,63 @@
 
   <!-- ══════════════ PRICING ══════════════ -->
   <section class="py-16 sm:py-24 bg-warm-100" id="pricing">
-    <div class="max-w-3xl mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-6">
 
       <header class="max-w-2xl mx-auto text-center mb-14 reveal">
         <div class="deco-line mx-auto mb-6"></div>
         <h2 class="text-warm-900 leading-tight" style="font-size:clamp(2rem, 4.5vw, 3rem)">
-          Completely free
+          Start free. Upgrade when you're ready.
         </h2>
+        <p class="text-warm-600 text-lg mt-4">Your first report is on us. See the value before you spend a dollar.</p>
       </header>
 
-      <div class="reveal bg-white border border-warm-200 rounded-xl p-8 max-w-lg mx-auto text-center">
-        <div class="mb-6">
-          <span class="font-serif text-5xl text-warm-900">$0</span>
-          <span class="text-warm-600 text-sm ml-2">forever</span>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+
+        <!-- Free tier -->
+        <div class="reveal bg-white border border-warm-200 rounded-xl p-8 flex flex-col" data-delay="0">
+          <span class="inline-block font-sans text-xs font-bold text-warm-600 bg-warm-200 px-3 py-1 rounded-full mb-6 w-fit">Free</span>
+          <div class="mb-6">
+            <span class="font-serif text-5xl text-warm-900">$0</span>
+            <span class="text-warm-600 text-sm ml-2">to start</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Full baseline report with revenue analysis</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Waste analysis with ordering recommendations</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Milk usage breakdown by type</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> 2 free weekly uploads to try tracking</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> No credit card required</li>
+          </ul>
+          <a href="/login" class="btn-pill btn-outline text-base px-6 py-3.5 justify-center w-full">
+            Get my free report
+          </a>
         </div>
-        <ul class="space-y-3 mb-8 text-left max-w-xs mx-auto">
-          <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Full sales &amp; revenue analysis</li>
-          <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Waste analysis with order recommendations</li>
-          <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Milk usage breakdown by type</li>
-          <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Week-over-week comparison tracking</li>
-          <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> Category filtering &amp; full item list</li>
-          <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-sage-600 mt-0.5">&#10003;</span> No credit card required</li>
-        </ul>
-        <a href="/login" class="btn-pill btn-terra text-base px-8 py-3.5 justify-center w-full">
-          Get my free report
-        </a>
-        <p class="text-xs text-warm-500 text-center mt-3">Takes under 5 minutes to get your first report</p>
+
+        <!-- Pro tier -->
+        <div class="reveal bg-white border-2 border-terra-500 rounded-xl p-8 flex flex-col relative" data-delay="120">
+          <span class="inline-block font-sans text-xs font-bold text-white bg-terra-500 px-3 py-1 rounded-full mb-6 w-fit">Pro</span>
+          <div class="mb-6">
+            <span class="font-serif text-5xl text-warm-900">$49</span>
+            <span class="text-warm-600 text-sm ml-2">/month</span>
+          </div>
+          <ul class="space-y-3 mb-8 flex-1">
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-terra-500 mt-0.5">&#10003;</span> Everything in Free, plus:</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-terra-500 mt-0.5">&#10003;</span> Unlimited weekly data uploads</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-terra-500 mt-0.5">&#10003;</span> Week-over-week revenue &amp; waste tracking</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-terra-500 mt-0.5">&#10003;</span> Cumulative savings tracker</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-terra-500 mt-0.5">&#10003;</span> Product trend analysis &amp; item movers</li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700"><span class="text-terra-500 mt-0.5">&#10003;</span> Personalized weekly action items</li>
+          </ul>
+          <a href="/login" class="btn-pill btn-terra text-base px-6 py-3.5 justify-center w-full">
+            Start free, upgrade later
+          </a>
+          <p class="text-xs text-warm-500 text-center mt-3">Cancel anytime. No contracts.</p>
+        </div>
+
       </div>
+
+      <p class="reveal text-center text-sm text-warm-500 mt-8 max-w-lg mx-auto">
+        Most cafes waste $500&ndash;1,500/month on over-ordering. At $49/month, PulpIQ pays for itself if it helps you cut even 10% of that.
+      </p>
     </div>
   </section>
 
@@ -464,10 +494,10 @@
       <header class="text-center mb-10 reveal">
         <div class="deco-line mx-auto mb-6"></div>
         <h2 class="text-warm-900 leading-tight mb-3" style="font-size:clamp(1.75rem, 4vw, 2.5rem)">
-          Get started free
+          See where your money's going
         </h2>
         <p class="text-warm-600 text-lg leading-relaxed">
-          No credit card. No commitment. Just better operations.
+          Your first report is free. No credit card, no commitment.
         </p>
       </header>
 
@@ -479,7 +509,7 @@
             Get My Free Report
           </a>
           <p class="text-xs text-warm-500 mt-4">
-            No credit card. No commitment. No password needed.
+            No credit card required. No password needed.
           </p>
           <p class="text-warm-600">Questions? <a href="mailto:Hello@trypulp.co" class="text-terra-500 font-medium hover:text-terra-600 underline">Hello@trypulp.co</a></p>
         </div>
@@ -557,10 +587,10 @@
 
         <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
           <summary class="flex items-center justify-between gap-4 px-5 sm:px-6 py-4 sm:py-5 cursor-pointer select-none min-h-[44px]">
-            <span class="font-sans font-bold text-sm text-warm-900">Is PulpIQ really free?</span>
+            <span class="font-sans font-bold text-sm text-warm-900">How does the free plan work?</span>
             <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </summary>
-          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Yes. Upload your data, get your report, track weekly &mdash; all free. No credit card, no trial period, no hidden fees.</p></div></div>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Your first report is completely free &mdash; no credit card needed. You also get 2 free weekly uploads to try the tracking features. After that, PulpIQ Pro is $49/month for unlimited weekly analytics. Cancel anytime.</p></div></div>
         </details>
 
         <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
@@ -568,7 +598,7 @@
             <span class="font-sans font-bold text-sm text-warm-900">How is this different from Toast or Square?</span>
             <span class="faq-chevron text-warm-400 flex-shrink-0"><svg class="w-4 h-4" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
           </summary>
-          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Toast and Square show you raw sales numbers. PulpIQ analyzes your data to find waste, recommend order quantities, and track trends week over week. And it's free.</p></div></div>
+          <div class="faq-body"><div class="faq-inner px-5 sm:px-6 pb-4 sm:pb-5"><p class="text-sm text-warm-600 leading-relaxed">Toast and Square show you raw sales numbers. PulpIQ analyzes your data to find waste, recommend order quantities, and track trends week over week. And your first report is free.</p></div></div>
         </details>
 
         <details class="bg-white border border-warm-200 rounded-xl overflow-hidden">
@@ -610,9 +640,9 @@
         <svg class="w-5 h-5 hidden sm:block" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M3 10a.75.75 0 01.75-.75h10.638L10.23 5.29a.75.75 0 111.04-1.08l5.5 5.25a.75.75 0 010 1.08l-5.5 5.25a.75.75 0 11-1.04-1.08l4.158-3.96H3.75A.75.75 0 013 10z" clip-rule="evenodd"/></svg>
       </a>
       <div class="reveal flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm text-warm-500">
-        <span>100% free</span>
+        <span>Free to start</span>
         <span>No credit card</span>
-        <span>Results in seconds</span>
+        <span>First report in seconds</span>
       </div>
     </div>
   </section>

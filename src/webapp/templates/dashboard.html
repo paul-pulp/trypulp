@@ -127,9 +127,9 @@
 {% set trial_left = user.trial_uploads_remaining if user.trial_uploads_remaining is defined else 2 %}
 {% if trial_left is not none and trial_left <= 0 %}
 <div class="card-savings p-6 mt-8 text-center load-in load-in-6">
-    <p class="text-warm-300 text-sm mb-2">Your free trial uploads are used up</p>
+    <p class="text-warm-300 text-sm mb-2">Ready to keep tracking your savings?</p>
     <a href="/upgrade" class="inline-block bg-white text-warm-800 font-medium py-2.5 px-6 rounded-lg text-sm hover:bg-warm-100 transition-colors">
-        Subscribe — $49/month
+        Upgrade to Pro — $49/month
     </a>
 </div>
 {% endif %}

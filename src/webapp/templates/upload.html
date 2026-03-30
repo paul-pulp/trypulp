@@ -9,8 +9,8 @@
 
     {% if not is_subscribed and trial_left is defined and trial_left is not none and trial_left > 0 and upload_label != 'baseline' %}
     <div class="insight-callout mb-4 text-sm">
-        <strong>Free trial:</strong> {{ trial_left }} weekly upload{{ "s" if trial_left != 1 }} remaining.
-        <a href="/upgrade" class="text-terra-600 hover:underline ml-1">Subscribe for unlimited uploads</a>
+        You have <strong>{{ trial_left }} free weekly upload{{ "s" if trial_left != 1 }}</strong> left.
+        After that, <a href="/upgrade" class="text-terra-600 hover:underline">PulpIQ Pro is $49/month</a> for unlimited tracking.
     </div>
     {% endif %}
 
