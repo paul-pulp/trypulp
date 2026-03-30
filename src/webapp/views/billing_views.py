@@ -96,11 +96,63 @@ def billing_success():
 
             print(f"[BILLING] User {user_id} subscribed: {subscription_id}", flush=True)
             flash("You're subscribed! Upload your data anytime.", "success")
+
+            # Send welcome email
+            user = get_user_by_id(user_id)
+            _send_welcome_email(user)
+
         except Exception as e:
             print(f"[BILLING] Success handler error: {e}", flush=True)
             flash("Payment received! Your account is being activated.", "success")
 
     return redirect(url_for("dashboard.dashboard"))
+
+
+def _send_welcome_email(user):
+    """Send a congratulations email to new Pro subscribers."""
+    import smtplib
+    from email.mime.text import MIMEText
+
+    smtp_user = current_app.config.get("SMTP_USER", "")
+    smtp_pass = current_app.config.get("SMTP_PASS", "")
+
+    if not smtp_user or not smtp_pass:
+        return
+
+    cafe = user["cafe_name"] if user else "there"
+    email = user["email"] if user else ""
+
+    body = (
+        f"Hey {cafe} team!\n\n"
+        f"Welcome to PulpIQ Pro. You're all set.\n\n"
+        f"Here's what you can do now:\n\n"
+        f"  1. Upload your sales data every week\n"
+        f"  2. See how your revenue and waste are trending\n"
+        f"  3. Get specific action items each week based on your numbers\n"
+        f"  4. Track your cumulative savings over time\n\n"
+        f"Your next step: head to your dashboard and upload this week's data.\n\n"
+        f"  {current_app.config['APP_URL']}/dashboard\n\n"
+        f"If you ever need help or have questions, just reply to this email.\n\n"
+        f"Thanks for trusting us with your data.\n\n"
+        f"— Paul\n"
+        f"Founder, PulpIQ\n"
+        f"hello@trypulp.co"
+    )
+
+    msg = MIMEText(body, "plain")
+    msg["Subject"] = f"Welcome to PulpIQ Pro, {cafe}!"
+    msg["From"] = smtp_user
+    msg["To"] = email
+
+    try:
+        with smtplib.SMTP(current_app.config["SMTP_HOST"],
+                          current_app.config["SMTP_PORT"]) as server:
+            server.starttls()
+            server.login(smtp_user, smtp_pass)
+            server.send_message(msg)
+        print(f"[BILLING] Welcome email sent to {email}", flush=True)
+    except Exception as e:
+        print(f"[BILLING] Welcome email failed: {e}", flush=True)
 
 
 @billing_bp.route("/billing/cancel")
