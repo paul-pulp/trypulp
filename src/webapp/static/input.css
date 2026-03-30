@@ -132,6 +132,32 @@ h1, h2, h3 {
     background: var(--color-terra-500);
 }
 
+/* ── Filter pills ──────────────────────────────────────── */
+
+.filter-pill {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border-radius: 9999px;
+    border: 1px solid var(--color-warm-200);
+    background: white;
+    color: var(--color-warm-600);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.filter-pill:hover {
+    border-color: var(--color-terra-500);
+    color: var(--color-terra-600);
+}
+
+.filter-pill.active {
+    background: var(--color-warm-800);
+    border-color: var(--color-warm-800);
+    color: white;
+}
+
 /* ── Tooltips ──────────────────────────────────────────── */
 
 .tooltip {

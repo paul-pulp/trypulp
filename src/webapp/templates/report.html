@@ -46,29 +46,52 @@
     </div>
 </div>
 
-<!-- What's Selling -->
+<!-- ═══ ALL ITEMS WITH CATEGORY FILTER ═══ -->
 <section class="mb-10 load-in load-in-3">
-    <h2 class="text-xl text-warm-800 mb-4">What's Selling</h2>
+    <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl text-warm-800">All Items</h2>
+        <span class="text-sm text-warm-400" id="item-count"></span>
+    </div>
+
+    <!-- Category filter pills -->
+    <div class="flex flex-wrap gap-2 mb-4" id="category-filters">
+        <button class="filter-pill active" data-category="all">All</button>
+        {% set categories = customer.all_items | map(attribute='category') | unique | sort %}
+        {% for cat in categories %}
+        <button class="filter-pill" data-category="{{ cat }}">{{ cat }}</button>
+        {% endfor %}
+    </div>
+
     <div class="card-static overflow-hidden">
-        <table class="w-full text-sm">
+        <table class="w-full text-sm" id="items-table">
             <thead class="bg-warm-50">
                 <tr>
-                    <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Item</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Revenue</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">% of Total</th>
-                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Units Sold</th>
+                    <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide cursor-pointer hover:text-warm-700" data-sort="item">Item</th>
+                    <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Category</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide cursor-pointer hover:text-warm-700" data-sort="revenue">Revenue</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide cursor-pointer hover:text-warm-700" data-sort="pct">% of Total</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide cursor-pointer hover:text-warm-700" data-sort="units">Units Sold</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Price</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-warm-100">
-                {% for item in customer.top_items[:10] %}
-                <tr class="hover:bg-warm-50/50 transition-colors">
+            <tbody class="divide-y divide-warm-100" id="items-body">
+                {% for item in customer.all_items %}
+                <tr class="hover:bg-warm-50/50 transition-colors item-row" data-category="{{ item.category }}">
                     <td class="px-5 py-3">
-                        <span class="font-medium text-warm-800">{{ item.item or item.index }}</span>
-                        <div class="pct-bar mt-1" style="width: 120px"><div class="pct-bar-fill" style="width: {{ item.revenue_pct }}%"></div></div>
+                        <span class="font-medium text-warm-800">{{ item.item }}</span>
+                        <div class="pct-bar mt-1" style="width: 100px"><div class="pct-bar-fill" style="width: {{ item.revenue_pct }}%"></div></div>
+                    </td>
+                    <td class="px-5 py-3">
+                        <span class="inline-block text-xs font-medium px-2 py-0.5 rounded-full
+                            {% if item.category == 'Beverage' %}bg-blue-50 text-blue-700
+                            {% elif item.category == 'Pastry' %}bg-amber-50 text-amber-700
+                            {% elif item.category == 'Food' %}bg-green-50 text-green-700
+                            {% else %}bg-warm-100 text-warm-600{% endif %}">{{ item.category }}</span>
                     </td>
                     <td class="px-5 py-3 text-right text-warm-800 font-medium">${{ "%.2f"|format(item.revenue) }}</td>
                     <td class="px-5 py-3 text-right text-warm-500">{{ item.revenue_pct }}%</td>
                     <td class="px-5 py-3 text-right text-warm-500">{{ item.units_sold|int }}</td>
+                    <td class="px-5 py-3 text-right text-warm-500">${{ "%.2f"|format(item.avg_price) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -76,7 +99,7 @@
     </div>
 </section>
 
-<!-- Your Product Mix -->
+<!-- ═══ YOUR PRODUCT MIX ═══ -->
 <section class="mb-10 load-in load-in-4">
     <h2 class="text-xl text-warm-800 mb-4">Your Product Mix</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -87,14 +110,77 @@
             <div class="mt-3 bg-warm-100 rounded-full h-3">
                 <div class="bg-terra-500 rounded-full h-3 transition-all" style="width: {{ cat.revenue_pct }}%"></div>
             </div>
-            <p class="text-xs text-warm-400 mt-1.5">{{ cat.revenue_pct }}% of revenue</p>
+            <p class="text-xs text-warm-400 mt-1.5">{{ cat.revenue_pct }}% of revenue &middot; {{ cat.item_count if cat.item_count is defined else '' }} items</p>
         </div>
         {% endfor %}
     </div>
 </section>
 
-<!-- How They Pay -->
+<!-- ═══ DAILY & HOURLY TRENDS ═══ -->
+{% if customer.daily_trends %}
 <section class="mb-10 load-in load-in-5">
+    <h2 class="text-xl text-warm-800 mb-4">Revenue by Day of Week</h2>
+    <div class="card-static overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-warm-50">
+                <tr>
+                    <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Day</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Revenue</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Items Sold</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-warm-100">
+                {% for day in customer.daily_trends %}
+                {% set max_rev = customer.daily_trends | map(attribute='avg_revenue') | max %}
+                <tr class="hover:bg-warm-50/50 transition-colors">
+                    <td class="px-5 py-3 font-medium text-warm-800">{{ day.day_of_week or day.index }}</td>
+                    <td class="px-5 py-3 text-right">
+                        <span class="text-warm-800 font-medium">${{ "%.2f"|format(day.avg_revenue) }}</span>
+                        <div class="pct-bar mt-1 ml-auto" style="width: 100px">
+                            <div class="pct-bar-fill" style="width: {{ (day.avg_revenue / max_rev * 100) if max_rev else 0 }}%"></div>
+                        </div>
+                    </td>
+                    <td class="px-5 py-3 text-right text-warm-500">{{ "%.0f"|format(day.avg_items) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+{% if customer.hourly_trends %}
+<section class="mb-10 load-in">
+    <h2 class="text-xl text-warm-800 mb-4">Revenue by Hour</h2>
+    <div class="card-static overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-warm-50">
+                <tr>
+                    <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Hour</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Avg Revenue/Day</th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">% of Revenue</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-warm-100">
+                {% for hour in customer.hourly_trends %}
+                {% if hour.avg_revenue_per_day is defined and hour.avg_revenue_per_day > 0 %}
+                <tr class="hover:bg-warm-50/50 transition-colors">
+                    <td class="px-5 py-3 font-medium text-warm-800">{{ hour.hour if hour.hour is defined else hour.index }}:00</td>
+                    <td class="px-5 py-3 text-right">
+                        <span class="text-warm-800 font-medium">${{ "%.2f"|format(hour.avg_revenue_per_day) }}</span>
+                    </td>
+                    <td class="px-5 py-3 text-right text-warm-500">{{ hour.revenue_pct }}%</td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endif %}
+
+<!-- ═══ HOW THEY PAY ═══ -->
+<section class="mb-10 load-in">
     <h2 class="text-xl text-warm-800 mb-4">How They Pay</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {% for method in customer.payment_methods %}
@@ -110,9 +196,35 @@
     </div>
 </section>
 
-<!-- Where You're Losing Money -->
+<!-- ═══ HOT vs ICED ═══ -->
+{% if customer.hot_vs_iced and customer.hot_vs_iced.summary %}
+{% set hvi = customer.hot_vs_iced.summary %}
+{% if hvi.hot is defined or hvi.iced is defined %}
+<section class="mb-10 load-in">
+    <h2 class="text-xl text-warm-800 mb-4">Hot vs Iced</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {% if hvi.hot is defined %}
+        <div class="card p-5">
+            <p class="font-medium text-warm-800 mb-1">Hot Drinks</p>
+            <p class="text-2xl font-semibold text-warm-800">{{ hvi.hot.avg_per_day }}<span class="text-sm font-normal text-warm-500">/day</span></p>
+            <p class="text-sm text-warm-400 mt-1">{{ hvi.hot.pct }}% of drinks &middot; ${{ "%.0f"|format(hvi.hot.revenue) }} revenue</p>
+        </div>
+        {% endif %}
+        {% if hvi.iced is defined %}
+        <div class="card p-5">
+            <p class="font-medium text-warm-800 mb-1">Iced Drinks</p>
+            <p class="text-2xl font-semibold text-warm-800">{{ hvi.iced.avg_per_day }}<span class="text-sm font-normal text-warm-500">/day</span></p>
+            <p class="text-sm text-warm-400 mt-1">{{ hvi.iced.pct }}% of drinks &middot; ${{ "%.0f"|format(hvi.iced.revenue) }} revenue</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+{% endif %}
+
+<!-- ═══ WHERE YOU'RE LOSING MONEY ═══ -->
 {% if waste.waste_projection and waste.waste_projection['items'] %}
-<section class="mb-10 load-in load-in-6">
+<section class="mb-10 load-in">
     <h2 class="text-xl text-warm-800 mb-4">Where You're Losing Money</h2>
 
     <div class="grid grid-cols-3 gap-4 mb-5">
@@ -124,13 +236,13 @@
         </div>
         <div class="card p-5 text-center">
             <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-                <span class="tooltip" data-tip="Daily waste units multiplied by each item's ingredient cost (30% of menu price) over 30 days. This is what unsold perishables cost you each month.">Monthly Waste Cost<i class="info-icon">?</i></span>
+                <span class="tooltip" data-tip="Daily waste units multiplied by each item's ingredient cost (30% of menu price) over 30 days.">Monthly Waste Cost<i class="info-icon">?</i></span>
             </p>
             <p class="text-2xl font-semibold text-red-600">${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}</p>
         </div>
         <div class="card p-5 text-center !bg-sage-50 !border-sage-100">
             <p class="text-xs text-sage-600 uppercase tracking-wide mb-1">
-                <span class="tooltip" data-tip="If you adjust orders to our recommended quantities, this is how much you'd save. Includes reduced perishable waste plus an estimated 6% reduction in milk over-ordering.">Savings Potential<i class="info-icon">?</i></span>
+                <span class="tooltip" data-tip="If you adjust orders to our recommended quantities, this is how much you'd save.">Savings Potential<i class="info-icon">?</i></span>
             </p>
             <p class="text-2xl font-semibold text-sage-700">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal">/mo</span></p>
         </div>
@@ -142,16 +254,16 @@
                 <tr>
                     <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Item</th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="How many units of this item sell on an average day, based on your full data range.">Avg Sold/Day<i class="info-icon">?</i></span>
+                        <span class="tooltip" data-tip="How many units of this item sell on an average day.">Avg Sold/Day<i class="info-icon">?</i></span>
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="Our estimate of how many you're currently ordering, based on your peak sales day. Cafes tend to order for their busiest day.">Current Order<i class="info-icon">?</i></span>
+                        <span class="tooltip" data-tip="Estimated from your peak sales day — cafes tend to order for their busiest day.">Current Order<i class="info-icon">?</i></span>
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="The quantity we recommend ordering: your average daily sales plus a small buffer for variance. Enough to cover most days without over-ordering.">Recommended<i class="info-icon">?</i></span>
+                        <span class="tooltip" data-tip="Average daily sales plus a small buffer for variance.">Recommended<i class="info-icon">?</i></span>
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="Monthly cost of unsold units at current ordering levels. Calculated as: (current order - avg sold) × ingredient cost × 30 days.">Wasted/Mo<i class="info-icon">?</i></span>
+                        <span class="tooltip" data-tip="(Current order - avg sold) x ingredient cost x 30 days.">Wasted/Mo<i class="info-icon">?</i></span>
                     </th>
                 </tr>
             </thead>
@@ -178,7 +290,7 @@
 </section>
 {% endif %}
 
-<!-- Your Milk Breakdown -->
+<!-- ═══ YOUR MILK BREAKDOWN ═══ -->
 {% if waste.milk_usage and waste.milk_usage.by_type %}
 <section class="mb-10 load-in">
     <h2 class="text-xl text-warm-800 mb-4">Your Milk Breakdown</h2>
@@ -196,22 +308,49 @@
         </div>
         {% endfor %}
     </div>
-
-    {% set non_dairy = waste.milk_usage.by_type.items()|selectattr('0', 'ne', 'dairy')|list %}
-    {% if non_dairy|length > 0 %}
-    {% set alt_pct = non_dairy|map(attribute='1')|map(attribute='pct_of_milk')|sum %}
-    <div class="insight-callout">
-        <strong>Alt-milk is {{ "%.0f"|format(alt_pct) }}% of your milk usage.</strong>
-        {% if alt_pct > 30 %}Consider negotiating a bulk deal with your oat milk supplier — at this volume it'll pay for itself.
-        {% elif alt_pct > 15 %}That's a healthy mix. Make sure you're stocking enough to avoid running out mid-shift.
-        {% else %}Dairy-dominant menu. Alt-milk is a small part of your costs.{% endif %}
-    </div>
-    {% endif %}
 </section>
 {% endif %}
 
 <div class="text-center mt-8 text-xs text-warm-400 load-in">
     All dollar amounts in CAD. Costs based on Toronto industry averages.
 </div>
+
+<!-- ═══ JAVASCRIPT: Category filtering ═══ -->
+<script>
+(function() {
+    var filters = document.querySelectorAll('.filter-pill');
+    var rows = document.querySelectorAll('.item-row');
+    var countEl = document.getElementById('item-count');
+
+    function updateCount() {
+        var visible = document.querySelectorAll('.item-row:not([style*="display: none"])').length;
+        var total = rows.length;
+        countEl.textContent = visible === total ? total + ' items' : visible + ' of ' + total + ' items';
+    }
+
+    filters.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var cat = this.getAttribute('data-category');
+
+            // Update active pill
+            filters.forEach(function(b) { b.classList.remove('active'); });
+            this.classList.add('active');
+
+            // Filter rows
+            rows.forEach(function(row) {
+                if (cat === 'all' || row.getAttribute('data-category') === cat) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            updateCount();
+        });
+    });
+
+    updateCount();
+})();
+</script>
 
 {% endblock %}

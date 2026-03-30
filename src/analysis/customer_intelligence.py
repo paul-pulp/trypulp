@@ -84,6 +84,31 @@ def top_selling_items(df, top_n=10):
     return items.head(top_n)
 
 
+def all_items_with_category(df):
+    """Return ALL items with their category, sorted by revenue descending."""
+    group_cols = ["item"]
+    if "category" in df.columns:
+        group_cols = ["item", "category"]
+
+    items = (
+        df.groupby(group_cols)
+        .agg(
+            units_sold=("quantity", "sum"),
+            revenue=("price", "sum"),
+            transaction_count=("time", "count"),
+        )
+        .reset_index()
+        .sort_values("revenue", ascending=False)
+    )
+    items["avg_price"] = (items["revenue"] / items["units_sold"]).round(2)
+    items["revenue_pct"] = (items["revenue"] / items["revenue"].sum() * 100).round(1)
+
+    if "category" not in items.columns:
+        items["category"] = "Uncategorized"
+
+    return items
+
+
 def revenue_by_category(df):
     """Break down revenue and volume by category."""
     cats = (
@@ -334,6 +359,7 @@ def run(csv_path):
     return {
         "summary": summary_stats(df),
         "top_items": top_selling_items(df),
+        "all_items": all_items_with_category(df),
         "revenue_by_category": revenue_by_category(df),
         "payment_methods": payment_method_breakdown(df),
         "daily_trends": daily_trends(df),
