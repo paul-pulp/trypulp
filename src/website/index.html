@@ -137,6 +137,7 @@
     /* Thin decorative line */
     .deco-line { width: 48px; height: 2px; background: #E0D8CC; }
 
+    @media print { #stickyCta { display: none !important; } }
     @media (prefers-reduced-motion: reduce) {
       .reveal, .load-in { opacity: 1 !important; transform: none !important; animation: none !important; transition: none !important; }
     }
@@ -689,6 +690,17 @@
     </div>
   </footer>
 
+  <!-- Sticky CTA bar -->
+  <div id="stickyCta" class="fixed bottom-0 inset-x-0 z-40 translate-y-full transition-transform duration-300" style="backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); background:rgba(254,252,249,0.92); border-top:1px solid #EFEBE4;">
+    <div class="max-w-6xl mx-auto px-6 py-3 flex items-center justify-between gap-4">
+      <p class="text-sm text-warm-700 hidden sm:block">See where your cafe is losing money.</p>
+      <div class="flex items-center gap-3 ml-auto">
+        <a href="/login" class="text-sm font-medium text-warm-600 hover:text-warm-900 transition-colors">Log in</a>
+        <a href="/login" class="btn-pill btn-terra text-sm px-5 py-2.5 whitespace-nowrap">Get Free Report</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     // Nav
     const nav = document.getElementById('mainNav');
@@ -696,7 +708,12 @@
     const menu = document.getElementById('mobileMenu');
     let open = false;
 
-    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 20), { passive: true });
+    const stickyCta = document.getElementById('stickyCta');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', scrollY > 20);
+      stickyCta.classList.toggle('translate-y-full', scrollY < 400);
+      stickyCta.classList.toggle('translate-y-0', scrollY >= 400);
+    }, { passive: true });
 
     toggle.addEventListener('click', () => {
       open = !open;
