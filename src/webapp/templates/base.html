@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}PulpIQ{% endblock %}</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="{{ url_for('static', filename='styles.css') }}" rel="stylesheet">
 </head>
 <body class="bg-warm-50 text-warm-900 min-h-screen flex flex-col">
     <nav class="bg-white border-b border-warm-200 px-6 py-3 no-print">
         <div class="max-w-5xl mx-auto flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <a href="/dashboard" class="font-serif text-xl text-warm-800">PulpIQ</a>
+                <a href="/dashboard" class="text-xl text-warm-800" style="font-family: 'Fraunces', serif; font-weight: 600;">Pulp<span class="text-terra-500">IQ</span></a>
                 {% if current_user %}
                 <span class="text-warm-300 text-sm">/</span>
                 <span class="text-sm text-warm-500">{{ current_user.cafe_name }}</span>

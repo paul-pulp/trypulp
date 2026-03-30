@@ -269,11 +269,11 @@
             </p>
             <p class="text-2xl font-semibold text-red-600">${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}</p>
         </div>
-        <div class="card p-5 text-center !bg-sage-50 !border-sage-100">
-            <p class="text-xs text-sage-600 uppercase tracking-wide mb-1">
-                <span class="tooltip" data-tip="If you adjust orders to our recommended quantities, this is how much you'd save.">Savings Potential<i class="info-icon">?</i></span>
+        <div class="card-savings p-5 text-center">
+            <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
+                <span class="tooltip" data-tip="If you adjust orders to our recommended quantities, this is how much you'd save.">Savings Potential<i class="info-icon" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6)">?</i></span>
             </p>
-            <p class="text-2xl font-semibold text-sage-700">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal">/mo</span></p>
+            <p class="text-3xl font-semibold text-white">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal text-warm-400">/mo</span></p>
         </div>
     </div>
 

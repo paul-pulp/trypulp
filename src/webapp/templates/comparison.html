@@ -29,10 +29,10 @@
 
 <!-- ═══ CUMULATIVE SAVINGS TRACKER ═══ -->
 {% if comparison.cumulative_savings and comparison.cumulative_savings.total > 0 %}
-<div class="card p-6 !bg-sage-50 !border-sage-100 mb-8 load-in load-in-2 text-center">
-    <p class="text-xs text-sage-600 uppercase tracking-wide mb-2">Estimated Savings Since You Started</p>
-    <p class="text-4xl font-semibold text-sage-700">${{ "%.0f"|format(comparison.cumulative_savings.total) }}</p>
-    <p class="text-sm text-sage-600 mt-1">
+<div class="card-savings p-8 mb-8 load-in load-in-2 text-center">
+    <p class="text-xs text-warm-400 uppercase tracking-wide mb-2">Estimated Savings Since You Started</p>
+    <p class="text-5xl font-semibold text-white">${{ "%.0f"|format(comparison.cumulative_savings.total) }}</p>
+    <p class="text-sm text-warm-400 mt-2">
         across {{ comparison.cumulative_savings.weeks }} week{{ "s" if comparison.cumulative_savings.weeks != 1 }}
         &middot; saving ~${{ "%.0f"|format(comparison.cumulative_savings.monthly_rate) }}/month at current rate
     </p>
