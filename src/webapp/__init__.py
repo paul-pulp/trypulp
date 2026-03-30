@@ -55,6 +55,13 @@ def create_app():
                 pass
         return {"current_user": user}
 
+    # Health check (public — confirms deploy is working)
+    @app.route("/health")
+    def health():
+        from flask import jsonify
+        routes = [rule.rule for rule in app.url_map.iter_rules() if "static" not in rule.rule]
+        return jsonify({"status": "ok", "routes": sorted(routes)})
+
     # Admin routes (protected by BACKUP_KEY query param)
     def _check_admin_key():
         from flask import request, abort
