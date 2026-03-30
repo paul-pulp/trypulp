@@ -3,10 +3,11 @@ Dashboard and report views.
 """
 
 import json
-from flask import Blueprint, render_template, session, redirect, url_for, abort
+from flask import Blueprint, render_template, request, session, redirect, url_for, abort, flash
 
 from ..models import (
     get_user_by_id, get_snapshots_for_user, get_snapshot_by_id, get_latest_snapshot,
+    insert_feedback,
 )
 
 dashboard_bp = Blueprint("dashboard", __name__)
@@ -87,3 +88,20 @@ def compare(snapshot_id):
                            comparison=comparison,
                            customer=customer,
                            waste=waste)
+
+
+@dashboard_bp.route("/feedback", methods=["POST"])
+@login_required
+def feedback():
+    user_id = session["user_id"]
+    feedback_type = request.form.get("feedback_type", "feedback")
+    message = request.form.get("message", "").strip()
+
+    if message:
+        insert_feedback(user_id, feedback_type, message)
+        print(f"[FEEDBACK] {feedback_type} from user {user_id}: {message[:100]}", flush=True)
+        flash("Thanks for your feedback!", "success")
+    else:
+        flash("Please enter a message.", "error")
+
+    return redirect(url_for("dashboard.dashboard"))

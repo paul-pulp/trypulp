@@ -13,7 +13,11 @@
         <div class="flex items-center justify-between mb-8">
             <div>
                 <h1 class="font-serif text-2xl text-warm-800">PulpIQ Admin</h1>
-                <p class="text-sm text-warm-500">User signups and activity</p>
+                <div class="flex items-center gap-3 text-sm">
+                    <span class="text-warm-500">User signups and activity</span>
+                    <span class="text-warm-300">|</span>
+                    <a href="/admin/feedback" class="text-terra-600 hover:text-terra-700 font-medium">View Feedback</a>
+                </div>
             </div>
             <div class="text-right text-sm text-warm-500">
                 <p><strong class="text-warm-800">{{ users|length }}</strong> total users</p>

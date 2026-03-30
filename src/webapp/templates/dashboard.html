@@ -112,4 +112,44 @@
     </table>
 </div>
 {% endif %}
+
+<!-- Feedback -->
+<section class="mt-12 load-in load-in-6">
+    <div class="card-static p-6">
+        <h2 class="text-lg text-warm-800 mb-1">Have feedback?</h2>
+        <p class="text-sm text-warm-500 mb-4">We're building this for you. Tell us what's useful, what's confusing, or what you wish it did.</p>
+        <form method="POST" action="/feedback" class="space-y-3" id="feedback-form">
+            <div class="flex gap-2">
+                <label class="flex-1">
+                    <input type="radio" name="feedback_type" value="feedback" checked class="sr-only peer">
+                    <span class="block text-center text-sm py-2 px-3 rounded-lg border border-warm-200 cursor-pointer peer-checked:bg-warm-800 peer-checked:text-white peer-checked:border-warm-800 hover:border-warm-400 transition-colors">Feedback</span>
+                </label>
+                <label class="flex-1">
+                    <input type="radio" name="feedback_type" value="feature_request" class="sr-only peer">
+                    <span class="block text-center text-sm py-2 px-3 rounded-lg border border-warm-200 cursor-pointer peer-checked:bg-warm-800 peer-checked:text-white peer-checked:border-warm-800 hover:border-warm-400 transition-colors">Feature Request</span>
+                </label>
+                <label class="flex-1">
+                    <input type="radio" name="feedback_type" value="bug" class="sr-only peer">
+                    <span class="block text-center text-sm py-2 px-3 rounded-lg border border-warm-200 cursor-pointer peer-checked:bg-warm-800 peer-checked:text-white peer-checked:border-warm-800 hover:border-warm-400 transition-colors">Bug Report</span>
+                </label>
+            </div>
+            <textarea name="message" required rows="3" placeholder="What's on your mind?"
+                      class="w-full px-4 py-2.5 rounded-lg border border-warm-300 focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none transition-colors text-sm resize-none"></textarea>
+            <button type="submit" id="feedback-btn"
+                    class="bg-warm-800 hover:bg-warm-900 text-white font-medium py-2 px-5 rounded-lg text-sm transition-colors">
+                Send Feedback
+            </button>
+        </form>
+    </div>
+</section>
+
+<script>
+document.getElementById('feedback-form').addEventListener('submit', function() {
+    var btn = document.getElementById('feedback-btn');
+    btn.innerHTML = 'Sent! Thanks<span class="ml-1">&#10003;</span>';
+    btn.disabled = true;
+    btn.classList.add('bg-sage-600');
+    btn.classList.remove('bg-warm-800', 'hover:bg-warm-900');
+});
+</script>
 {% endblock %}

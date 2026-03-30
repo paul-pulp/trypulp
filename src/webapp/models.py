@@ -60,6 +60,14 @@ def init_db(app):
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             UNIQUE(user_id, week_number)
         );
+
+        CREATE TABLE IF NOT EXISTS feedback (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL REFERENCES users(id),
+            feedback_type TEXT NOT NULL,
+            message TEXT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
     """)
     db.close()
     app.teardown_appcontext(close_db)
@@ -190,3 +198,25 @@ def insert_snapshot(user_id, week_number, csv_filename, date_start, date_end,
     )
     db.commit()
     return cursor.lastrowid
+
+
+# ── Feedback operations ────────────────────────────────────────────────
+
+def insert_feedback(user_id, feedback_type, message):
+    db = get_db()
+    db.execute(
+        "INSERT INTO feedback (user_id, feedback_type, message) VALUES (?, ?, ?)",
+        (user_id, feedback_type, message.strip()),
+    )
+    db.commit()
+
+
+def get_all_feedback():
+    """Get all feedback with user info, newest first."""
+    return get_db().execute("""
+        SELECT f.id, f.feedback_type, f.message, f.created_at,
+               u.cafe_name, u.email
+        FROM feedback f
+        JOIN users u ON f.user_id = u.id
+        ORDER BY f.created_at DESC
+    """).fetchall()

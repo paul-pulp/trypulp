@@ -121,6 +121,21 @@ def create_app():
             traceback.print_exc()
             return jsonify({"error": str(e)}), 500
 
+    @app.route("/admin/feedback")
+    def admin_feedback():
+        denied = _check_admin_auth()
+        if denied:
+            return denied
+        from flask import render_template, jsonify
+        from .models import get_all_feedback
+        try:
+            feedback = get_all_feedback()
+            return render_template("admin_feedback.html", feedback=feedback)
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return jsonify({"error": str(e)}), 500
+
     # Public pages (methodology, terms)
     @app.route("/methodology")
     def methodology():
