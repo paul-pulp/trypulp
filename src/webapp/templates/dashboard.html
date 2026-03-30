@@ -41,7 +41,7 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
     <div class="card p-5 load-in load-in-1">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            <span class="tooltip" data-tip="Your total revenue divided by the number of days in the data. Tracks whether your overall sales are growing or shrinking.">Avg Daily Revenue<i class="info-icon">?</i></span>
+            Avg Daily Revenue
         </p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_daily_revenue) }}</p>
         {% if latest.comparison and latest.comparison.revenue.change %}
@@ -52,7 +52,7 @@
     </div>
     <div class="card p-5 load-in load-in-2">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            <span class="tooltip" data-tip="Average spend per transaction. Higher tickets mean customers are buying more per visit — upselling and combos can move this number.">Avg Ticket<i class="info-icon">?</i></span>
+            Avg Ticket
         </p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_ticket_size) }}</p>
         {% if latest.comparison and latest.comparison.ticket.change %}
@@ -63,13 +63,13 @@
     </div>
     <div class="card p-5 load-in load-in-3">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            <span class="tooltip" data-tip="Average number of separate transactions per day. Each unique date+time combination in your POS data counts as one transaction.">Daily Transactions<i class="info-icon">?</i></span>
+            Daily Transactions
         </p>
         <p class="text-2xl font-semibold text-warm-800">{{ "%.0f"|format(latest.avg_daily_transactions) }}</p>
     </div>
     <div class="card-savings p-5 load-in load-in-4">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            <span class="tooltip" data-tip="How much you could save monthly by adjusting perishable orders to match actual demand. Based on reducing over-ordering (current peak orders vs. recommended quantities) and cutting ~6% of milk waste.">Savings Potential<i class="info-icon" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6)">?</i></span>
+            Savings Potential
         </p>
         <p class="text-3xl font-semibold text-white">${{ "%.0f"|format(latest.waste_savings_monthly or 0) }}<span class="text-sm font-normal text-warm-400">/mo</span></p>
         {% if latest.waste_monthly_cost %}

@@ -259,19 +259,19 @@
     <div class="grid grid-cols-3 gap-4 mb-5">
         <div class="card p-5 text-center">
             <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-                <span class="tooltip" data-tip="The estimated number of perishable items that go unsold each day, based on the gap between your peak ordering and average sales.">Daily Waste<i class="info-icon">?</i></span>
+                Daily Waste
             </p>
             <p class="text-2xl font-semibold text-warm-800">{{ "%.1f"|format(waste.waste_projection.total_daily_waste_units) }} <span class="text-sm font-normal text-warm-500">items</span></p>
         </div>
         <div class="card p-5 text-center">
             <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-                <span class="tooltip" data-tip="Daily waste units multiplied by each item's ingredient cost (30% of menu price) over 30 days.">Monthly Waste Cost<i class="info-icon">?</i></span>
+                Monthly Waste Cost
             </p>
             <p class="text-2xl font-semibold text-red-600">${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}</p>
         </div>
         <div class="card-savings p-5 text-center">
             <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-                <span class="tooltip" data-tip="If you adjust orders to our recommended quantities, this is how much you'd save.">Savings Potential<i class="info-icon" style="background:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6)">?</i></span>
+                Savings Potential
             </p>
             <p class="text-3xl font-semibold text-white">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal text-warm-400">/mo</span></p>
         </div>
@@ -283,16 +283,16 @@
                 <tr>
                     <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Item</th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="How many units of this item sell on an average day.">Avg Sold/Day<i class="info-icon">?</i></span>
+                        Avg Sold/Day
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="Estimated from your peak sales day — cafes tend to order for their busiest day.">Current Order<i class="info-icon">?</i></span>
+                        Current Order
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="Average daily sales plus a small buffer for variance.">Recommended<i class="info-icon">?</i></span>
+                        Recommended
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        <span class="tooltip" data-tip="(Current order - avg sold) x ingredient cost x 30 days.">Wasted/Mo<i class="info-icon">?</i></span>
+                        Wasted/Mo
                     </th>
                 </tr>
             </thead>
