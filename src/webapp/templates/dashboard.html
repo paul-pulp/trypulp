@@ -4,7 +4,12 @@
 <div class="flex items-center justify-between mb-8 load-in">
     <div>
         <h1 class="text-2xl text-warm-800">{{ user.cafe_name }}</h1>
-        <p class="text-warm-500 text-sm">Your sales analytics dashboard</p>
+        <p class="text-warm-500 text-sm">
+            Your sales analytics dashboard
+            {% if user.subscription_status is defined and user.subscription_status == 'active' %}
+            <span class="inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full bg-sage-50 text-sage-700 ml-2">Pro</span>
+            {% endif %}
+        </p>
     </div>
     <a href="/upload"
        class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2.5 px-5 rounded-lg transition-colors text-sm flex items-center gap-2">
@@ -111,6 +116,23 @@
         </tbody>
     </table>
 </div>
+{% endif %}
+
+<!-- Subscription -->
+{% if user.subscription_status is defined and user.subscription_status == 'active' %}
+<div class="mt-8 text-sm text-warm-400 load-in load-in-6">
+    <a href="/billing/manage" class="text-terra-600 hover:underline">Manage subscription</a>
+</div>
+{% elif snapshots and snapshots|length > 0 %}
+{% set trial_left = user.trial_uploads_remaining if user.trial_uploads_remaining is defined else 2 %}
+{% if trial_left is not none and trial_left <= 0 %}
+<div class="card-savings p-6 mt-8 text-center load-in load-in-6">
+    <p class="text-warm-300 text-sm mb-2">Your free trial uploads are used up</p>
+    <a href="/upgrade" class="inline-block bg-white text-warm-800 font-medium py-2.5 px-6 rounded-lg text-sm hover:bg-warm-100 transition-colors">
+        Subscribe — $49/month
+    </a>
+</div>
+{% endif %}
 {% endif %}
 
 <!-- Feedback -->

@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Upgrade to PulpIQ Pro{% endblock %}
+{% block content %}
+
+<div class="max-w-2xl mx-auto mt-8 load-in">
+
+    <div class="text-center mb-10">
+        <h1 class="text-3xl text-warm-800 mb-3">Keep tracking your progress</h1>
+        <p class="text-warm-500 text-lg">
+            Your free trial uploads are used up. Subscribe to PulpIQ Pro to continue uploading weekly and tracking your savings.
+        </p>
+    </div>
+
+    <!-- Pricing card -->
+    <div class="card-static p-8 max-w-md mx-auto text-center mb-8 load-in load-in-1">
+        <p class="text-xs font-medium text-terra-500 uppercase tracking-wide mb-4">PulpIQ Pro</p>
+        <div class="mb-6">
+            <span class="text-5xl font-semibold text-warm-800">$49</span>
+            <span class="text-warm-500 text-lg">/month</span>
+        </div>
+
+        <ul class="space-y-3 text-left mb-8">
+            <li class="flex items-start gap-2.5 text-sm text-warm-700">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Unlimited weekly data uploads
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Week-over-week revenue and waste tracking
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Cumulative savings tracker
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Product trend analysis and item movers
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Personalized weekly action items
+            </li>
+            <li class="flex items-start gap-2.5 text-sm text-warm-700">
+                <svg class="w-4 h-4 text-sage-600 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                Ordering recommendations to reduce waste
+            </li>
+        </ul>
+
+        <a href="/subscribe"
+           class="block w-full bg-terra-600 hover:bg-terra-700 text-white font-medium py-3 px-4 rounded-lg transition-colors text-base text-center">
+            Subscribe — $49/month
+        </a>
+
+        <p class="text-xs text-warm-400 mt-4">
+            Cancel anytime. Manage your subscription from your dashboard.
+        </p>
+    </div>
+
+    <!-- Value reminder -->
+    <div class="insight-callout load-in load-in-2">
+        <strong>Your last report showed savings potential — subscribing lets you track whether those savings are actually happening.</strong>
+        Most cafes waste $500–1,500/month on over-ordering. At $49/month, PulpIQ pays for itself if it helps you save even 10% of that.
+    </div>
+
+    <div class="text-center mt-6 load-in load-in-3">
+        <a href="/dashboard" class="text-sm text-warm-400 hover:text-warm-600 transition-colors">
+            Back to dashboard — view your existing reports
+        </a>
+    </div>
+
+</div>
+{% endblock %}

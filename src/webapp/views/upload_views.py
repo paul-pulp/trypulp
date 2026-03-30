@@ -7,7 +7,7 @@ import json
 import tempfile
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 
-from ..models import count_snapshots, get_latest_snapshot, get_baseline_snapshot, get_snapshots_for_user, insert_snapshot, get_user_by_id
+from ..models import count_snapshots, get_latest_snapshot, get_baseline_snapshot, get_snapshots_for_user, insert_snapshot, get_user_by_id, can_upload, use_trial_upload
 from ..analysis_runner import run_analysis, serialize_results
 
 upload_bp = Blueprint("upload", __name__)
@@ -27,12 +27,24 @@ def login_required(f):
 @upload_bp.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
+    user = get_user_by_id(session["user_id"])
+
+    # Check if user can upload (free baseline, trial, or active sub)
+    if not can_upload(user):
+        return redirect(url_for("billing.paywall"))
+
     if request.method == "GET":
-        user = get_user_by_id(session["user_id"])
         week_num = count_snapshots(session["user_id"])
         label = "baseline" if week_num == 0 else f"week {week_num}"
+
+        # Show trial info
+        status = user["subscription_status"] if "subscription_status" in user.keys() else "free"
+        trial_left = user["trial_uploads_remaining"] if "trial_uploads_remaining" in user.keys() else 2
+        is_subscribed = status == "active"
+
         return render_template("upload.html", cafe_name=user["cafe_name"],
-                               upload_label=label)
+                               upload_label=label, is_subscribed=is_subscribed,
+                               trial_left=trial_left)
 
     # Handle file upload
     file = request.files.get("csv_file")
@@ -102,6 +114,11 @@ def upload():
             waste_results_json=json.dumps(serialize_results(waste)),
             comparison_results_json=comparison_json,
         )
+
+        # Decrement trial upload if not subscribed and not baseline
+        status = user["subscription_status"] if "subscription_status" in user.keys() else "free"
+        if status != "active" and week_number > 0:
+            use_trial_upload(user_id)
 
         return redirect(url_for("dashboard.report", snapshot_id=snapshot_id))
 

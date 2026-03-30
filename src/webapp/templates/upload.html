@@ -7,6 +7,13 @@
         {{ cafe_name }} — uploading <strong class="text-warm-700">{{ upload_label }}</strong> data
     </p>
 
+    {% if not is_subscribed and trial_left is defined and trial_left is not none and trial_left > 0 and upload_label != 'baseline' %}
+    <div class="insight-callout mb-4 text-sm">
+        <strong>Free trial:</strong> {{ trial_left }} weekly upload{{ "s" if trial_left != 1 }} remaining.
+        <a href="/upgrade" class="text-terra-600 hover:underline ml-1">Subscribe for unlimited uploads</a>
+    </div>
+    {% endif %}
+
     <form method="POST" enctype="multipart/form-data" class="space-y-6" id="upload-form">
         <div class="card p-10 text-center cursor-pointer hover:border-terra-400 border-2 border-dashed !border-warm-300 !shadow-none"
              id="drop-zone"

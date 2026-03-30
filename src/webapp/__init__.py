@@ -22,6 +22,9 @@ def create_app():
         SMTP_USER=os.environ.get("SMTP_USER", ""),
         SMTP_PASS=os.environ.get("SMTP_PASS", ""),
         APP_URL=os.environ.get("APP_URL", "http://localhost:5000"),
+        STRIPE_SECRET_KEY=os.environ.get("STRIPE_SECRET_KEY", ""),
+        STRIPE_PUBLISHABLE_KEY=os.environ.get("STRIPE_PUBLISHABLE_KEY", ""),
+        STRIPE_PRICE_ID=os.environ.get("STRIPE_PRICE_ID", ""),
     )
 
     os.makedirs(app.instance_path, exist_ok=True)
@@ -39,10 +42,12 @@ def create_app():
     from .views.auth_views import auth_bp
     from .views.upload_views import upload_bp
     from .views.dashboard_views import dashboard_bp
+    from .views.billing_views import billing_bp
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(upload_bp)
     app.register_blueprint(dashboard_bp)
+    app.register_blueprint(billing_bp)
 
     # Inject current_user into all templates
     @app.context_processor

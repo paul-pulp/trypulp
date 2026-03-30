@@ -29,6 +29,10 @@ def init_db(app):
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE NOT NULL,
             cafe_name TEXT NOT NULL,
+            stripe_customer_id TEXT,
+            stripe_subscription_id TEXT,
+            subscription_status TEXT DEFAULT 'free',
+            trial_uploads_remaining INTEGER DEFAULT 2,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
 
@@ -69,6 +73,25 @@ def init_db(app):
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
     """)
+    # Migrations: add columns if they don't exist (safe to run repeatedly)
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN stripe_customer_id TEXT")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN stripe_subscription_id TEXT")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN subscription_status TEXT DEFAULT 'free'")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN trial_uploads_remaining INTEGER DEFAULT 2")
+    except Exception:
+        pass
+    db.commit()
+
     db.close()
     app.teardown_appcontext(close_db)
 
@@ -80,6 +103,7 @@ def get_all_users_with_stats():
     return get_db().execute("""
         SELECT
             u.id, u.email, u.cafe_name, u.created_at,
+            u.subscription_status, u.trial_uploads_remaining,
             COUNT(s.id) as upload_count,
             MAX(s.created_at) as last_upload,
             MAX(s.avg_daily_revenue) as latest_revenue,
@@ -90,6 +114,61 @@ def get_all_users_with_stats():
         GROUP BY u.id
         ORDER BY MAX(s.waste_savings_monthly) DESC NULLS LAST
     """).fetchall()
+
+
+def update_user_subscription(user_id, stripe_customer_id=None, stripe_subscription_id=None,
+                             subscription_status=None, trial_uploads_remaining=None):
+    """Update subscription fields on a user."""
+    db = get_db()
+    fields = []
+    values = []
+    if stripe_customer_id is not None:
+        fields.append("stripe_customer_id = ?")
+        values.append(stripe_customer_id)
+    if stripe_subscription_id is not None:
+        fields.append("stripe_subscription_id = ?")
+        values.append(stripe_subscription_id)
+    if subscription_status is not None:
+        fields.append("subscription_status = ?")
+        values.append(subscription_status)
+    if trial_uploads_remaining is not None:
+        fields.append("trial_uploads_remaining = ?")
+        values.append(trial_uploads_remaining)
+    if fields:
+        values.append(user_id)
+        db.execute(f"UPDATE users SET {', '.join(fields)} WHERE id = ?", values)
+        db.commit()
+
+
+def can_upload(user):
+    """Check if a user can upload (free baseline, trial, or active subscription)."""
+    snapshot_count = count_snapshots(user["id"])
+
+    # First upload (baseline) is always free
+    if snapshot_count == 0:
+        return True
+
+    # Active subscriber
+    status = user["subscription_status"] if "subscription_status" in user.keys() else "free"
+    if status == "active":
+        return True
+
+    # Trial uploads remaining
+    trial_remaining = user["trial_uploads_remaining"] if "trial_uploads_remaining" in user.keys() else 2
+    if trial_remaining is not None and trial_remaining > 0:
+        return True
+
+    return False
+
+
+def use_trial_upload(user_id):
+    """Decrement trial uploads remaining."""
+    db = get_db()
+    db.execute(
+        "UPDATE users SET trial_uploads_remaining = MAX(0, COALESCE(trial_uploads_remaining, 2) - 1) WHERE id = ?",
+        (user_id,),
+    )
+    db.commit()
 
 
 def get_user_by_email(email):
