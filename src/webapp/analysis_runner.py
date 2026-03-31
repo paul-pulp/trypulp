@@ -100,17 +100,14 @@ def run_analysis(csv_path):
     # Step 1: Validate (with auto-fixes)
     validation = validate_file(csv_path)
 
-    # Hard errors block analysis
+    # Only block on truly unrecoverable errors (empty file, unreadable, no price column)
     if not validation.is_valid:
-        date_range_errors = [e for e in validation.errors if "days of data" in e]
-        hard_errors = [e for e in validation.errors if e not in date_range_errors]
-        if hard_errors:
-            return {
-                "customer": {},
-                "waste": {},
-                "errors": hard_errors,
-                "warnings": validation.warnings,
-            }
+        return {
+            "customer": {},
+            "waste": {},
+            "errors": validation.errors,
+            "warnings": validation.warnings,
+        }
 
     # Step 1b: Write cleaned CSV if auto-fixes were applied
     analysis_path = csv_path

@@ -299,17 +299,69 @@ def validate_file(csv_path):
         mapped_canonical = set(column_map.values())
         result.note("No quantity column found — assuming 1 unit per line item")
 
+    # ── Auto-fix: fill missing time as 12:00 ─────────────────────────
+    if "time" not in mapped_canonical:
+        for row in rows:
+            row["_auto_time"] = "12:00"
+        column_map["_auto_time"] = "time"
+        raw_columns.append("_auto_time")
+        mapped_canonical = set(column_map.values())
+        result.warn("No time column found — using 12:00 for all rows. Hourly analysis won't be accurate.")
+
+    # ── Auto-fix: guess missing date from date-like columns ──────────
+    if "date" not in mapped_canonical:
+        # Try to find a column with date-like values
+        for raw_col in raw_columns:
+            if raw_col.startswith("_auto_"):
+                continue
+            sample_vals = [rows[i].get(raw_col, "") for i in range(min(5, len(rows)))]
+            for val in sample_vals:
+                if val and _try_parse_date(val.strip()):
+                    column_map[raw_col] = "date"
+                    mapped_canonical = set(column_map.values())
+                    result.warn(f"No date column recognized — using '{raw_col}' which looks like dates.")
+                    break
+            if "date" in mapped_canonical:
+                break
+
+    # ── Auto-fix: guess missing item from first text column ──────────
+    if "item" not in mapped_canonical:
+        numeric_canonicals = {"date", "time", "quantity", "price", "datetime", "transaction_id"}
+        for raw_col in raw_columns:
+            if raw_col.startswith("_auto_"):
+                continue
+            canonical = column_map.get(raw_col)
+            if canonical in numeric_canonicals:
+                continue
+            # Check if it has text values
+            sample_vals = [rows[i].get(raw_col, "") for i in range(min(5, len(rows)))]
+            if any(v and not v.replace(".", "").replace("-", "").replace("/", "").isdigit() for v in sample_vals):
+                column_map[raw_col] = "item"
+                mapped_canonical = set(column_map.values())
+                result.warn(f"No item column recognized — using '{raw_col}' which looks like item names.")
+                break
+
     result.column_map = column_map
 
+    # Only block if we truly can't analyze — missing price is the one hard block
     missing_required = [c for c in REQUIRED_COLUMNS if c not in mapped_canonical]
-    if missing_required:
+    if "price" in missing_required:
         result.error(
-            f"Missing required columns: {', '.join(missing_required)}\n"
+            f"We couldn't find a price/total/amount column in your CSV.\n"
             f"  Your columns: {', '.join(raw_columns)}\n"
-            f"  We need: {', '.join(REQUIRED_COLUMNS)}\n"
-            f"  Fix: Rename or add the missing columns in your CSV"
+            f"  We need at least a column with sale amounts to run the analysis.\n"
+            f"  Tip: Look for 'Total', 'Amount', 'Price', 'Revenue', or 'Net Sales' in your POS export."
         )
         return result
+
+    if missing_required:
+        # Other missing columns — warn but continue if we have enough
+        still_missing = [c for c in missing_required if c != "price"]
+        if still_missing:
+            result.warn(
+                f"Could not find columns for: {', '.join(still_missing)}. "
+                f"Results may be limited. Your columns: {', '.join(raw_columns)}"
+            )
 
     missing_optional = [c for c in OPTIONAL_COLUMNS if c not in mapped_canonical]
     if missing_optional:
@@ -394,31 +446,28 @@ def validate_file(csv_path):
     if bad_dates:
         pct = len(bad_dates) / total * 100
         if pct > 50:
-            example_val = rows[bad_dates[0] - 2].get(date_col, "")
-            result.error(
-                f"{len(bad_dates)} rows ({pct:.0f}%) have invalid/missing dates\n"
-                f"  Example from row {bad_dates[0]}: '{example_val}'\n"
-                f"  Expected formats: YYYY-MM-DD, MM/DD/YYYY, DD/MM/YYYY\n"
-                f"  Fix: Check your POS export date format settings"
+            example_val = rows[bad_dates[0] - 2].get(date_col, "") if bad_dates[0] - 2 < len(rows) else ""
+            result.warn(
+                f"{len(bad_dates)} rows ({pct:.0f}%) have unreadable dates — those rows will be skipped. "
+                f"Example: '{example_val}'. Expected: YYYY-MM-DD, MM/DD/YYYY, etc."
             )
         else:
             result.warn(
-                f"{len(bad_dates)} rows ({pct:.1f}%) have invalid/missing dates "
-                f"(rows: {_fmt_rows(bad_dates)})"
+                f"{len(bad_dates)} rows ({pct:.1f}%) have invalid/missing dates — those rows will be skipped"
             )
 
     if bad_times:
         pct = len(bad_times) / total * 100
-        if pct > 50:
-            result.error(
-                f"{len(bad_times)} rows ({pct:.0f}%) have invalid/missing times\n"
-                f"  Expected formats: HH:MM, HH:MM:SS, H:MM AM/PM"
-            )
-        else:
-            result.warn(
-                f"{len(bad_times)} rows ({pct:.1f}%) have invalid/missing times "
-                f"(rows: {_fmt_rows(bad_times)})"
-            )
+        result.warn(
+            f"{len(bad_times)} rows ({pct:.0f}%) have unreadable times — using 12:00 as default. "
+            f"Hourly analysis may be less accurate."
+        )
+        # Auto-fix: fill bad times with 12:00
+        if time_col:
+            for i_row in bad_times:
+                idx = i_row - 2
+                if 0 <= idx < len(rows):
+                    rows[idx][time_col] = "12:00"
 
     # ── Report item issues ──────────────────────────────────────────────
     if empty_items:
@@ -428,19 +477,15 @@ def validate_file(csv_path):
     # ── Report quantity issues ──────────────────────────────────────────
     if bad_quantities:
         pct = len(bad_quantities) / total * 100
-        examples = bad_quantities[:3]
-        example_str = ", ".join(f"row {r}: '{v}'" for r, v in examples)
-        if pct > 20:
-            result.error(
-                f"{len(bad_quantities)} rows ({pct:.0f}%) have invalid quantities\n"
-                f"  Examples: {example_str}\n"
-                f"  Fix: Quantities should be positive whole numbers (1, 2, 3...)"
-            )
-        else:
-            result.warn(
-                f"{len(bad_quantities)} rows ({pct:.1f}%) have invalid quantities "
-                f"({example_str})"
-            )
+        result.warn(
+            f"{len(bad_quantities)} rows ({pct:.0f}%) have unreadable quantities — using 1 as default."
+        )
+        # Auto-fix: fill bad quantities with 1
+        if qty_col:
+            for row_num, val in bad_quantities:
+                idx = row_num - 2
+                if 0 <= idx < len(rows):
+                    rows[idx][qty_col] = "1"
 
     # ── Report price issues ─────────────────────────────────────────────
     if bad_prices:
@@ -488,10 +533,10 @@ def validate_file(csv_path):
         result.stats["unique_dates"] = unique_dates
 
         if date_range_days < MIN_DAYS_USABLE:
-            result.error(
-                f"Only {date_range_days} days of data ({min_date.date()} to {max_date.date()})\n"
-                f"  We need at least {MIN_DAYS_USABLE} days to produce useful insights\n"
-                f"  Fix: Export a longer date range from your POS"
+            result.warn(
+                f"Only {date_range_days} day{'s' if date_range_days != 1 else ''} of data "
+                f"({min_date.date()} to {max_date.date()}). "
+                f"Results will be rough estimates. For better accuracy, export 30+ days."
             )
         elif date_range_days < MIN_DAYS_RECOMMENDED:
             result.warn(
