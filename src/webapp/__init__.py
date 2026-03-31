@@ -126,6 +126,23 @@ def create_app():
             traceback.print_exc()
             return jsonify({"error": str(e)}), 500
 
+    @app.route("/admin/cafe/<int:user_id>/toggle-pro", methods=["POST"])
+    def admin_toggle_pro(user_id):
+        denied = _check_admin_auth()
+        if denied:
+            return denied
+        from flask import redirect, url_for
+        from .models import get_user_by_id, update_user_subscription
+        user = get_user_by_id(user_id)
+        if user is None:
+            from flask import abort
+            abort(404)
+        current = user["subscription_status"] if "subscription_status" in user.keys() else "free"
+        new_status = "free" if current == "active" else "active"
+        update_user_subscription(user_id, subscription_status=new_status)
+        print(f"[ADMIN] Toggled user {user_id} ({user['cafe_name']}) to {new_status}", flush=True)
+        return redirect(f"/admin/cafe/{user_id}")
+
     @app.route("/admin/feedback")
     def admin_feedback():
         denied = _check_admin_auth()
