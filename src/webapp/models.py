@@ -248,6 +248,20 @@ def get_baseline_snapshot(user_id):
     ).fetchone()
 
 
+def delete_latest_snapshot(user_id):
+    """Delete the most recent snapshot for a user. Returns True if deleted."""
+    db = get_db()
+    latest = db.execute(
+        "SELECT id, week_number FROM snapshots WHERE user_id = ? ORDER BY week_number DESC LIMIT 1",
+        (user_id,),
+    ).fetchone()
+    if latest is None:
+        return False
+    db.execute("DELETE FROM snapshots WHERE id = ?", (latest["id"],))
+    db.commit()
+    return True
+
+
 def count_snapshots(user_id):
     row = get_db().execute(
         "SELECT COUNT(*) as cnt FROM snapshots WHERE user_id = ?", (user_id,)

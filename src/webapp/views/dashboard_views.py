@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 
 from ..models import (
     get_user_by_id, get_snapshots_for_user, get_snapshot_by_id, get_latest_snapshot,
-    insert_feedback,
+    insert_feedback, delete_latest_snapshot, count_snapshots,
 )
 
 dashboard_bp = Blueprint("dashboard", __name__)
@@ -60,9 +60,14 @@ def report(snapshot_id):
     if snapshot["comparison_results"]:
         comparison = json.loads(snapshot["comparison_results"])
 
+    # Check if this is the most recent snapshot (for delete button)
+    latest = get_latest_snapshot(user_id)
+    is_latest = latest is not None and latest["id"] == snapshot_id
+
     return render_template("report.html",
                            user=user,
                            snapshot=snapshot,
+                           is_latest=is_latest,
                            customer=customer,
                            waste=waste,
                            comparison=comparison)
@@ -88,6 +93,23 @@ def compare(snapshot_id):
                            comparison=comparison,
                            customer=customer,
                            waste=waste)
+
+
+@dashboard_bp.route("/report/<int:snapshot_id>/delete", methods=["POST"])
+@login_required
+def delete_report(snapshot_id):
+    user_id = session["user_id"]
+
+    # Only allow deleting the most recent snapshot
+    latest = get_latest_snapshot(user_id)
+    if latest is None or latest["id"] != snapshot_id:
+        flash("You can only delete your most recent upload.", "error")
+        return redirect(url_for("dashboard.dashboard"))
+
+    delete_latest_snapshot(user_id)
+    print(f"[DELETE] User {user_id} deleted snapshot {snapshot_id}", flush=True)
+    flash("Upload deleted. You can upload a new file.", "success")
+    return redirect(url_for("dashboard.dashboard"))
 
 
 @dashboard_bp.route("/feedback", methods=["POST"])
