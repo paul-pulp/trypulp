@@ -41,7 +41,7 @@
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
     <div class="card p-5 load-in load-in-1">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            Avg Daily Revenue
+            Daily Sales
         </p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_daily_revenue) }}</p>
         {% if latest.comparison and latest.comparison.revenue.change %}
@@ -52,7 +52,7 @@
     </div>
     <div class="card p-5 load-in load-in-2">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            Avg Ticket
+            Avg Sale
         </p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(latest.avg_ticket_size) }}</p>
         {% if latest.comparison and latest.comparison.ticket.change %}
@@ -63,7 +63,7 @@
     </div>
     <div class="card p-5 load-in load-in-3">
         <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-            Daily Transactions
+            Sales Per Day
         </p>
         <p class="text-2xl font-semibold text-warm-800">{{ "%.0f"|format(latest.avg_daily_transactions) }}</p>
     </div>

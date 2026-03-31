@@ -27,7 +27,7 @@
                 Drop your CSV here or click to browse
             </p>
             <p class="text-sm text-warm-400 mt-1" id="file-meta">
-                Export from Square, Toast, Clover, or any POS
+                Export a sales report from your cash register system
             </p>
             <input type="file" name="csv_file" id="csv_file" accept=".csv" class="hidden"
                    onchange="handleFile(this)">
@@ -83,7 +83,7 @@
                     </tbody>
                 </table>
             </div>
-            <p class="mt-2 text-xs text-warm-400">Column names don't have to match exactly — we auto-detect 60+ variations. A combined "Datetime" column works too.</p>
+            <p class="mt-2 text-xs text-warm-400">Column names don't have to be exact — we recognize common names from Square, Toast, Clover, and other systems. A combined date+time column works too.</p>
         </div>
     </div>
 </div>

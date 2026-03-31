@@ -63,7 +63,7 @@
         {% endif %}
     </div>
 
-    <!-- vs Week 1 -->
+    <!-- vs your first week -->
     {% if baseline_change is not none and baseline is not none %}
     {% set base_good = (baseline_change < 0 if invert else baseline_change > 0) %}
     {% set base_bad = (baseline_change > 0 if invert else baseline_change < 0) %}
@@ -74,7 +74,7 @@
             {{ "+" if baseline_change > 0 }}{{ prefix }}{{ "%.2f"|format(baseline_change) }}{{ suffix }}
             {% if base_pct is not none %}({{ "+" if base_pct > 0 }}{{ "%.1f"|format(base_pct) }}%){% endif %}
         </span>
-        <span class="text-xs text-warm-400">vs Week 1</span>
+        <span class="text-xs text-warm-400">vs your first week</span>
         {% else %}
         <span class="text-xs text-warm-400">Same as Week 1</span>
         {% endif %}
@@ -84,33 +84,33 @@
 {% endmacro %}
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-    {{ metric_card("Avg Daily Revenue",
+    {{ metric_card("Daily Sales",
         comparison.revenue.current,
         comparison.revenue.previous,
         comparison.revenue.change,
         comparison.revenue.baseline,
         comparison.revenue.baseline_change,
         delay="3") }}
-    {{ metric_card("Avg Ticket Size",
+    {{ metric_card("Avg Sale Amount",
         comparison.ticket.current,
         comparison.ticket.previous,
         comparison.ticket.change,
         comparison.ticket.baseline,
         comparison.ticket.baseline_change,
         delay="3") }}
-    {{ metric_card("Daily Transactions",
+    {{ metric_card("Sales Per Day",
         comparison.transactions.current,
         comparison.transactions.previous,
         comparison.transactions.change,
         prefix="", suffix="", delay="4") }}
-    {{ metric_card("Daily Waste (items)",
+    {{ metric_card("Unsold Items/Day",
         comparison.waste_units.current,
         comparison.waste_units.previous,
         comparison.waste_units.change,
         comparison.waste_units.baseline,
         comparison.waste_units.baseline_change,
         prefix="", suffix=" items", invert=true, delay="4") }}
-    {{ metric_card("Monthly Waste Cost",
+    {{ metric_card("Est. Monthly Waste",
         comparison.waste_cost.current,
         comparison.waste_cost.previous,
         comparison.waste_cost.change,
@@ -122,7 +122,7 @@
 <!-- ═══ ITEM-LEVEL MOVERS ═══ -->
 {% if comparison.movers and comparison.movers|length > 0 %}
 <section class="mb-8 load-in load-in-5">
-    <h2 class="text-lg text-warm-800 mb-4">Biggest Movers This Week</h2>
+    <h2 class="text-lg text-warm-800 mb-4">Items That Changed Most This Week</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
         {% for mover in comparison.movers %}
         <div class="card p-4 flex items-center justify-between">

@@ -52,15 +52,15 @@
 <!-- Summary Cards -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10 load-in load-in-2">
     <div class="card p-5">
-        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Daily Revenue</p>
+        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Daily Sales</p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(customer.summary.avg_daily_revenue) }}</p>
     </div>
     <div class="card p-5">
-        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Avg Ticket</p>
+        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Avg Sale</p>
         <p class="text-2xl font-semibold text-warm-800">${{ "%.2f"|format(customer.summary.avg_ticket_size) }}</p>
     </div>
     <div class="card p-5">
-        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Transactions/Day</p>
+        <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">Sales/Day</p>
         <p class="text-2xl font-semibold text-warm-800">{{ "%.0f"|format(customer.summary.avg_daily_transactions) }}</p>
     </div>
     <div class="card p-5">
@@ -78,7 +78,7 @@
         <li>Your biggest revenue driver is <strong>{{ top.item or top.index }}</strong> ({{ top.revenue_pct }}% of revenue)</li>
         {% endif %}
         {% if waste.waste_projection and waste.waste_projection.total_monthly_waste_cost %}
-        <li>You're wasting an estimated <strong>${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}/month</strong> on over-ordering perishables</li>
+        <li>You're wasting an estimated <strong>${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}/month</strong> on items that go unsold</li>
         {% endif %}
         {% if waste.waste_projection and waste.waste_projection['items'] and waste.waste_projection['items']|length > 0 %}
         {% set tw = waste.waste_projection['items'][0] %}
@@ -146,7 +146,7 @@
 
 <!-- ═══ YOUR PRODUCT MIX ═══ -->
 <section class="mb-10 load-in load-in-4">
-    <h2 class="text-xl text-warm-800 mb-4">Your Product Mix</h2>
+    <h2 class="text-xl text-warm-800 mb-4">Your Menu Breakdown</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         {% for cat in customer.revenue_by_category %}
         <div class="card p-5">
@@ -226,7 +226,7 @@
 
 <!-- ═══ HOW THEY PAY ═══ -->
 <section class="mb-10 load-in">
-    <h2 class="text-xl text-warm-800 mb-4">How They Pay</h2>
+    <h2 class="text-xl text-warm-800 mb-4">How Your Customers Pay</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         {% for method in customer.payment_methods %}
         <div class="card p-5">
@@ -270,18 +270,18 @@
 <!-- ═══ WHERE YOU'RE LOSING MONEY ═══ -->
 {% if waste.waste_projection and waste.waste_projection['items'] %}
 <section class="mb-10 load-in">
-    <h2 class="text-xl text-warm-800 mb-4">Where You're Losing Money</h2>
+    <h2 class="text-xl text-warm-800 mb-4">Where You Could Save</h2>
 
     <div class="grid grid-cols-3 gap-4 mb-5">
         <div class="card p-5 text-center">
             <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-                Daily Waste
+                Unsold Items/Day
             </p>
             <p class="text-2xl font-semibold text-warm-800">{{ "%.1f"|format(waste.waste_projection.total_daily_waste_units) }} <span class="text-sm font-normal text-warm-500">items</span></p>
         </div>
         <div class="card p-5 text-center">
             <p class="text-xs text-warm-400 uppercase tracking-wide mb-1">
-                Monthly Waste Cost
+                Est. Monthly Waste
             </p>
             <p class="text-2xl font-semibold text-red-600">${{ "%.0f"|format(waste.waste_projection.total_monthly_waste_cost) }}</p>
         </div>
@@ -299,16 +299,16 @@
                 <tr>
                     <th class="text-left px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">Item</th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        Avg Sold/Day
+                        You Sell/Day
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        Current Order
+                        You Likely Order
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
                         Recommended
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        Wasted/Mo
+                        Wasted $/Month
                     </th>
                 </tr>
             </thead>
