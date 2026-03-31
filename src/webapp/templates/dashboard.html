@@ -82,6 +82,13 @@
 {% endif %}
 
 <!-- Upload history -->
+<!-- Next step nudge for users with only 1 upload -->
+{% if snapshots|length == 1 %}
+<div class="insight-callout mb-8 load-in load-in-5">
+    <strong>You've got your Week 1 report.</strong> Review the recommendations, make some adjustments to your ordering this week, then <a href="/upload" class="text-terra-600 hover:underline">upload next week's data</a> to see if your numbers improve.
+</div>
+{% endif %}
+
 <h2 class="text-lg text-warm-800 mb-4 load-in load-in-5">Upload History</h2>
 <div class="card-static overflow-hidden load-in load-in-6">
     <table class="w-full text-sm">

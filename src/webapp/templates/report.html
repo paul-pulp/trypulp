@@ -356,7 +356,34 @@
 </section>
 {% endif %}
 
-<div class="card-static p-5 mt-10 text-xs text-warm-500 load-in">
+<!-- What to do next -->
+{% if waste.waste_projection and waste.waste_projection['items'] and waste.waste_projection['items']|length > 0 %}
+<div class="card-savings p-6 mt-10 load-in">
+    <h2 class="text-lg text-white mb-3">What to Do This Week</h2>
+    <ol class="space-y-2 text-sm text-warm-200">
+        {% set tw = waste.waste_projection['items'][0] %}
+        <li class="flex items-start gap-2">
+            <span class="text-white font-semibold">1.</span>
+            <span>Reduce your <strong class="text-white">{{ tw.item }}</strong> order from {{ tw.current_order }} to {{ tw.recommended_order }} per day. This alone could save ~${{ "%.0f"|format(tw.monthly_waste_cost) }}/month.</span>
+        </li>
+        {% if waste.milk_usage and waste.milk_usage.by_type %}
+        {% set milk_types = waste.milk_usage.by_type.keys()|list %}
+        {% if milk_types|length > 1 %}
+        <li class="flex items-start gap-2">
+            <span class="text-white font-semibold">2.</span>
+            <span>Check your milk orders against the breakdown above. Order based on what you actually use, not your busiest day.</span>
+        </li>
+        {% endif %}
+        {% endif %}
+        <li class="flex items-start gap-2">
+            <span class="text-white font-semibold">{{ '3' if waste.milk_usage and waste.milk_usage.by_type and waste.milk_usage.by_type.keys()|list|length > 1 else '2' }}.</span>
+            <span>Upload again next week to see if your numbers improve. <a href="/upload" class="text-white underline hover:no-underline">Upload next week's data</a></span>
+        </li>
+    </ol>
+</div>
+{% endif %}
+
+<div class="card-static p-5 mt-6 text-xs text-warm-500 load-in">
     <p class="mb-2">
         All dollar amounts in CAD. Savings estimates are based on your sales data and
         <a href="/methodology" class="text-terra-600 hover:underline">Toronto industry-average costs</a>.
