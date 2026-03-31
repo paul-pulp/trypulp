@@ -160,17 +160,11 @@ def _build_comparison(current_result, prev_snapshot, baseline_snapshot=None, all
     baseline_waste_units = (baseline_snapshot["waste_units_daily"] or 0) if baseline_snapshot else None
     baseline_waste_cost = (baseline_snapshot["waste_monthly_cost"] or 0) if baseline_snapshot else None
 
-    # Cumulative savings estimate (sum of waste_savings_monthly across all weeks)
-    cumulative_savings = 0
-    weeks_tracked = 0
-    if all_snapshots:
-        for snap in all_snapshots:
-            s = snap["waste_savings_monthly"] or 0
-            if s > 0:
-                cumulative_savings += s
-                weeks_tracked += 1
-    # Convert monthly savings to per-week (rough: monthly / 4.3)
-    cumulative_weekly_savings = round(cumulative_savings / 4.3, 2) if cumulative_savings else 0
+    # Cumulative savings estimate: latest weekly rate × weeks tracked
+    weeks_tracked = len(all_snapshots) if all_snapshots else 0
+    latest_monthly = curr_savings.get("total_savings_monthly", 0) or 0
+    latest_weekly = latest_monthly / 4.3 if latest_monthly > 0 else 0
+    cumulative_weekly_savings = round(latest_weekly * max(1, weeks_tracked - 1), 0)  # -1 because first week is the baseline
 
     # Item-level movers (compare top items between current and previous)
     movers = _build_item_movers(current_result, prev_snapshot)

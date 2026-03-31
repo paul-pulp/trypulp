@@ -60,7 +60,7 @@ def analyze_perishable_sales_by_hour(df):
     hourly = (
         perishables.groupby("hour")
         .agg(units_sold=("quantity", "sum"), revenue=("price", "sum"))
-        .reindex(range(6, 19), fill_value=0)
+        .reindex(range(df["hour"].min(), df["hour"].max() + 1), fill_value=0)
     )
     hourly["avg_units_per_day"] = (hourly["units_sold"] / total_days).round(1)
     hourly["avg_revenue_per_day"] = (hourly["revenue"] / total_days).round(2)
@@ -411,19 +411,15 @@ def estimate_waste_savings(df, cost_overrides=None):
     optimized_waste_cost = (optimized_waste * item_prices * cogs).sum()
     optimized_monthly = optimized_waste_cost * 30
 
-    # Milk savings: assume 10% over-ordering currently
-    milk = calculate_milk_usage(df, cost_overrides)
-    milk_by_type = milk.get("by_type", {})
-    current_milk_daily = sum(m["daily_cost"] for m in milk_by_type.values())
-    milk_waste_monthly = current_milk_daily * 0.10 * 30  # 10% waste
+    # Savings based on data-driven ordering improvements only (no guesses)
+    ordering_savings = round(monthly_waste_cost - optimized_monthly, 2)
 
     return {
         "current_pastry_waste_monthly": round(monthly_waste_cost, 2),
         "optimized_pastry_waste_monthly": round(optimized_monthly, 2),
-        "pastry_savings_monthly": round(monthly_waste_cost - optimized_monthly, 2),
-        "milk_waste_savings_monthly": round(milk_waste_monthly * 0.6, 2),  # can cut 60% of milk waste
-        "total_savings_monthly": round(
-            (monthly_waste_cost - optimized_monthly) + (milk_waste_monthly * 0.6), 2
+        "pastry_savings_monthly": ordering_savings,
+        "milk_waste_savings_monthly": 0,  # removed — was an unsupported estimate
+        "total_savings_monthly": round(ordering_savings, 2
         ),
     }
 

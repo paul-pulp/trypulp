@@ -292,6 +292,7 @@
             <p class="text-3xl font-semibold text-white">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal text-warm-400">/mo</span></p>
         </div>
     </div>
+    <p class="text-xs text-warm-400 mb-4">Based on your sales patterns and Toronto industry-average ingredient costs. Actual savings depend on what you currently order and pay for ingredients.</p>
 
     <div class="card-static overflow-hidden mb-4">
         <table class="w-full text-sm">
@@ -302,7 +303,7 @@
                         You Sell/Day
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
-                        You Likely Order
+                        Est. Peak Order
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
                         Recommended
@@ -332,6 +333,7 @@
         <strong>Biggest opportunity:</strong> Reduce {{ top_waste.item }} orders from {{ top_waste.current_order }} to {{ top_waste.recommended_order }}/day — saves ~${{ "%.0f"|format(top_waste.monthly_waste_cost) }}/month.
     </div>
     {% endif %}
+    <p class="text-xs text-warm-400 mt-3">"Est. Peak Order" is based on your busiest sales day. If this doesn't match what you actually order, the savings estimate will be different. All costs are Toronto industry averages.</p>
 </section>
 {% endif %}
 

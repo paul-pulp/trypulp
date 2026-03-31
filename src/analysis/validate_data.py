@@ -265,7 +265,9 @@ def validate_file(csv_path):
             dt_val = (row.get(dt_raw_col) or "").strip()
             if not dt_val:
                 continue
-            # Try to split "2024-01-15 09:30:00" or "01/15/2024 9:30 AM" etc.
+            # Handle ISO 8601 with T separator (2024-01-15T09:30:00)
+            dt_val = dt_val.replace("T", " ").rstrip("Z")
+            # Split "2024-01-15 09:30:00" or "01/15/2024 9:30 AM" etc.
             parts = dt_val.split(" ", 1)
             if len(parts) == 2:
                 if "date" not in mapped_canonical:

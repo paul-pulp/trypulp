@@ -182,7 +182,7 @@ def hourly_trends(df):
             total_units=("quantity", "sum"),
             transaction_count=("time", "nunique"),
         )
-        .reindex(range(6, 19), fill_value=0)
+        .reindex(range(df["hour"].min(), df["hour"].max() + 1), fill_value=0)
     )
     total_days = df["date"].nunique()
     hourly["avg_revenue_per_day"] = (hourly["total_revenue"] / total_days).round(2)
@@ -233,7 +233,7 @@ def hot_vs_iced_analysis(df):
     by_hour["iced_pct"] = (
         by_hour["iced"] / (by_hour["hot"] + by_hour["iced"]).replace(0, 1) * 100
     ).round(1)
-    by_hour = by_hour.reindex(range(6, 19), fill_value=0)
+    by_hour = by_hour.reindex(range(df["hour"].min(), df["hour"].max() + 1), fill_value=0)
 
     # By day of week
     by_day = (
