@@ -1,0 +1,451 @@
+Date,Time,Transaction ID,Item,Category,Quantity,Unit Price,Total,Tax,Payment Method,Customer Name,Staff Member
+2025-03-24,14:35:02,SQ-20250324-0001,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Sarah
+2025-03-24,07:50:13,SQ-20250324-0002,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Sarah
+2025-03-24,11:15:46,SQ-20250324-0003,Salad,Food,1,9.0,9.0,1.17,Credit Card,Guest,Maya
+2025-03-24,11:01:49,SQ-20250324-0004,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Maya
+2025-03-24,08:57:56,SQ-20250324-0005,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Maya
+2025-03-24,11:19:44,SQ-20250324-0006,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Jennifer L.,Jake
+2025-03-24,12:26:37,SQ-20250324-0007,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Maya
+2025-03-24,13:16:22,SQ-20250324-0008,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Jake
+2025-03-24,13:04:31,SQ-20250324-0009,Sandwich,Food,1,9.5,9.5,1.24,Cash,Guest,Sarah
+2025-03-24,15:28:42,SQ-20250324-0010,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Jake
+2025-03-24,12:20:17,SQ-20250324-0011,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Michael K.,Jake
+2025-03-24,14:13:03,SQ-20250324-0012,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-24,07:13:21,SQ-20250324-0013,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Sarah
+2025-03-24,13:20:24,SQ-20250324-0014,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Maya
+2025-03-24,12:01:17,SQ-20250324-0015,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Maya
+2025-03-24,13:59:14,SQ-20250324-0016,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Sarah T.,Sarah
+2025-03-24,12:47:59,SQ-20250324-0017,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-24,09:13:27,SQ-20250324-0018,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-24,12:34:23,SQ-20250324-0019,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Maya
+2025-03-24,12:14:09,SQ-20250324-0020,Salad,Food,1,9.0,9.0,1.17,Credit Card,Sarah T.,Sarah
+2025-03-24,16:52:10,SQ-20250324-0021,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Sarah
+2025-03-24,08:08:07,SQ-20250324-0022,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Guest,Sarah
+2025-03-24,08:36:20,SQ-20250324-0023,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-24,12:38:41,SQ-20250324-0024,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Sarah
+2025-03-24,12:48:38,SQ-20250324-0025,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Jake
+2025-03-24,12:40:06,SQ-20250324-0026,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Sarah
+2025-03-24,10:08:28,SQ-20250324-0027,Americano,Beverage,1,3.95,3.95,0.51,Cash,Jennifer L.,Maya
+2025-03-24,12:31:19,SQ-20250324-0028,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Jake
+2025-03-24,13:10:06,SQ-20250324-0029,Sandwich,Food,1,9.5,9.5,1.24,Cash,Guest,Maya
+2025-03-24,15:42:23,SQ-20250324-0030,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-24,13:59:03,SQ-20250324-0031,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Sarah
+2025-03-24,09:21:14,SQ-20250324-0032,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-24,15:27:25,SQ-20250324-0033,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Maya
+2025-03-24,08:24:58,SQ-20250324-0034,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Sarah
+2025-03-24,08:56:11,SQ-20250324-0035,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Michael K.,Jake
+2025-03-24,17:39:46,SQ-20250324-0036,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-24,07:07:18,SQ-20250324-0037,Muffin,Pastry,1,4.0,4.0,0.52,Cash,Guest,Maya
+2025-03-24,07:16:35,SQ-20250324-0038,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Sarah
+2025-03-24,13:00:25,SQ-20250324-0039,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Maya
+2025-03-24,07:28:51,SQ-20250324-0040,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Jennifer L.,Maya
+2025-03-24,13:56:35,SQ-20250324-0041,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Maya
+2025-03-24,10:22:55,SQ-20250324-0042,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Guest,Sarah
+2025-03-24,13:53:49,SQ-20250324-0043,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Jennifer L.,Maya
+2025-03-24,08:07:49,SQ-20250324-0044,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Jake
+2025-03-24,07:58:40,SQ-20250324-0045,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Jake
+2025-03-24,11:30:25,SQ-20250324-0046,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Jake
+2025-03-24,12:43:10,SQ-20250324-0047,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Jake
+2025-03-24,07:25:36,SQ-20250324-0048,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Sarah
+2025-03-24,08:22:56,SQ-20250324-0049,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Maya
+2025-03-24,15:53:42,SQ-20250324-0050,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Maya
+2025-03-24,08:20:19,SQ-20250324-0051,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-24,10:04:41,SQ-20250324-0052,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Guest,Jake
+2025-03-24,12:03:37,SQ-20250324-0053,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Sarah
+2025-03-24,13:53:02,SQ-20250324-0054,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Sarah
+2025-03-25,11:33:24,SQ-20250325-0055,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Sarah
+2025-03-25,12:10:52,SQ-20250325-0056,Americano,Beverage,1,3.95,3.95,0.51,Cash,Michael K.,Maya
+2025-03-25,08:35:26,SQ-20250325-0057,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Sarah
+2025-03-25,12:14:33,SQ-20250325-0058,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-25,08:44:21,SQ-20250325-0059,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-25,12:09:39,SQ-20250325-0060,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Jake
+2025-03-25,11:41:33,SQ-20250325-0061,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Maya
+2025-03-25,07:58:48,SQ-20250325-0062,Latte,Beverage,1,4.75,4.75,0.62,Cash,Michael K.,Jake
+2025-03-25,12:28:09,SQ-20250325-0063,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Jake
+2025-03-25,15:26:47,SQ-20250325-0064,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Sarah
+2025-03-25,11:03:25,SQ-20250325-0065,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Maya
+2025-03-25,09:59:46,SQ-20250325-0066,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Jake
+2025-03-25,09:24:40,SQ-20250325-0067,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Michael K.,Sarah
+2025-03-25,15:41:43,SQ-20250325-0068,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Sarah
+2025-03-25,08:34:57,SQ-20250325-0069,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Jake
+2025-03-25,11:56:13,SQ-20250325-0070,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-25,10:13:47,SQ-20250325-0071,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-25,08:45:58,SQ-20250325-0072,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Sarah
+2025-03-25,14:12:15,SQ-20250325-0073,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-25,16:00:49,SQ-20250325-0074,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-25,09:22:34,SQ-20250325-0075,Croissant,Pastry,1,3.75,3.75,0.49,Cash,Guest,Jake
+2025-03-25,13:30:32,SQ-20250325-0076,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Jake
+2025-03-25,13:49:15,SQ-20250325-0077,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Maya
+2025-03-25,16:03:58,SQ-20250325-0078,Americano,Beverage,1,3.95,3.95,0.51,Cash,Guest,Sarah
+2025-03-25,07:26:38,SQ-20250325-0079,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Guest,Jake
+2025-03-25,15:43:07,SQ-20250325-0080,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-25,09:11:18,SQ-20250325-0081,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Sarah
+2025-03-25,16:52:55,SQ-20250325-0082,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Maya
+2025-03-25,08:21:59,SQ-20250325-0083,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Guest,Jake
+2025-03-25,15:28:40,SQ-20250325-0084,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Sarah
+2025-03-25,12:22:04,SQ-20250325-0085,Wrap,Food,1,8.75,8.75,1.14,Cash,Michael K.,Jake
+2025-03-25,16:11:00,SQ-20250325-0086,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Jake
+2025-03-25,13:23:49,SQ-20250325-0087,Wrap,Food,1,8.75,8.75,1.14,Cash,Guest,Maya
+2025-03-25,12:55:34,SQ-20250325-0088,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Maya
+2025-03-25,10:05:37,SQ-20250325-0089,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Sarah
+2025-03-25,07:21:46,SQ-20250325-0090,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Maya
+2025-03-25,11:56:36,SQ-20250325-0091,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Sarah
+2025-03-25,16:58:05,SQ-20250325-0092,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Maya
+2025-03-25,12:16:06,SQ-20250325-0093,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Sarah T.,Jake
+2025-03-25,09:55:31,SQ-20250325-0094,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-25,15:45:45,SQ-20250325-0095,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Jake
+2025-03-25,12:41:16,SQ-20250325-0096,Latte,Beverage,1,4.75,4.75,0.62,Cash,Guest,Sarah
+2025-03-25,16:51:34,SQ-20250325-0097,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-25,08:58:53,SQ-20250325-0098,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Maya
+2025-03-25,08:36:45,SQ-20250325-0099,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Maya
+2025-03-25,15:56:29,SQ-20250325-0100,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Sarah T.,Jake
+2025-03-25,09:55:00,SQ-20250325-0101,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Guest,Maya
+2025-03-25,16:46:50,SQ-20250325-0102,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-25,12:51:58,SQ-20250325-0103,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Sarah
+2025-03-25,10:09:38,SQ-20250325-0104,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Sarah T.,Sarah
+2025-03-25,17:58:41,SQ-20250325-0105,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-25,13:42:14,SQ-20250325-0106,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Maya
+2025-03-25,11:46:39,SQ-20250325-0107,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Maya
+2025-03-25,15:07:56,SQ-20250325-0108,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Maya
+2025-03-25,08:52:26,SQ-20250325-0109,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-25,10:00:18,SQ-20250325-0110,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Michael K.,Sarah
+2025-03-25,13:43:08,SQ-20250325-0111,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Sarah
+2025-03-25,08:05:21,SQ-20250325-0112,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-25,09:21:36,SQ-20250325-0113,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Sarah
+2025-03-25,08:30:13,SQ-20250325-0114,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Sarah
+2025-03-25,07:45:08,SQ-20250325-0115,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Jennifer L.,Sarah
+2025-03-25,16:24:09,SQ-20250325-0116,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Jake
+2025-03-25,12:35:56,SQ-20250325-0117,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Jake
+2025-03-25,07:30:19,SQ-20250325-0118,Cappuccino,Beverage,1,4.5,4.5,0.58,Cash,Michael K.,Jake
+2025-03-25,08:35:00,SQ-20250325-0119,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Sarah
+2025-03-25,13:01:50,SQ-20250325-0120,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Maya
+2025-03-25,12:13:21,SQ-20250325-0121,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Jake
+2025-03-25,11:50:58,SQ-20250325-0122,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Sarah
+2025-03-25,10:10:39,SQ-20250325-0123,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Michael K.,Jake
+2025-03-25,07:03:16,SQ-20250325-0124,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Maya
+2025-03-26,13:53:56,SQ-20250326-0125,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-26,12:38:49,SQ-20250326-0126,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Sarah
+2025-03-26,08:31:18,SQ-20250326-0127,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-26,08:02:43,SQ-20250326-0128,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Maya
+2025-03-26,09:27:30,SQ-20250326-0129,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Sarah
+2025-03-26,16:55:38,SQ-20250326-0130,Salad,Food,1,9.0,9.0,1.17,Credit Card,Guest,Sarah
+2025-03-26,16:59:41,SQ-20250326-0131,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Maya
+2025-03-26,09:57:36,SQ-20250326-0132,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-26,15:56:32,SQ-20250326-0133,Sandwich,Food,1,9.5,9.5,1.24,Cash,Guest,Sarah
+2025-03-26,11:26:14,SQ-20250326-0134,Cappuccino,Beverage,1,4.5,4.5,0.58,Cash,Jennifer L.,Sarah
+2025-03-26,08:02:42,SQ-20250326-0135,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Michael K.,Maya
+2025-03-26,13:13:21,SQ-20250326-0136,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Maya
+2025-03-26,12:49:45,SQ-20250326-0137,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-26,12:37:47,SQ-20250326-0138,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Maya
+2025-03-26,12:35:01,SQ-20250326-0139,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Maya
+2025-03-26,08:33:17,SQ-20250326-0140,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Maya
+2025-03-26,12:49:28,SQ-20250326-0141,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Maya
+2025-03-26,16:30:40,SQ-20250326-0142,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Maya
+2025-03-26,09:31:25,SQ-20250326-0143,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-26,15:40:41,SQ-20250326-0144,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Sarah T.,Maya
+2025-03-26,11:47:01,SQ-20250326-0145,Salad,Food,1,9.0,9.0,1.17,Cash,Michael K.,Maya
+2025-03-26,13:51:37,SQ-20250326-0146,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Sarah
+2025-03-26,11:51:18,SQ-20250326-0147,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Sarah
+2025-03-26,07:12:53,SQ-20250326-0148,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Jennifer L.,Maya
+2025-03-26,07:47:03,SQ-20250326-0149,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-26,11:36:59,SQ-20250326-0150,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Sarah
+2025-03-26,14:59:38,SQ-20250326-0151,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Sarah T.,Sarah
+2025-03-26,09:57:23,SQ-20250326-0152,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Jake
+2025-03-26,12:43:36,SQ-20250326-0153,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Sarah
+2025-03-26,14:11:14,SQ-20250326-0154,Cappuccino,Beverage,1,4.5,4.5,0.58,Cash,Guest,Sarah
+2025-03-26,13:22:00,SQ-20250326-0155,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Michael K.,Maya
+2025-03-26,13:42:52,SQ-20250326-0156,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Jake
+2025-03-26,09:40:37,SQ-20250326-0157,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Maya
+2025-03-26,13:59:21,SQ-20250326-0158,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Maya
+2025-03-26,09:25:24,SQ-20250326-0159,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Maya
+2025-03-26,13:22:04,SQ-20250326-0160,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Jake
+2025-03-26,08:46:45,SQ-20250326-0161,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Maya
+2025-03-26,12:51:52,SQ-20250326-0162,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Maya
+2025-03-26,12:18:26,SQ-20250326-0163,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Guest,Sarah
+2025-03-26,08:43:29,SQ-20250326-0164,Scone,Pastry,1,3.5,3.5,0.46,Cash,Sarah T.,Jake
+2025-03-26,13:56:11,SQ-20250326-0165,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Maya
+2025-03-26,12:08:53,SQ-20250326-0166,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Jake
+2025-03-26,08:30:24,SQ-20250326-0167,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Sarah
+2025-03-26,07:25:04,SQ-20250326-0168,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-26,12:41:18,SQ-20250326-0169,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Maya
+2025-03-26,09:05:26,SQ-20250326-0170,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Maya
+2025-03-26,09:20:16,SQ-20250326-0171,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Jake
+2025-03-26,09:50:32,SQ-20250326-0172,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Maya
+2025-03-26,15:49:31,SQ-20250326-0173,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Guest,Maya
+2025-03-26,07:37:04,SQ-20250326-0174,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Maya
+2025-03-26,14:43:55,SQ-20250326-0175,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Sarah T.,Jake
+2025-03-26,09:24:47,SQ-20250326-0176,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Jake
+2025-03-26,16:17:40,SQ-20250326-0177,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Guest,Sarah
+2025-03-26,10:42:38,SQ-20250326-0178,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Maya
+2025-03-26,16:54:07,SQ-20250326-0179,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Maya
+2025-03-26,07:53:35,SQ-20250326-0180,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Sarah
+2025-03-26,14:39:29,SQ-20250326-0181,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Jake
+2025-03-27,09:44:50,SQ-20250327-0182,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Michael K.,Jake
+2025-03-27,12:01:31,SQ-20250327-0183,Latte,Beverage,1,4.75,4.75,0.62,Cash,Guest,Sarah
+2025-03-27,12:01:00,SQ-20250327-0184,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Jake
+2025-03-27,14:37:57,SQ-20250327-0185,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Maya
+2025-03-27,08:56:42,SQ-20250327-0186,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Sarah
+2025-03-27,07:54:55,SQ-20250327-0187,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Michael K.,Sarah
+2025-03-27,07:16:43,SQ-20250327-0188,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Maya
+2025-03-27,13:40:56,SQ-20250327-0189,Salad,Food,1,9.0,9.0,1.17,Cash,Michael K.,Maya
+2025-03-27,12:23:38,SQ-20250327-0190,Salad,Food,1,9.0,9.0,1.17,Credit Card,Jennifer L.,Maya
+2025-03-27,15:54:08,SQ-20250327-0191,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Maya
+2025-03-27,10:48:31,SQ-20250327-0192,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Sarah
+2025-03-27,10:52:54,SQ-20250327-0193,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Jennifer L.,Jake
+2025-03-27,14:13:37,SQ-20250327-0194,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Maya
+2025-03-27,12:43:09,SQ-20250327-0195,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-27,16:13:02,SQ-20250327-0196,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Jake
+2025-03-27,07:12:29,SQ-20250327-0197,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Jennifer L.,Sarah
+2025-03-27,11:13:10,SQ-20250327-0198,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Sarah
+2025-03-27,13:42:13,SQ-20250327-0199,Americano,Beverage,1,3.95,3.95,0.51,Cash,Sarah T.,Jake
+2025-03-27,14:08:49,SQ-20250327-0200,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Jake
+2025-03-27,09:20:44,SQ-20250327-0201,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Maya
+2025-03-27,12:13:46,SQ-20250327-0202,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Jake
+2025-03-27,10:04:21,SQ-20250327-0203,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Maya
+2025-03-27,09:25:03,SQ-20250327-0204,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Maya
+2025-03-27,12:41:04,SQ-20250327-0205,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Maya
+2025-03-27,09:56:46,SQ-20250327-0206,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-27,16:08:31,SQ-20250327-0207,Salad,Food,1,9.0,9.0,1.17,Credit Card,Jennifer L.,Sarah
+2025-03-27,09:32:01,SQ-20250327-0208,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Maya
+2025-03-27,15:54:10,SQ-20250327-0209,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-27,08:08:10,SQ-20250327-0210,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Michael K.,Jake
+2025-03-27,17:23:56,SQ-20250327-0211,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Jennifer L.,Sarah
+2025-03-27,12:41:27,SQ-20250327-0212,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Sarah
+2025-03-27,13:12:58,SQ-20250327-0213,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Jake
+2025-03-27,14:22:17,SQ-20250327-0214,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Sarah
+2025-03-27,12:35:27,SQ-20250327-0215,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Maya
+2025-03-27,09:13:45,SQ-20250327-0216,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Guest,Maya
+2025-03-27,16:03:42,SQ-20250327-0217,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Jake
+2025-03-27,11:30:29,SQ-20250327-0218,Cappuccino,Beverage,1,4.5,4.5,0.58,Cash,Guest,Sarah
+2025-03-27,09:59:08,SQ-20250327-0219,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-27,09:44:04,SQ-20250327-0220,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Sarah T.,Jake
+2025-03-27,09:19:51,SQ-20250327-0221,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Sarah
+2025-03-27,07:27:23,SQ-20250327-0222,Americano,Beverage,1,3.95,3.95,0.51,Cash,Guest,Sarah
+2025-03-27,12:12:56,SQ-20250327-0223,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Jake
+2025-03-27,13:28:39,SQ-20250327-0224,Salad,Food,1,9.0,9.0,1.17,Credit Card,Guest,Jake
+2025-03-27,11:19:10,SQ-20250327-0225,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Maya
+2025-03-27,13:18:39,SQ-20250327-0226,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Sarah
+2025-03-27,14:05:54,SQ-20250327-0227,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Guest,Maya
+2025-03-27,13:09:40,SQ-20250327-0228,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-27,13:58:37,SQ-20250327-0229,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Sarah
+2025-03-27,14:18:08,SQ-20250327-0230,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Jennifer L.,Maya
+2025-03-27,11:24:03,SQ-20250327-0231,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Jake
+2025-03-27,09:23:12,SQ-20250327-0232,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Sarah
+2025-03-27,11:47:01,SQ-20250327-0233,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-27,12:31:46,SQ-20250327-0234,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Jake
+2025-03-27,07:01:30,SQ-20250327-0235,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-27,12:09:17,SQ-20250327-0236,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Maya
+2025-03-27,09:58:21,SQ-20250327-0237,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Maya
+2025-03-27,11:34:36,SQ-20250327-0238,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Jake
+2025-03-27,12:13:27,SQ-20250327-0239,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Maya
+2025-03-27,12:12:34,SQ-20250327-0240,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-27,07:37:51,SQ-20250327-0241,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Jake
+2025-03-27,12:32:54,SQ-20250327-0242,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-27,12:21:49,SQ-20250327-0243,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-27,09:39:29,SQ-20250327-0244,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Jake
+2025-03-27,11:41:02,SQ-20250327-0245,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Maya
+2025-03-28,08:58:16,SQ-20250328-0246,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Maya
+2025-03-28,07:05:15,SQ-20250328-0247,Americano,Beverage,1,3.95,3.95,0.51,Cash,Michael K.,Maya
+2025-03-28,10:35:36,SQ-20250328-0248,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Sarah
+2025-03-28,09:41:16,SQ-20250328-0249,Americano,Beverage,1,3.95,3.95,0.51,Cash,Jennifer L.,Sarah
+2025-03-28,13:12:53,SQ-20250328-0250,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Sarah
+2025-03-28,16:14:52,SQ-20250328-0251,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Jake
+2025-03-28,07:46:27,SQ-20250328-0252,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Maya
+2025-03-28,09:56:54,SQ-20250328-0253,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Maya
+2025-03-28,12:03:38,SQ-20250328-0254,Salad,Food,1,9.0,9.0,1.17,Credit Card,Sarah T.,Maya
+2025-03-28,11:37:40,SQ-20250328-0255,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Jake
+2025-03-28,09:25:53,SQ-20250328-0256,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Sarah
+2025-03-28,12:31:11,SQ-20250328-0257,Salad,Food,1,9.0,9.0,1.17,Cash,Jennifer L.,Maya
+2025-03-28,09:54:02,SQ-20250328-0258,Muffin,Pastry,1,4.0,4.0,0.52,Cash,Michael K.,Maya
+2025-03-28,12:42:50,SQ-20250328-0259,Sandwich,Food,1,9.5,9.5,1.24,Cash,Guest,Maya
+2025-03-28,10:54:43,SQ-20250328-0260,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Maya
+2025-03-28,09:43:46,SQ-20250328-0261,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Jake
+2025-03-28,08:06:52,SQ-20250328-0262,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Sarah T.,Jake
+2025-03-28,09:01:30,SQ-20250328-0263,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-28,12:00:10,SQ-20250328-0264,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Jake
+2025-03-28,12:22:51,SQ-20250328-0265,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Jake
+2025-03-28,13:15:24,SQ-20250328-0266,Sandwich,Food,1,9.5,9.5,1.24,Cash,Guest,Maya
+2025-03-28,12:44:35,SQ-20250328-0267,Sandwich,Food,1,9.5,9.5,1.24,Cash,Jennifer L.,Jake
+2025-03-28,15:08:16,SQ-20250328-0268,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Jennifer L.,Maya
+2025-03-28,08:49:36,SQ-20250328-0269,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-28,12:59:10,SQ-20250328-0270,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Sarah
+2025-03-28,14:27:35,SQ-20250328-0271,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Sarah
+2025-03-28,12:31:24,SQ-20250328-0272,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Maya
+2025-03-28,14:12:14,SQ-20250328-0273,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Sarah
+2025-03-28,13:40:34,SQ-20250328-0274,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Maya
+2025-03-28,10:12:54,SQ-20250328-0275,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Sarah
+2025-03-28,12:51:00,SQ-20250328-0276,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Jake
+2025-03-28,11:08:49,SQ-20250328-0277,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Maya
+2025-03-28,08:11:07,SQ-20250328-0278,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Sarah
+2025-03-28,09:32:24,SQ-20250328-0279,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-28,07:20:39,SQ-20250328-0280,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Maya
+2025-03-28,07:17:55,SQ-20250328-0281,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Jake
+2025-03-28,09:11:34,SQ-20250328-0282,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-28,16:36:00,SQ-20250328-0283,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-28,12:29:33,SQ-20250328-0284,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Sarah
+2025-03-28,08:47:23,SQ-20250328-0285,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Jake
+2025-03-28,12:44:57,SQ-20250328-0286,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-28,09:22:51,SQ-20250328-0287,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-28,13:47:41,SQ-20250328-0288,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Jake
+2025-03-28,08:06:03,SQ-20250328-0289,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Sarah
+2025-03-28,12:07:37,SQ-20250328-0290,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Sarah
+2025-03-28,07:05:30,SQ-20250328-0291,Croissant,Pastry,1,3.75,3.75,0.49,Cash,Michael K.,Jake
+2025-03-28,17:21:10,SQ-20250328-0292,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Jake
+2025-03-28,13:08:13,SQ-20250328-0293,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Sarah
+2025-03-28,10:51:18,SQ-20250328-0294,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Maya
+2025-03-28,08:55:59,SQ-20250328-0295,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Maya
+2025-03-28,10:25:33,SQ-20250328-0296,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Maya
+2025-03-28,08:35:44,SQ-20250328-0297,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Jake
+2025-03-28,16:04:59,SQ-20250328-0298,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Sarah T.,Maya
+2025-03-28,11:02:20,SQ-20250328-0299,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Jake
+2025-03-28,11:14:21,SQ-20250328-0300,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-28,11:33:03,SQ-20250328-0301,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Jake
+2025-03-28,14:51:57,SQ-20250328-0302,Wrap,Food,1,8.75,8.75,1.14,Cash,Sarah T.,Sarah
+2025-03-28,12:04:36,SQ-20250328-0303,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Jake
+2025-03-28,10:50:29,SQ-20250328-0304,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Sarah
+2025-03-28,08:03:36,SQ-20250328-0305,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Maya
+2025-03-28,12:30:50,SQ-20250328-0306,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Jake
+2025-03-28,08:39:47,SQ-20250328-0307,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Maya
+2025-03-28,12:28:41,SQ-20250328-0308,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-28,11:10:38,SQ-20250328-0309,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Jennifer L.,Jake
+2025-03-28,08:00:56,SQ-20250328-0310,Scone,Pastry,1,3.5,3.5,0.46,Cash,Guest,Jake
+2025-03-28,09:28:30,SQ-20250328-0311,Americano,Beverage,1,3.95,3.95,0.51,Cash,Guest,Sarah
+2025-03-28,13:48:36,SQ-20250328-0312,Wrap,Food,1,8.75,8.75,1.14,Cash,Guest,Jake
+2025-03-29,11:43:43,SQ-20250329-0313,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Maya
+2025-03-29,09:59:41,SQ-20250329-0314,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-29,08:43:15,SQ-20250329-0315,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-29,07:18:15,SQ-20250329-0316,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-29,13:27:29,SQ-20250329-0317,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-29,11:13:36,SQ-20250329-0318,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Sarah T.,Jake
+2025-03-29,16:32:53,SQ-20250329-0319,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Jake
+2025-03-29,08:49:54,SQ-20250329-0320,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Jake
+2025-03-29,07:06:12,SQ-20250329-0321,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Jake
+2025-03-29,15:47:17,SQ-20250329-0322,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Maya
+2025-03-29,14:32:30,SQ-20250329-0323,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Sarah
+2025-03-29,12:21:04,SQ-20250329-0324,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Sarah
+2025-03-29,16:49:12,SQ-20250329-0325,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Sarah T.,Jake
+2025-03-29,15:19:52,SQ-20250329-0326,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Sarah T.,Jake
+2025-03-29,07:41:59,SQ-20250329-0327,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Jake
+2025-03-29,09:11:34,SQ-20250329-0328,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Sarah T.,Maya
+2025-03-29,08:04:01,SQ-20250329-0329,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-29,13:03:51,SQ-20250329-0330,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Sarah
+2025-03-29,13:11:00,SQ-20250329-0331,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Jake
+2025-03-29,08:44:13,SQ-20250329-0332,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Jake
+2025-03-29,14:58:12,SQ-20250329-0333,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Sarah
+2025-03-29,13:01:06,SQ-20250329-0334,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Sarah
+2025-03-29,09:47:11,SQ-20250329-0335,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Maya
+2025-03-29,13:39:58,SQ-20250329-0336,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Sarah
+2025-03-29,12:50:29,SQ-20250329-0337,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Jake
+2025-03-29,16:02:22,SQ-20250329-0338,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Sarah
+2025-03-29,07:41:04,SQ-20250329-0339,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Guest,Jake
+2025-03-29,15:20:21,SQ-20250329-0340,Americano,Beverage,1,3.95,3.95,0.51,Cash,Guest,Jake
+2025-03-29,11:30:59,SQ-20250329-0341,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Maya
+2025-03-29,08:36:14,SQ-20250329-0342,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Jake
+2025-03-29,13:51:56,SQ-20250329-0343,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-29,16:16:04,SQ-20250329-0344,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-29,15:20:22,SQ-20250329-0345,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Sarah T.,Maya
+2025-03-29,11:51:44,SQ-20250329-0346,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Maya
+2025-03-29,11:02:49,SQ-20250329-0347,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Michael K.,Jake
+2025-03-29,13:33:31,SQ-20250329-0348,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Jake
+2025-03-29,09:35:11,SQ-20250329-0349,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Guest,Maya
+2025-03-29,11:13:50,SQ-20250329-0350,Salad,Food,1,9.0,9.0,1.17,Credit Card,Jennifer L.,Jake
+2025-03-29,12:43:41,SQ-20250329-0351,Americano,Beverage,1,3.95,3.95,0.51,Cash,Jennifer L.,Jake
+2025-03-29,11:31:50,SQ-20250329-0352,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Jennifer L.,Maya
+2025-03-29,13:30:07,SQ-20250329-0353,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Maya
+2025-03-29,08:13:46,SQ-20250329-0354,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Jake
+2025-03-29,08:11:20,SQ-20250329-0355,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-29,15:23:46,SQ-20250329-0356,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Maya
+2025-03-29,12:25:04,SQ-20250329-0357,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Sarah
+2025-03-29,17:49:58,SQ-20250329-0358,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Michael K.,Jake
+2025-03-29,16:54:14,SQ-20250329-0359,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Sarah
+2025-03-29,10:11:24,SQ-20250329-0360,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Sarah T.,Sarah
+2025-03-29,07:02:39,SQ-20250329-0361,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Jennifer L.,Maya
+2025-03-29,16:25:10,SQ-20250329-0362,Salad,Food,1,9.0,9.0,1.17,Credit Card,Guest,Sarah
+2025-03-29,08:14:28,SQ-20250329-0363,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Jake
+2025-03-29,12:55:58,SQ-20250329-0364,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Sarah
+2025-03-29,07:36:13,SQ-20250329-0365,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Sarah T.,Maya
+2025-03-29,12:07:10,SQ-20250329-0366,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Jake
+2025-03-29,13:57:10,SQ-20250329-0367,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Sarah
+2025-03-29,08:56:25,SQ-20250329-0368,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Sarah
+2025-03-29,09:50:36,SQ-20250329-0369,Muffin,Pastry,1,4.0,4.0,0.52,Credit Card,Sarah T.,Sarah
+2025-03-29,11:12:09,SQ-20250329-0370,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Sarah
+2025-03-29,07:08:43,SQ-20250329-0371,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Jake
+2025-03-29,12:58:57,SQ-20250329-0372,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Maya
+2025-03-29,13:40:48,SQ-20250329-0373,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-29,11:04:20,SQ-20250329-0374,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Sarah T.,Sarah
+2025-03-29,11:57:27,SQ-20250329-0375,Salad,Food,1,9.0,9.0,1.17,Credit Card,Michael K.,Jake
+2025-03-29,08:29:42,SQ-20250329-0376,Scone,Pastry,1,3.5,3.5,0.46,Cash,Sarah T.,Sarah
+2025-03-29,09:08:52,SQ-20250329-0377,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Michael K.,Sarah
+2025-03-29,13:44:40,SQ-20250329-0378,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Sarah
+2025-03-29,12:56:30,SQ-20250329-0379,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Maya
+2025-03-29,08:19:49,SQ-20250329-0380,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Jake
+2025-03-30,13:30:53,SQ-20250330-0381,Wrap,Food,1,8.75,8.75,1.14,Cash,Michael K.,Jake
+2025-03-30,16:02:21,SQ-20250330-0382,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Sarah
+2025-03-30,08:20:00,SQ-20250330-0383,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Jake
+2025-03-30,11:09:46,SQ-20250330-0384,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Jake
+2025-03-30,09:11:50,SQ-20250330-0385,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Jennifer L.,Jake
+2025-03-30,13:13:55,SQ-20250330-0386,Salad,Food,1,9.0,9.0,1.17,Credit Card,Sarah T.,Jake
+2025-03-30,10:27:12,SQ-20250330-0387,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Sarah T.,Jake
+2025-03-30,09:40:43,SQ-20250330-0388,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Sarah
+2025-03-30,08:35:53,SQ-20250330-0389,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Michael K.,Jake
+2025-03-30,11:47:50,SQ-20250330-0390,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Maya
+2025-03-30,15:17:26,SQ-20250330-0391,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Jake
+2025-03-30,14:04:37,SQ-20250330-0392,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Sarah
+2025-03-30,13:54:23,SQ-20250330-0393,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Maya
+2025-03-30,11:05:39,SQ-20250330-0394,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Sarah
+2025-03-30,12:47:59,SQ-20250330-0395,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Jennifer L.,Maya
+2025-03-30,10:37:31,SQ-20250330-0396,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Sarah
+2025-03-30,08:25:14,SQ-20250330-0397,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Sarah
+2025-03-30,11:34:12,SQ-20250330-0398,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Maya
+2025-03-30,09:46:13,SQ-20250330-0399,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Jake
+2025-03-30,16:50:57,SQ-20250330-0400,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Guest,Jake
+2025-03-30,11:57:51,SQ-20250330-0401,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-30,13:06:05,SQ-20250330-0402,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Guest,Maya
+2025-03-30,08:21:03,SQ-20250330-0403,Croissant,Pastry,1,3.75,3.75,0.49,Credit Card,Guest,Jake
+2025-03-30,08:42:16,SQ-20250330-0404,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Guest,Maya
+2025-03-30,08:11:50,SQ-20250330-0405,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Jake
+2025-03-30,09:01:11,SQ-20250330-0406,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Guest,Maya
+2025-03-30,16:52:05,SQ-20250330-0407,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Guest,Maya
+2025-03-30,09:30:01,SQ-20250330-0408,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Sarah T.,Maya
+2025-03-30,13:28:37,SQ-20250330-0409,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Sarah
+2025-03-30,11:15:38,SQ-20250330-0410,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Jake
+2025-03-30,11:14:12,SQ-20250330-0411,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Maya
+2025-03-30,15:42:50,SQ-20250330-0412,Americano,Beverage,1,3.95,3.95,0.51,Cash,Jennifer L.,Jake
+2025-03-30,08:31:44,SQ-20250330-0413,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Sarah
+2025-03-30,08:00:02,SQ-20250330-0414,Latte,Beverage,1,4.75,4.75,0.62,Cash,Jennifer L.,Jake
+2025-03-30,07:21:33,SQ-20250330-0415,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Sarah T.,Maya
+2025-03-30,11:37:56,SQ-20250330-0416,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Sarah
+2025-03-30,08:04:42,SQ-20250330-0417,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-30,07:54:00,SQ-20250330-0418,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Guest,Sarah
+2025-03-30,12:52:09,SQ-20250330-0419,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Sarah
+2025-03-30,16:45:59,SQ-20250330-0420,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Guest,Jake
+2025-03-30,15:43:50,SQ-20250330-0421,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Jennifer L.,Maya
+2025-03-30,12:06:48,SQ-20250330-0422,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Jake
+2025-03-30,11:52:00,SQ-20250330-0423,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Jennifer L.,Sarah
+2025-03-30,10:24:40,SQ-20250330-0424,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Maya
+2025-03-30,08:41:28,SQ-20250330-0425,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Guest,Sarah
+2025-03-30,10:14:42,SQ-20250330-0426,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Sarah T.,Jake
+2025-03-30,16:59:19,SQ-20250330-0427,Salad,Food,1,9.0,9.0,1.17,Credit Card,Sarah T.,Sarah
+2025-03-30,08:51:09,SQ-20250330-0428,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Jennifer L.,Maya
+2025-03-30,13:05:34,SQ-20250330-0429,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Sarah
+2025-03-30,14:45:56,SQ-20250330-0430,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Guest,Sarah
+2025-03-30,08:42:39,SQ-20250330-0431,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Sarah T.,Maya
+2025-03-30,12:18:17,SQ-20250330-0432,Cold Brew,Beverage,1,5.0,5.0,0.65,Cash,Jennifer L.,Jake
+2025-03-30,10:17:03,SQ-20250330-0433,Cold Brew,Beverage,1,5.0,5.0,0.65,Credit Card,Michael K.,Jake
+2025-03-30,12:58:34,SQ-20250330-0434,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Michael K.,Jake
+2025-03-30,12:55:55,SQ-20250330-0435,Sandwich,Food,1,9.5,9.5,1.24,Credit Card,Michael K.,Sarah
+2025-03-30,10:11:03,SQ-20250330-0436,Latte,Beverage,1,4.75,4.75,0.62,Cash,Sarah T.,Jake
+2025-03-30,08:06:07,SQ-20250330-0437,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Jennifer L.,Sarah
+2025-03-30,15:01:05,SQ-20250330-0438,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Credit Card,Guest,Sarah
+2025-03-30,12:57:16,SQ-20250330-0439,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Sarah
+2025-03-30,12:48:28,SQ-20250330-0440,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-30,15:02:42,SQ-20250330-0441,Wrap,Food,1,8.75,8.75,1.14,Credit Card,Guest,Jake
+2025-03-30,14:15:06,SQ-20250330-0442,Salad,Food,1,9.0,9.0,1.17,Cash,Guest,Maya
+2025-03-30,13:15:23,SQ-20250330-0443,Oat Milk Latte,Beverage,1,5.5,5.5,0.72,Cash,Guest,Sarah
+2025-03-30,16:16:22,SQ-20250330-0444,Latte,Beverage,1,4.75,4.75,0.62,Credit Card,Michael K.,Jake
+2025-03-30,10:08:58,SQ-20250330-0445,Scone,Pastry,1,3.5,3.5,0.46,Credit Card,Jennifer L.,Sarah
+2025-03-30,15:49:53,SQ-20250330-0446,Cappuccino,Beverage,1,4.5,4.5,0.58,Cash,Guest,Maya
+2025-03-30,08:56:19,SQ-20250330-0447,Cappuccino,Beverage,1,4.5,4.5,0.58,Credit Card,Jennifer L.,Jake
+2025-03-30,14:03:41,SQ-20250330-0448,Americano,Beverage,1,3.95,3.95,0.51,Credit Card,Guest,Sarah
+2025-03-30,08:34:25,SQ-20250330-0449,Latte,Beverage,1,4.75,4.75,0.62,Cash,Sarah T.,Sarah
+2025-03-30,15:40:57,SQ-20250330-0450,Cappuccino,Beverage,1,4.5,4.5,0.58,Cash,Sarah T.,Sarah

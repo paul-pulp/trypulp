@@ -26,10 +26,14 @@ def _normalize_columns(df):
     """Rename columns to canonical lowercase names so any POS export works."""
     from validate_data import COLUMN_ALIASES, _normalize
     rename_map = {}
+    used_canonical = set()
     for col in df.columns:
         canonical = COLUMN_ALIASES.get(_normalize(col))
-        if canonical and col != canonical:
+        if canonical and col != canonical and canonical not in used_canonical:
             rename_map[col] = canonical
+            used_canonical.add(canonical)
+        elif canonical:
+            used_canonical.add(canonical if col == canonical else col)
     if rename_map:
         df = df.rename(columns=rename_map)
     return df
@@ -327,10 +331,9 @@ def recommend_order_quantities(df, cost_overrides=None):
 
     # Cost per item (average price * COGS ratio)
     cogs = costs["perishable_cogs_ratio"]
-    item_prices = (
-        perishables.groupby("item")
-        .apply(lambda g: (g["price"] / g["quantity"]).mean())
-    )
+    perishables_copy = perishables.reset_index(drop=True).copy()
+    perishables_copy["_unit_price"] = perishables_copy["price"] / perishables_copy["quantity"]
+    item_prices = perishables_copy.groupby("item")["_unit_price"].mean()
     item_stats["unit_cost"] = (item_prices * cogs).round(2)
     item_stats["daily_waste_cost"] = (item_stats["est_daily_waste"] * item_stats["unit_cost"]).round(2)
     item_stats["monthly_waste_cost"] = (item_stats["daily_waste_cost"] * 30).round(2)
@@ -393,9 +396,9 @@ def estimate_waste_savings(df, cost_overrides=None):
 
     item_peaks = daily_sales.groupby("item")["quantity"].max()
     item_means = daily_sales.groupby("item")["quantity"].mean()
-    item_prices = perishables.groupby("item").apply(
-        lambda g: (g["price"] / g["quantity"]).mean()
-    )
+    perishables_ws = perishables.reset_index(drop=True).copy()
+    perishables_ws["_unit_price"] = perishables_ws["price"] / perishables_ws["quantity"]
+    item_prices = perishables_ws.groupby("item")["_unit_price"].mean()
 
     daily_waste_units = (item_peaks - item_means).clip(lower=0)
     daily_waste_cost = (daily_waste_units * item_prices * cogs).sum()

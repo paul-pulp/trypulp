@@ -39,10 +39,14 @@ def _normalize_columns(df):
     """Rename columns to canonical lowercase names so any POS export works."""
     from validate_data import COLUMN_ALIASES, _normalize
     rename_map = {}
+    used_canonical = set()
     for col in df.columns:
         canonical = COLUMN_ALIASES.get(_normalize(col))
-        if canonical and col != canonical:
+        if canonical and col != canonical and canonical not in used_canonical:
             rename_map[col] = canonical
+            used_canonical.add(canonical)
+        elif canonical:
+            used_canonical.add(canonical if col == canonical else col)
     if rename_map:
         df = df.rename(columns=rename_map)
     return df

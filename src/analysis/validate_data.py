@@ -70,7 +70,7 @@ COLUMN_ALIASES = {
     "gross sales": "price",
     "line total": "price",
     "subtotal": "price",
-    "unit price": "price",
+    # "unit price" intentionally NOT mapped to price — "Total" is the correct price column
     "sale total": "price",
     "sales": "price",
     # optional but useful
