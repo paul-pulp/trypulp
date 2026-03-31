@@ -11,7 +11,7 @@
 
 <h1 class="text-2xl text-warm-800 mb-2 load-in load-in-1">Week-Over-Week Comparison</h1>
 <p class="text-warm-500 text-sm mb-6 load-in load-in-1">
-    Week {{ snapshot.week_number }} vs {{ "Baseline" if snapshot.week_number == 1 else "Week " ~ (snapshot.week_number - 1) }}
+    Week {{ snapshot.week_number + 1 }} vs Week {{ snapshot.week_number }}
 </p>
 
 <!-- ═══ HEADLINE CALLOUT ═══ -->
@@ -63,7 +63,7 @@
         {% endif %}
     </div>
 
-    <!-- vs baseline -->
+    <!-- vs Week 1 -->
     {% if baseline_change is not none and baseline is not none %}
     {% set base_good = (baseline_change < 0 if invert else baseline_change > 0) %}
     {% set base_bad = (baseline_change > 0 if invert else baseline_change < 0) %}
@@ -74,9 +74,9 @@
             {{ "+" if baseline_change > 0 }}{{ prefix }}{{ "%.2f"|format(baseline_change) }}{{ suffix }}
             {% if base_pct is not none %}({{ "+" if base_pct > 0 }}{{ "%.1f"|format(base_pct) }}%){% endif %}
         </span>
-        <span class="text-xs text-warm-400">vs baseline</span>
+        <span class="text-xs text-warm-400">vs Week 1</span>
         {% else %}
-        <span class="text-xs text-warm-400">Same as baseline</span>
+        <span class="text-xs text-warm-400">Same as Week 1</span>
         {% endif %}
     </div>
     {% endif %}

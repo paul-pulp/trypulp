@@ -35,7 +35,7 @@ def upload():
 
     if request.method == "GET":
         week_num = count_snapshots(session["user_id"])
-        label = "baseline" if week_num == 0 else f"week {week_num}"
+        label = f"week {week_num + 1}"
 
         # Show trial info
         status = user["subscription_status"] if "subscription_status" in user.keys() else "free"
@@ -317,12 +317,12 @@ def _build_weekly_actions(current_result, prev_snapshot, baseline_snapshot=None)
             reduction_pct = round((base_waste - curr_waste_cost) / base_waste * 100, 0)
             actions.append({
                 "type": "progress",
-                "text": f"Waste is down {reduction_pct:.0f}% since your baseline. Keep optimizing your ordering.",
+                "text": f"Waste is down {reduction_pct:.0f}% since Week 1. Keep optimizing your ordering.",
             })
         elif base_waste > 0 and curr_waste_cost >= base_waste:
             actions.append({
                 "type": "progress",
-                "text": "Waste hasn't improved since baseline. Review the order recommendations in your report and try adjusting this week.",
+                "text": "Waste hasn't improved since Week 1. Review the order recommendations in your report and try adjusting this week.",
             })
 
     return actions

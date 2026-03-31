@@ -79,7 +79,7 @@
                     {% for snap in snapshots|reverse %}
                     <tr class="hover:bg-warm-50/50 transition-colors">
                         <td class="px-5 py-3 font-medium text-warm-800">
-                            {{ "Baseline" if snap.week_number == 0 else "Week " ~ snap.week_number }}
+                            Week {{ snap.week_number + 1 }}
                         </td>
                         <td class="px-5 py-3 text-right text-warm-800 font-medium">
                             ${{ "%.2f"|format(snap.avg_daily_revenue or 0) }}
@@ -144,7 +144,7 @@
                     {% for snap in snapshots %}
                     <tr class="hover:bg-warm-50/50 transition-colors">
                         <td class="px-5 py-3 font-medium text-warm-800">
-                            {{ "Baseline" if snap.week_number == 0 else "Week " ~ snap.week_number }}
+                            Week {{ snap.week_number + 1 }}
                         </td>
                         <td class="px-5 py-3 text-warm-500">{{ snap.date_start }} to {{ snap.date_end }}</td>
                         <td class="px-5 py-3 text-warm-400 text-xs">{{ snap.csv_filename }}</td>

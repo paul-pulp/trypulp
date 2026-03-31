@@ -7,7 +7,7 @@
         {{ cafe_name }} — uploading <strong class="text-warm-700">{{ upload_label }}</strong> data
     </p>
 
-    {% if not is_subscribed and trial_left is defined and trial_left is not none and trial_left > 0 and upload_label != 'baseline' %}
+    {% if not is_subscribed and trial_left is defined and trial_left is not none and trial_left > 0 and upload_label != 'week 1' %}
     <div class="insight-callout mb-4 text-sm">
         You have <strong>{{ trial_left }} free weekly upload{{ "s" if trial_left != 1 }}</strong> left.
         After that, <a href="/upgrade" class="text-terra-600 hover:underline">PulpIQ Pro is $49/month</a> for unlimited tracking.
