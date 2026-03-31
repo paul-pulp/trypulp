@@ -90,6 +90,22 @@ def init_db(app):
         db.execute("ALTER TABLE users ADD COLUMN trial_uploads_remaining INTEGER DEFAULT 2")
     except Exception:
         pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN cost_milk_per_gallon REAL")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN cost_pastry_avg REAL")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN cost_hourly_wage REAL")
+    except Exception:
+        pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN costs_updated INTEGER DEFAULT 0")
+    except Exception:
+        pass
     db.commit()
 
     db.close()
@@ -169,6 +185,40 @@ def use_trial_upload(user_id):
         (user_id,),
     )
     db.commit()
+
+
+def update_user_costs(user_id, milk_per_gallon=None, pastry_avg=None, hourly_wage=None):
+    """Update the cafe's actual cost data."""
+    db = get_db()
+    fields = ["costs_updated = 1"]
+    values = []
+    if milk_per_gallon is not None:
+        fields.append("cost_milk_per_gallon = ?")
+        values.append(milk_per_gallon)
+    if pastry_avg is not None:
+        fields.append("cost_pastry_avg = ?")
+        values.append(pastry_avg)
+    if hourly_wage is not None:
+        fields.append("cost_hourly_wage = ?")
+        values.append(hourly_wage)
+    values.append(user_id)
+    db.execute(f"UPDATE users SET {', '.join(fields)} WHERE id = ?", values)
+    db.commit()
+
+
+def get_user_cost_overrides(user):
+    """Build a cost_overrides dict from the user's actual costs (if provided)."""
+    overrides = {}
+    milk = user["cost_milk_per_gallon"] if "cost_milk_per_gallon" in user.keys() else None
+    if milk and milk > 0:
+        overrides["dairy_cost_per_oz"] = round(milk / 128, 6)  # gallon = 128 oz
+    pastry = user["cost_pastry_avg"] if "cost_pastry_avg" in user.keys() else None
+    if pastry and pastry > 0:
+        # pastry_avg is the actual cost; derive COGS ratio from average menu price
+        # We don't know menu price here, so store as absolute cost
+        # For now, use it as a COGS ratio hint: if they say $2 avg cost on a ~$5 item = ~40%
+        overrides["perishable_cogs_ratio"] = min(0.80, max(0.10, pastry / 5.0))
+    return overrides if overrides else None
 
 
 def get_user_by_email(email):

@@ -7,7 +7,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 
 from ..models import (
     get_user_by_id, get_snapshots_for_user, get_snapshot_by_id, get_latest_snapshot,
-    insert_feedback, delete_latest_snapshot, count_snapshots,
+    insert_feedback, delete_latest_snapshot, count_snapshots, update_user_costs,
 )
 
 dashboard_bp = Blueprint("dashboard", __name__)
@@ -93,6 +93,31 @@ def compare(snapshot_id):
                            comparison=comparison,
                            customer=customer,
                            waste=waste)
+
+
+@dashboard_bp.route("/costs", methods=["GET", "POST"])
+@login_required
+def costs():
+    user_id = session["user_id"]
+    user = get_user_by_id(user_id)
+
+    if request.method == "GET":
+        return render_template("costs.html", user=user)
+
+    # Save costs
+    milk = request.form.get("milk_per_gallon", "").strip()
+    pastry = request.form.get("pastry_avg", "").strip()
+    wage = request.form.get("hourly_wage", "").strip()
+
+    update_user_costs(
+        user_id,
+        milk_per_gallon=float(milk) if milk else None,
+        pastry_avg=float(pastry) if pastry else None,
+        hourly_wage=float(wage) if wage else None,
+    )
+
+    flash("Your costs are saved! Future reports will use your actual numbers.", "success")
+    return redirect(url_for("dashboard.dashboard"))
 
 
 @dashboard_bp.route("/report/<int:snapshot_id>/delete", methods=["POST"])

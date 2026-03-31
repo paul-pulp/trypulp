@@ -86,7 +86,7 @@ def _write_cleaned_csv(original_path, column_map):
     return tmp.name
 
 
-def run_analysis(csv_path):
+def run_analysis(csv_path, cost_overrides=None):
     """Run validation + analysis on a CSV file.
 
     Returns:
@@ -114,9 +114,9 @@ def run_analysis(csv_path):
     if any("_auto_" in k for k in validation.column_map):
         analysis_path = _write_cleaned_csv(csv_path, validation.column_map)
 
-    # Step 2: Run analysis modules
+    # Step 2: Run analysis modules (with user's actual costs if provided)
     customer = run_customer(analysis_path)
-    waste = run_waste(analysis_path)
+    waste = run_waste(analysis_path, cost_overrides)
 
     # Clean up temp file if we created one
     if analysis_path != csv_path:

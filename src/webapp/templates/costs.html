@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Your Costs — PulpIQ{% endblock %}
+{% block content %}
+
+<div class="max-w-lg mx-auto mt-8 load-in">
+    <h1 class="text-2xl text-warm-800 mb-2">Make Your Numbers More Accurate</h1>
+    <p class="text-warm-500 mb-6">
+        Right now we're using Toronto industry averages. Tell us what you actually pay and we'll recalculate everything with your real costs.
+    </p>
+
+    <div class="card p-8 load-in load-in-1">
+        <form method="POST" action="/costs" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-warm-700 mb-1">What do you pay for a gallon of milk?</label>
+                <div class="flex items-center gap-2">
+                    <span class="text-warm-500">$</span>
+                    <input type="number" name="milk_per_gallon" step="0.01" min="0" max="20"
+                           value="{{ user.cost_milk_per_gallon or '' }}"
+                           class="flex-1 px-4 py-2.5 rounded-lg border border-warm-300 focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none transition-colors"
+                           placeholder="5.10">
+                    <span class="text-sm text-warm-400">per gallon</span>
+                </div>
+                <p class="text-xs text-warm-400 mt-1">Toronto average: ~$5.10/gallon from Saputo</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-warm-700 mb-1">What's your average cost per pastry/food item from your supplier?</label>
+                <div class="flex items-center gap-2">
+                    <span class="text-warm-500">$</span>
+                    <input type="number" name="pastry_avg" step="0.01" min="0" max="20"
+                           value="{{ user.cost_pastry_avg or '' }}"
+                           class="flex-1 px-4 py-2.5 rounded-lg border border-warm-300 focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none transition-colors"
+                           placeholder="2.00">
+                    <span class="text-sm text-warm-400">per item</span>
+                </div>
+                <p class="text-xs text-warm-400 mt-1">Example: if a croissant costs you $1.80 from your bakery supplier, enter that</p>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-warm-700 mb-1">What do you pay your baristas per hour?</label>
+                <div class="flex items-center gap-2">
+                    <span class="text-warm-500">$</span>
+                    <input type="number" name="hourly_wage" step="0.50" min="0" max="50"
+                           value="{{ user.cost_hourly_wage or '' }}"
+                           class="flex-1 px-4 py-2.5 rounded-lg border border-warm-300 focus:border-terra-500 focus:ring-2 focus:ring-terra-500/20 outline-none transition-colors"
+                           placeholder="18.50">
+                    <span class="text-sm text-warm-400">per hour</span>
+                </div>
+                <p class="text-xs text-warm-400 mt-1">Toronto average: ~$18.50/hour</p>
+            </div>
+
+            <button type="submit"
+                    class="w-full bg-terra-600 hover:bg-terra-700 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                Update My Costs
+            </button>
+        </form>
+
+        <p class="text-xs text-warm-400 mt-4 text-center">
+            Leave any field blank to keep using the Toronto average. You can update these anytime from your dashboard.
+        </p>
+    </div>
+
+    <a href="/dashboard" class="block text-center text-sm text-warm-400 hover:text-warm-600 mt-4 transition-colors">
+        Skip for now — use industry averages
+    </a>
+</div>
+{% endblock %}

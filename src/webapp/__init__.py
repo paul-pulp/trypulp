@@ -169,22 +169,31 @@ def create_app():
         from flask import render_template
         return render_template("terms.html")
 
-    # Daily automatic backup (background thread)
-    def _daily_backup_loop():
+    # Daily automatic backup + reminders (background thread)
+    def _daily_tasks_loop():
         time.sleep(60)  # wait for app to fully start
         while True:
+            # Backup
             try:
                 with app.app_context():
                     from .backup import run_backup
                     run_backup(app)
             except Exception as e:
                 print(f"[BACKUP] Auto-backup error: {e}", flush=True)
+
+            # Weekly upload reminders
+            try:
+                from .reminders import send_weekly_reminders
+                send_weekly_reminders(app)
+            except Exception as e:
+                print(f"[REMINDERS] Error: {e}", flush=True)
+
             time.sleep(86400)  # 24 hours
 
     if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN"):
         # Only start in the main process (not the reloader)
-        backup_thread = threading.Thread(target=_daily_backup_loop, daemon=True)
-        backup_thread.start()
+        daily_thread = threading.Thread(target=_daily_tasks_loop, daemon=True)
+        daily_thread.start()
 
     # Serve landing page images from src/website/
     import pathlib

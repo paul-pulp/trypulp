@@ -7,7 +7,7 @@ import json
 import tempfile
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 
-from ..models import count_snapshots, get_latest_snapshot, get_baseline_snapshot, get_snapshots_for_user, insert_snapshot, get_user_by_id, can_upload, use_trial_upload
+from ..models import count_snapshots, get_latest_snapshot, get_baseline_snapshot, get_snapshots_for_user, insert_snapshot, get_user_by_id, can_upload, use_trial_upload, get_user_cost_overrides
 from ..analysis_runner import run_analysis, serialize_results
 
 upload_bp = Blueprint("upload", __name__)
@@ -64,8 +64,9 @@ def upload():
 
         print(f"[UPLOAD] Processing {file.filename} ({os.path.getsize(tmp.name) / 1024:.1f} KB)", flush=True)
 
-        # Run analysis
-        result = run_analysis(tmp.name)
+        # Run analysis with user's actual costs (if provided)
+        cost_overrides = get_user_cost_overrides(user)
+        result = run_analysis(tmp.name, cost_overrides)
 
         if result["errors"]:
             for err in result["errors"]:
@@ -119,6 +120,12 @@ def upload():
         status = user["subscription_status"] if "subscription_status" in user.keys() else "free"
         if status != "active" and week_number > 0:
             use_trial_upload(user_id)
+
+        # After first upload, prompt for actual costs (if not already provided)
+        costs_updated = user["costs_updated"] if "costs_updated" in user.keys() else 0
+        if week_number == 0 and not costs_updated:
+            flash("Your Week 1 report is ready! Want to make it more accurate? Enter your actual costs below.", "success")
+            return redirect(url_for("dashboard.costs"))
 
         return redirect(url_for("dashboard.report", snapshot_id=snapshot_id))
 

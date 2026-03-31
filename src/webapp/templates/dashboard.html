@@ -125,6 +125,13 @@
 </div>
 {% endif %}
 
+<!-- Your costs -->
+{% if snapshots and snapshots|length > 0 %}
+<div class="mt-4 text-sm text-warm-400 load-in">
+    <a href="/costs" class="text-terra-600 hover:underline">Edit your costs</a> — using your actual costs makes the savings numbers more accurate.
+</div>
+{% endif %}
+
 <!-- Subscription -->
 {% if user.subscription_status is defined and user.subscription_status == 'active' %}
 <div class="mt-8 text-sm text-warm-400 load-in load-in-6">
@@ -136,7 +143,7 @@
 <div class="card-savings p-6 mt-8 text-center load-in load-in-6">
     <p class="text-warm-300 text-sm mb-2">Ready to keep tracking your savings?</p>
     <a href="/upgrade" class="inline-block bg-white text-warm-800 font-medium py-2.5 px-6 rounded-lg text-sm hover:bg-warm-100 transition-colors">
-        Upgrade to Pro — $49/month
+        Upgrade to Pro — $29/month
     </a>
 </div>
 {% endif %}
