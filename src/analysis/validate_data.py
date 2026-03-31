@@ -21,12 +21,24 @@ COLUMN_ALIASES = {
     "transaction date": "date",
     "trans date": "date",
     "order date": "date",
+    "order_date": "date",
+    "created at": "date",
+    "created date": "date",
     # time
     "time": "time",
     "sale time": "time",
     "transaction time": "time",
     "trans time": "time",
     "order time": "time",
+    "order_time": "time",
+    "hour": "time",
+    # datetime (will be split into date + time during auto-fix)
+    "datetime": "datetime",
+    "date time": "datetime",
+    "timestamp": "datetime",
+    "transaction datetime": "datetime",
+    "created_at": "datetime",
+    "order datetime": "datetime",
     # item
     "item": "item",
     "item name": "item",
@@ -34,12 +46,19 @@ COLUMN_ALIASES = {
     "product name": "item",
     "menu item": "item",
     "description": "item",
+    "item description": "item",
+    "sku name": "item",
+    "line item": "item",
+    "name": "item",
     # quantity
     "quantity": "quantity",
     "qty": "quantity",
     "units": "quantity",
     "count": "quantity",
     "units sold": "quantity",
+    "qty sold": "quantity",
+    "number sold": "quantity",
+    "num": "quantity",
     # price
     "price": "price",
     "total": "price",
@@ -49,22 +68,44 @@ COLUMN_ALIASES = {
     "revenue": "price",
     "net sales": "price",
     "gross sales": "price",
+    "line total": "price",
+    "subtotal": "price",
+    "unit price": "price",
+    "sale total": "price",
+    "sales": "price",
     # optional but useful
     "category": "category",
     "type": "category",
     "item category": "category",
     "product category": "category",
+    "group": "category",
+    "item type": "category",
+    "department": "category",
     "payment method": "payment_method",
     "payment_method": "payment_method",
     "payment type": "payment_method",
     "tender": "payment_method",
+    "tender type": "payment_method",
+    "payment": "payment_method",
     "location": "location",
     "store": "location",
     "store name": "location",
+    "outlet": "location",
+    "branch": "location",
+    # transaction ID (not used in analysis but helps identify rows)
+    "transaction id": "transaction_id",
+    "order id": "transaction_id",
+    "receipt": "transaction_id",
+    "receipt number": "transaction_id",
+    "order number": "transaction_id",
+    "trans id": "transaction_id",
 }
 
 REQUIRED_COLUMNS = ["date", "time", "item", "quantity", "price"]
 OPTIONAL_COLUMNS = ["category", "payment_method", "location"]
+
+# Columns that are recognized but not required for analysis
+KNOWN_EXTRA_COLUMNS = ["datetime", "transaction_id"]
 
 # ── Thresholds ──────────────────────────────────────────────────────────────
 MIN_PRICE = 0.50
@@ -215,6 +256,50 @@ def validate_file(csv_path):
 
     result.column_map = column_map
     mapped_canonical = set(column_map.values())
+
+    # ── Auto-fix: split datetime into date + time ─────────────────────
+    if "datetime" in mapped_canonical and ("date" not in mapped_canonical or "time" not in mapped_canonical):
+        dt_raw_col = [k for k, v in column_map.items() if v == "datetime"][0]
+        fixed = False
+        for row in rows:
+            dt_val = (row.get(dt_raw_col) or "").strip()
+            if not dt_val:
+                continue
+            # Try to split "2024-01-15 09:30:00" or "01/15/2024 9:30 AM" etc.
+            parts = dt_val.split(" ", 1)
+            if len(parts) == 2:
+                if "date" not in mapped_canonical:
+                    row["_auto_date"] = parts[0]
+                if "time" not in mapped_canonical:
+                    row["_auto_time"] = parts[1]
+                fixed = True
+            elif len(parts) == 1:
+                # Date only, no time component
+                if "date" not in mapped_canonical:
+                    row["_auto_date"] = parts[0]
+                if "time" not in mapped_canonical:
+                    row["_auto_time"] = "12:00"
+                fixed = True
+        if fixed:
+            if "date" not in mapped_canonical:
+                column_map["_auto_date"] = "date"
+                raw_columns.append("_auto_date")
+                result.note("Auto-split datetime column into date + time")
+            if "time" not in mapped_canonical:
+                column_map["_auto_time"] = "time"
+                raw_columns.append("_auto_time")
+            mapped_canonical = set(column_map.values())
+
+    # ── Auto-fix: fill missing quantity as 1 ──────────────────────────
+    if "quantity" not in mapped_canonical:
+        for row in rows:
+            row["_auto_qty"] = "1"
+        column_map["_auto_qty"] = "quantity"
+        raw_columns.append("_auto_qty")
+        mapped_canonical = set(column_map.values())
+        result.note("No quantity column found — assuming 1 unit per line item")
+
+    result.column_map = column_map
 
     missing_required = [c for c in REQUIRED_COLUMNS if c not in mapped_canonical]
     if missing_required:
