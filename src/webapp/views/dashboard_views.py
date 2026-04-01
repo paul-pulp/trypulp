@@ -8,6 +8,7 @@ from flask import Blueprint, render_template, request, session, redirect, url_fo
 from ..models import (
     get_user_by_id, get_snapshots_for_user, get_snapshot_by_id, get_latest_snapshot,
     insert_feedback, delete_latest_snapshot, count_snapshots, update_user_costs,
+    save_user_orders, get_user_orders,
 )
 
 dashboard_bp = Blueprint("dashboard", __name__)
@@ -64,10 +65,14 @@ def report(snapshot_id):
     latest = get_latest_snapshot(user_id)
     is_latest = latest is not None and latest["id"] == snapshot_id
 
+    # Get user's actual order quantities (if they've entered them)
+    user_orders = get_user_orders(user_id)
+
     return render_template("report.html",
                            user=user,
                            snapshot=snapshot,
                            is_latest=is_latest,
+                           user_orders=user_orders,
                            customer=customer,
                            waste=waste,
                            comparison=comparison)
@@ -114,6 +119,32 @@ def costs():
 
     flash("Your costs are saved! Future reports will use your actual numbers.", "success")
     return redirect(url_for("dashboard.dashboard"))
+
+
+@dashboard_bp.route("/report/<int:snapshot_id>/orders", methods=["POST"])
+@login_required
+def save_orders(snapshot_id):
+    user_id = session["user_id"]
+
+    # Collect all order_xxx fields from the form
+    orders = {}
+    for key, val in request.form.items():
+        if key.startswith("order_") and val.strip():
+            item_name = key[6:]  # strip "order_" prefix
+            try:
+                qty = int(float(val))
+                if qty > 0:
+                    orders[item_name] = qty
+            except (ValueError, TypeError):
+                pass
+
+    if orders:
+        save_user_orders(user_id, orders)
+        flash(f"Saved your actual orders for {len(orders)} items. Waste numbers updated.", "success")
+    else:
+        flash("No changes saved.", "info")
+
+    return redirect(url_for("dashboard.report", snapshot_id=snapshot_id))
 
 
 @dashboard_bp.route("/report/<int:snapshot_id>/delete", methods=["POST"])

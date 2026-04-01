@@ -72,6 +72,15 @@ def init_db(app):
             message TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS user_orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL REFERENCES users(id),
+            item_name TEXT NOT NULL,
+            daily_order INTEGER NOT NULL,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_id, item_name)
+        );
     """)
     # Migrations: add columns if they don't exist (safe to run repeatedly)
     try:
@@ -355,3 +364,29 @@ def get_all_feedback():
         JOIN users u ON f.user_id = u.id
         ORDER BY f.created_at DESC
     """).fetchall()
+
+
+# ── User order quantities ──────────────────────────────────────────────
+
+def save_user_orders(user_id, orders_dict):
+    """Save actual order quantities. orders_dict = {item_name: daily_order}."""
+    db = get_db()
+    for item_name, qty in orders_dict.items():
+        if qty and int(qty) > 0:
+            db.execute(
+                """INSERT INTO user_orders (user_id, item_name, daily_order)
+                   VALUES (?, ?, ?)
+                   ON CONFLICT(user_id, item_name) DO UPDATE SET
+                   daily_order = ?, updated_at = CURRENT_TIMESTAMP""",
+                (user_id, item_name, int(qty), int(qty)),
+            )
+    db.commit()
+
+
+def get_user_orders(user_id):
+    """Get saved order quantities as {item_name: daily_order}."""
+    rows = get_db().execute(
+        "SELECT item_name, daily_order FROM user_orders WHERE user_id = ?",
+        (user_id,),
+    ).fetchall()
+    return {row["item_name"]: row["daily_order"] for row in rows}

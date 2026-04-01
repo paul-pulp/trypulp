@@ -303,6 +303,7 @@
     </div>
     <p class="text-xs text-warm-400 mb-4">Based on your sales patterns and {% if current_user and current_user.costs_updated is defined and current_user.costs_updated %}your cost settings{% else %}Toronto industry-average costs (<a href="/costs" class="text-terra-500 hover:underline">update with your actual costs</a>){% endif %}. Actual savings depend on what you currently order.</p>
 
+    <form method="POST" action="/report/{{ snapshot.id }}/orders">
     <div class="card-static overflow-hidden mb-4">
         <table class="w-full text-sm">
             <thead class="bg-warm-50">
@@ -315,6 +316,9 @@
                         Est. Peak Order
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
+                        <span class="text-terra-600">Your Actual Order</span>
+                    </th>
+                    <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
                         Recommended
                     </th>
                     <th class="text-right px-5 py-3 text-warm-500 font-medium text-xs uppercase tracking-wide">
@@ -324,17 +328,35 @@
             </thead>
             <tbody class="divide-y divide-warm-100">
                 {% for item in waste.waste_projection['items'] %}
+                {% set actual = user_orders.get(item.item) if user_orders else None %}
+                {% set effective_order = actual if actual else item.current_order %}
+                {% set effective_waste = (effective_order - item.avg_sold) * (item.monthly_waste_cost / (item.current_order - item.avg_sold)) if (item.current_order - item.avg_sold) > 0 and effective_order > item.avg_sold else 0 %}
                 <tr class="hover:bg-warm-50/50 transition-colors">
                     <td class="px-5 py-3 font-medium text-warm-800">{{ item.item }}</td>
                     <td class="px-5 py-3 text-right text-warm-500">{{ item.avg_sold }}</td>
-                    <td class="px-5 py-3 text-right text-warm-500">{{ item.current_order }}</td>
+                    <td class="px-5 py-3 text-right text-warm-400 {{ 'line-through' if actual }}">{{ item.current_order }}</td>
+                    <td class="px-5 py-2 text-right">
+                        <input type="number" name="order_{{ item.item }}" min="0" max="999"
+                               value="{{ actual or '' }}"
+                               placeholder="{{ item.current_order }}"
+                               class="w-16 text-right px-2 py-1 text-sm rounded border border-warm-300 focus:border-terra-500 focus:ring-1 focus:ring-terra-500/20 outline-none {{ 'border-terra-500 bg-terra-50 font-medium' if actual else '' }}">
+                    </td>
                     <td class="px-5 py-3 text-right font-medium text-sage-700">{{ item.recommended_order }}</td>
-                    <td class="px-5 py-3 text-right font-medium text-red-600">${{ "%.0f"|format(item.monthly_waste_cost) }}</td>
+                    <td class="px-5 py-3 text-right font-medium {{ 'text-red-600' if effective_waste > 0 else 'text-sage-600' }}">
+                        ${{ "%.0f"|format(effective_waste) }}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+    <div class="flex items-center gap-3 mb-4 no-print">
+        <button type="submit" class="bg-terra-600 hover:bg-terra-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors">
+            Save My Actual Orders
+        </button>
+        <span class="text-xs text-warm-400">Enter what you actually order each day — makes the waste numbers real instead of estimated.</span>
+    </div>
+    </form>
 
     {% if waste.waste_projection['items'] %}
     {% set top_waste = waste.waste_projection['items'][0] %}
