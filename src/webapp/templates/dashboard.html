@@ -81,6 +81,65 @@
 </div>
 {% endif %}
 
+<!-- Trend chart (3+ uploads) -->
+{% if snapshots|length >= 3 %}
+{% set sorted_snaps = snapshots|reverse|list %}
+{% set max_rev = sorted_snaps|map(attribute='avg_daily_revenue')|select('number')|max %}
+{% set max_waste = sorted_snaps|map(attribute='waste_monthly_cost')|select('number')|max %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8 load-in load-in-5">
+
+    <!-- Revenue trend -->
+    <div class="card-static p-5">
+        <h3 class="text-sm font-medium text-warm-700 mb-3">Daily Sales Over Time</h3>
+        <div class="flex items-end gap-1.5" style="height: 120px;">
+            {% for snap in sorted_snaps %}
+            {% set rev = snap.avg_daily_revenue or 0 %}
+            {% set pct = (rev / max_rev * 100) if max_rev and max_rev > 0 else 0 %}
+            <div class="flex-1 flex flex-col items-center justify-end h-full">
+                <span class="text-xs text-warm-500 mb-1">${{ "%.0f"|format(rev) }}</span>
+                <div class="w-full rounded-t" style="height: {{ pct }}%; min-height: 4px; background: {{ '#577347' if loop.last else '#C4B8A8' if not loop.last else '#9A8E7E' }};"></div>
+                <span class="text-xs text-warm-400 mt-1">W{{ snap.week_number + 1 }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% set first_rev = sorted_snaps[0].avg_daily_revenue or 0 %}
+        {% set last_rev = sorted_snaps[-1].avg_daily_revenue or 0 %}
+        {% if first_rev > 0 %}
+        {% set change_pct = ((last_rev - first_rev) / first_rev * 100) %}
+        <p class="text-xs mt-3 {{ 'text-sage-600' if change_pct >= 0 else 'text-red-500' }}">
+            {{ "+" if change_pct >= 0 }}{{ "%.1f"|format(change_pct) }}% since Week 1
+        </p>
+        {% endif %}
+    </div>
+
+    <!-- Waste trend -->
+    <div class="card-static p-5">
+        <h3 class="text-sm font-medium text-warm-700 mb-3">Monthly Waste Over Time</h3>
+        <div class="flex items-end gap-1.5" style="height: 120px;">
+            {% for snap in sorted_snaps %}
+            {% set waste = snap.waste_monthly_cost or 0 %}
+            {% set pct = (waste / max_waste * 100) if max_waste and max_waste > 0 else 0 %}
+            <div class="flex-1 flex flex-col items-center justify-end h-full">
+                <span class="text-xs text-warm-500 mb-1">${{ "%.0f"|format(waste) }}</span>
+                <div class="w-full rounded-t" style="height: {{ pct }}%; min-height: 4px; background: {{ '#577347' if (loop.last and waste < (sorted_snaps[0].waste_monthly_cost or 0)) else '#B8633E' if loop.last else '#C4B8A8' }};"></div>
+                <span class="text-xs text-warm-400 mt-1">W{{ snap.week_number + 1 }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% set first_waste = sorted_snaps[0].waste_monthly_cost or 0 %}
+        {% set last_waste = sorted_snaps[-1].waste_monthly_cost or 0 %}
+        {% if first_waste > 0 %}
+        {% set waste_change = ((last_waste - first_waste) / first_waste * 100) %}
+        <p class="text-xs mt-3 {{ 'text-sage-600' if waste_change <= 0 else 'text-red-500' }}">
+            {{ "+" if waste_change > 0 }}{{ "%.1f"|format(waste_change) }}% since Week 1
+            {{ " — waste is going down" if waste_change < 0 else "" }}
+        </p>
+        {% endif %}
+    </div>
+
+</div>
+{% endif %}
+
 <!-- Upload history -->
 <!-- Next step nudge for users with only 1 upload -->
 {% if snapshots|length == 1 %}
