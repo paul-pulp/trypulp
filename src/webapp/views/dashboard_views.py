@@ -105,12 +105,10 @@ def costs():
         return render_template("costs.html", user=user)
 
     # Save costs
-    milk = request.form.get("milk_per_gallon", "").strip()
     ingredient_pct = request.form.get("ingredient_pct", "").strip()
 
     update_user_costs(
         user_id,
-        milk_per_gallon=float(milk) if milk else None,
         ingredient_pct=int(ingredient_pct) if ingredient_pct else None,
     )
 

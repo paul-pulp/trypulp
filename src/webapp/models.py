@@ -191,31 +191,22 @@ def use_trial_upload(user_id):
     db.commit()
 
 
-def update_user_costs(user_id, milk_per_gallon=None, ingredient_pct=None, hourly_wage=None):
-    """Update the cafe's actual cost data."""
+def update_user_costs(user_id, ingredient_pct=None):
+    """Update the cafe's ingredient cost percentage."""
     db = get_db()
     fields = ["costs_updated = 1"]
     values = []
-    if milk_per_gallon is not None:
-        fields.append("cost_milk_per_gallon = ?")
-        values.append(milk_per_gallon)
     if ingredient_pct is not None:
         fields.append("cost_ingredient_pct = ?")
         values.append(ingredient_pct)
-    if hourly_wage is not None:
-        fields.append("cost_hourly_wage = ?")
-        values.append(hourly_wage)
     values.append(user_id)
     db.execute(f"UPDATE users SET {', '.join(fields)} WHERE id = ?", values)
     db.commit()
 
 
 def get_user_cost_overrides(user):
-    """Build a cost_overrides dict from the user's actual costs (if provided)."""
+    """Build a cost_overrides dict from the user's ingredient cost percentage."""
     overrides = {}
-    milk = user["cost_milk_per_gallon"] if "cost_milk_per_gallon" in user.keys() else None
-    if milk and milk > 0:
-        overrides["dairy_cost_per_oz"] = round(milk / 128, 6)  # gallon = 128 oz
     ingredient_pct = user["cost_ingredient_pct"] if "cost_ingredient_pct" in user.keys() else None
     if ingredient_pct and ingredient_pct > 0:
         overrides["perishable_cogs_ratio"] = ingredient_pct / 100.0  # 30 → 0.30

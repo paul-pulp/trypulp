@@ -336,7 +336,8 @@ def recommend_order_quantities(df, cost_overrides=None):
     item_prices = perishables_copy.groupby("item")["_unit_price"].mean()
     item_stats["unit_cost"] = (item_prices * cogs).round(2)
     item_stats["daily_waste_cost"] = (item_stats["est_daily_waste"] * item_stats["unit_cost"]).round(2)
-    item_stats["monthly_waste_cost"] = (item_stats["daily_waste_cost"] * 30).round(2)
+    op_days = _operating_days_per_month(df)
+    item_stats["monthly_waste_cost"] = (item_stats["daily_waste_cost"] * op_days).round(2)
 
     return item_stats
 
@@ -368,7 +369,7 @@ def project_waste(df, cost_overrides=None):
         "items": sorted(items, key=lambda x: x["monthly_waste_cost"], reverse=True),
         "total_daily_waste_units": round(total_daily_waste_units, 1),
         "total_daily_waste_cost": round(total_daily_waste_cost, 2),
-        "total_monthly_waste_cost": round(total_daily_waste_cost * 30, 2),
+        "total_monthly_waste_cost": round(recs["monthly_waste_cost"].sum(), 2),
     }
 
 
@@ -400,16 +401,18 @@ def estimate_waste_savings(df, cost_overrides=None):
     perishables_ws["_unit_price"] = perishables_ws["price"] / perishables_ws["quantity"]
     item_prices = perishables_ws.groupby("item")["_unit_price"].mean()
 
+    op_days = _operating_days_per_month(df)
+
     daily_waste_units = (item_peaks - item_means).clip(lower=0)
     daily_waste_cost = (daily_waste_units * item_prices * cogs).sum()
-    monthly_waste_cost = daily_waste_cost * 30
+    monthly_waste_cost = daily_waste_cost * op_days
 
     # With optimization: order at mean + 0.5*std instead of peak
     item_stds = daily_sales.groupby("item")["quantity"].std().fillna(0)
     optimized_order = np.ceil(item_means + 0.5 * item_stds).clip(lower=1)
     optimized_waste = (optimized_order - item_means).clip(lower=0)
     optimized_waste_cost = (optimized_waste * item_prices * cogs).sum()
-    optimized_monthly = optimized_waste_cost * 30
+    optimized_monthly = optimized_waste_cost * op_days
 
     # Savings based on data-driven ordering improvements only (no guesses)
     ordering_savings = round(monthly_waste_cost - optimized_monthly, 2)
@@ -422,6 +425,22 @@ def estimate_waste_savings(df, cost_overrides=None):
         "total_savings_monthly": round(ordering_savings, 2
         ),
     }
+
+
+def _operating_days_per_month(df):
+    """Calculate how many days per month the cafe actually operates.
+
+    Uses ratio of sales days to calendar days in the data range, projected to 30 days.
+    A cafe open 5 days/week = ~22 operating days/month instead of 30.
+    """
+    unique_days = df["date"].nunique()
+    if unique_days <= 1:
+        return 30
+    date_range = (df["date"].max() - df["date"].min()).days + 1
+    if date_range <= 0:
+        return 30
+    ratio = unique_days / date_range
+    return max(1, round(ratio * 30))
 
 
 def run(csv_path, cost_overrides=None):
