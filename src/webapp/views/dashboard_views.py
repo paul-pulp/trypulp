@@ -106,14 +106,12 @@ def costs():
 
     # Save costs
     milk = request.form.get("milk_per_gallon", "").strip()
-    pastry = request.form.get("pastry_avg", "").strip()
-    wage = request.form.get("hourly_wage", "").strip()
+    ingredient_pct = request.form.get("ingredient_pct", "").strip()
 
     update_user_costs(
         user_id,
         milk_per_gallon=float(milk) if milk else None,
-        pastry_avg=float(pastry) if pastry else None,
-        hourly_wage=float(wage) if wage else None,
+        ingredient_pct=int(ingredient_pct) if ingredient_pct else None,
     )
 
     flash("Your costs are saved! Future reports will use your actual numbers.", "success")

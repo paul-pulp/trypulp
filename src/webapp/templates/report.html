@@ -292,7 +292,7 @@
             <p class="text-3xl font-semibold text-white">${{ "%.0f"|format(waste.savings.total_savings_monthly) }}<span class="text-sm font-normal text-warm-400">/mo</span></p>
         </div>
     </div>
-    <p class="text-xs text-warm-400 mb-4">Based on your sales patterns and Toronto industry-average ingredient costs. Actual savings depend on what you currently order and pay for ingredients.</p>
+    <p class="text-xs text-warm-400 mb-4">Based on your sales patterns and {% if current_user and current_user.costs_updated is defined and current_user.costs_updated %}your cost settings{% else %}Toronto industry-average costs (<a href="/costs" class="text-terra-500 hover:underline">update with your actual costs</a>){% endif %}. Actual savings depend on what you currently order.</p>
 
     <div class="card-static overflow-hidden mb-4">
         <table class="w-full text-sm">
