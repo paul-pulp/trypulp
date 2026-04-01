@@ -161,6 +161,13 @@
     </div>
 </section>
 
+<!-- ═══ MORE DETAILS (collapsible) ═══ -->
+<details class="mb-10 load-in">
+    <summary class="cursor-pointer text-sm font-medium text-terra-600 hover:text-terra-700 transition-colors flex items-center gap-2 mb-4">
+        <svg class="w-4 h-4 transition-transform details-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        More details — daily trends, hourly sales, payment methods, hot vs iced
+    </summary>
+
 <!-- ═══ DAILY & HOURLY TRENDS ═══ -->
 {% if customer.daily_trends %}
 <section class="mb-10 load-in load-in-5">
@@ -267,6 +274,8 @@
 {% endif %}
 {% endif %}
 
+</details>
+
 <!-- ═══ WHERE YOU'RE LOSING MONEY ═══ -->
 {% if waste.waste_projection and waste.waste_projection['items'] %}
 <section class="mb-10 load-in">
@@ -337,10 +346,14 @@
 </section>
 {% endif %}
 
-<!-- ═══ YOUR MILK BREAKDOWN ═══ -->
+<!-- ═══ YOUR MILK BREAKDOWN (collapsible) ═══ -->
 {% if waste.milk_usage and waste.milk_usage.by_type %}
-<section class="mb-10 load-in">
-    <h2 class="text-xl text-warm-800 mb-4">Your Milk Breakdown</h2>
+<details class="mb-10 load-in">
+    <summary class="cursor-pointer text-sm font-medium text-terra-600 hover:text-terra-700 transition-colors flex items-center gap-2 mb-4">
+        <svg class="w-4 h-4 transition-transform details-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        Your Milk Breakdown — daily usage by type and ordering recommendations
+    </summary>
+    <div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
         {% for type_name, data in waste.milk_usage.by_type.items() %}
         <div class="card p-5">
@@ -355,7 +368,8 @@
         </div>
         {% endfor %}
     </div>
-</section>
+    </div>
+</details>
 {% endif %}
 
 <!-- What to do next -->

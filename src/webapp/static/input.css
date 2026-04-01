@@ -255,6 +255,12 @@ h1, h2, h3 {
     flex-shrink: 0;
 }
 
+/* ── Collapsible sections ──────────────────────────────── */
+
+details[open] .details-chevron {
+    transform: rotate(90deg);
+}
+
 /* ── Print styles ──────────────────────────────────────── */
 
 @media print {
