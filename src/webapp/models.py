@@ -119,6 +119,10 @@ def init_db(app):
         db.execute("ALTER TABLE users ADD COLUMN costs_updated INTEGER DEFAULT 0")
     except Exception:
         pass
+    try:
+        db.execute("ALTER TABLE users ADD COLUMN unsubscribed INTEGER DEFAULT 0")
+    except Exception:
+        pass
     db.commit()
 
     db.close()
@@ -232,6 +236,22 @@ def get_user_by_id(user_id):
     return get_db().execute(
         "SELECT * FROM users WHERE id = ?", (user_id,)
     ).fetchone()
+
+
+def set_user_unsubscribed(user_id):
+    """Mark a user as unsubscribed from marketing emails."""
+    db = get_db()
+    db.execute("UPDATE users SET unsubscribed = 1 WHERE id = ?", (user_id,))
+    db.commit()
+
+
+def is_user_unsubscribed(user):
+    """Check if a user row has opted out of marketing emails."""
+    if user is None:
+        return False
+    if "unsubscribed" not in user.keys():
+        return False
+    return bool(user["unsubscribed"])
 
 
 def create_user(email, cafe_name):

@@ -138,6 +138,9 @@ def _send_welcome_email(user):
         f"hello@trypulp.co"
     )
 
+    from ..auth import unsubscribe_footer
+    body += unsubscribe_footer(user["id"])
+
     msg = MIMEText(body, "plain")
     msg["Subject"] = f"Welcome to PulpIQ Pro, {cafe}!"
     msg["From"] = f"PulpIQ <{smtp_user}>"

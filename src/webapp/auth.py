@@ -11,6 +11,10 @@ from email.mime.base import MIMEBase
 from email import encoders
 from datetime import datetime, timedelta
 from flask import current_app
+from itsdangerous import URLSafeSerializer, BadSignature
+
+
+UNSUB_SALT = "pulpiq-unsubscribe-v1"
 
 
 def generate_magic_link(user_id):
@@ -25,7 +29,34 @@ def generate_magic_link(user_id):
     return f"{app_url}/verify?token={token}"
 
 
-def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name=""):
+def generate_unsubscribe_link(user_id):
+    """Build a signed unsubscribe URL (no DB token needed)."""
+    serializer = URLSafeSerializer(current_app.config["SECRET_KEY"], salt=UNSUB_SALT)
+    token = serializer.dumps(int(user_id))
+    app_url = current_app.config["APP_URL"].rstrip("/")
+    return f"{app_url}/unsubscribe?token={token}"
+
+
+def verify_unsubscribe_token(token):
+    """Return user_id from a signed unsubscribe token, or None if invalid."""
+    serializer = URLSafeSerializer(current_app.config["SECRET_KEY"], salt=UNSUB_SALT)
+    try:
+        return int(serializer.loads(token))
+    except (BadSignature, ValueError, TypeError):
+        return None
+
+
+def unsubscribe_footer(user_id):
+    """Plain-text footer for marketing emails (CASL compliance)."""
+    link = generate_unsubscribe_link(user_id)
+    return (
+        f"\n\n---\n"
+        f"PulpIQ — hello@trypulp.co\n"
+        f"Don't want these emails? Unsubscribe: {link}"
+    )
+
+
+def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name="", user_id=None):
     """Send the magic link via SMTP. Attaches onboarding PDF for new users."""
     smtp_user = current_app.config["SMTP_USER"]
     smtp_pass = current_app.config["SMTP_PASS"]
@@ -57,6 +88,8 @@ def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name=""):
             f"— The PulpIQ Team\n"
             f"hello@trypulp.co"
         )
+        if user_id is not None:
+            body += unsubscribe_footer(user_id)
     else:
         subject = "Your PulpIQ Sign-In Link"
         body = (

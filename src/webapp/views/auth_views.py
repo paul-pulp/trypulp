@@ -6,8 +6,11 @@ import smtplib
 from email.mime.text import MIMEText
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash, current_app
 
-from ..models import get_user_by_email, create_user, verify_token, get_user_by_id, count_snapshots
-from ..auth import generate_magic_link, send_magic_link_email
+from ..models import (
+    get_user_by_email, create_user, verify_token, get_user_by_id,
+    count_snapshots, set_user_unsubscribed,
+)
+from ..auth import generate_magic_link, send_magic_link_email, verify_unsubscribe_token
 
 auth_bp = Blueprint("auth", __name__)
 
@@ -36,7 +39,7 @@ def login():
 
     # Generate and send magic link (with onboarding PDF for new users)
     link = generate_magic_link(user["id"])
-    send_magic_link_email(email, link, is_new_user=is_new, cafe_name=user["cafe_name"])
+    send_magic_link_email(email, link, is_new_user=is_new, cafe_name=user["cafe_name"], user_id=user["id"])
 
     return render_template("check_email.html", email=email)
 
@@ -63,6 +66,24 @@ def verify():
 def logout():
     session.clear()
     return redirect(url_for("auth.login"))
+
+
+@auth_bp.route("/unsubscribe")
+def unsubscribe():
+    """One-click unsubscribe from PulpIQ marketing emails (CASL compliance)."""
+    token = request.args.get("token", "")
+    user_id = verify_unsubscribe_token(token)
+
+    if user_id is None:
+        return render_template("unsubscribe.html", success=False), 400
+
+    user = get_user_by_id(user_id)
+    if user is None:
+        return render_template("unsubscribe.html", success=False), 404
+
+    set_user_unsubscribed(user_id)
+    print(f"[UNSUB] User {user_id} ({user['email']}) unsubscribed", flush=True)
+    return render_template("unsubscribe.html", success=True, email=user["email"])
 
 
 def _notify_new_signup(email, cafe_name):

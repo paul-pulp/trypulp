@@ -23,11 +23,13 @@ def send_weekly_reminders(app):
 
         db = get_db()
 
-        # Find users whose latest upload was 7-8 days ago (so we only remind once)
+        # Find users whose latest upload was 7-8 days ago (so we only remind once).
+        # Skip anyone who has unsubscribed from marketing emails.
         users_to_remind = db.execute("""
             SELECT u.id, u.email, u.cafe_name, MAX(s.created_at) as last_upload
             FROM users u
             JOIN snapshots s ON u.id = s.user_id
+            WHERE COALESCE(u.unsubscribed, 0) = 0
             GROUP BY u.id
             HAVING last_upload IS NOT NULL
               AND last_upload < datetime('now', '-7 days')
@@ -49,6 +51,8 @@ def _send_reminder(user, smtp_user, smtp_pass, app_url, config):
     cafe = user["cafe_name"]
     email = user["email"]
 
+    from .auth import unsubscribe_footer
+
     body = (
         f"Hey {cafe} team!\n\n"
         f"It's been a week since your last upload. Got new sales data?\n\n"
@@ -57,9 +61,9 @@ def _send_reminder(user, smtp_user, smtp_pass, app_url, config):
         f"It takes about 2 minutes — export from your POS, drag it in, "
         f"and see your week-over-week comparison instantly.\n\n"
         f"— The PulpIQ Team\n"
-        f"hello@trypulp.co\n\n"
-        f"Don't want these reminders? Just reply and let us know."
+        f"hello@trypulp.co"
     )
+    body += unsubscribe_footer(user["id"])
 
     msg = MIMEText(body, "plain")
     msg["Subject"] = f"{cafe} — time to check this week's numbers"
