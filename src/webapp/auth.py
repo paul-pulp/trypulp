@@ -56,6 +56,44 @@ def unsubscribe_footer(user_id):
     )
 
 
+def plain_to_html(text, user_id=None):
+    """Convert a plain-text email body to simple HTML with an unsub link."""
+    import html as _html
+
+    escaped = _html.escape(text)
+    # Turn URLs into clickable links (skip if already inside an HTML tag)
+    import re
+    escaped = re.sub(
+        r'(https?://[^\s&lt;]+)',
+        r'<a href="\1" style="color:#6b5545;text-decoration:underline">\1</a>',
+        escaped,
+    )
+    # Newlines to <br>
+    body_html = escaped.replace("\n", "<br>\n")
+
+    unsub_html = ""
+    if user_id is not None:
+        link = generate_unsubscribe_link(user_id)
+        unsub_html = (
+            f'<br><br>'
+            f'<div style="border-top:1px solid #e8ddd4;padding-top:12px;margin-top:12px;'
+            f'font-size:12px;color:#9a8a7c">'
+            f'PulpIQ &mdash; hello@trypulp.co<br>'
+            f'<a href="{link}" style="color:#9a8a7c;text-decoration:underline">'
+            f'Unsubscribe from these emails</a>'
+            f'</div>'
+        )
+
+    return (
+        f'<div style="font-family:-apple-system,BlinkMacSystemFont,\'Segoe UI\','
+        f'Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;'
+        f'color:#3d3028;max-width:560px;margin:0 auto;padding:24px">'
+        f'{body_html}'
+        f'{unsub_html}'
+        f'</div>'
+    )
+
+
 def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name="", user_id=None):
     """Send the magic link via SMTP. Attaches onboarding PDF for new users."""
     smtp_user = current_app.config["SMTP_USER"]
@@ -88,8 +126,6 @@ def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name="", us
             f"— The PulpIQ Team\n"
             f"hello@trypulp.co"
         )
-        if user_id is not None:
-            body += unsubscribe_footer(user_id)
     else:
         subject = "Your PulpIQ Sign-In Link"
         body = (
@@ -100,11 +136,14 @@ def send_magic_link_email(email, magic_link, is_new_user=False, cafe_name="", us
             f"— PulpIQ"
         )
 
+    # Convert to HTML with clickable links + unsubscribe footer
+    html_body = plain_to_html(body, user_id=user_id if is_new_user else None)
+
     msg = MIMEMultipart()
     msg["Subject"] = subject
     msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = email
-    msg.attach(MIMEText(body, "plain"))
+    msg.attach(MIMEText(html_body, "html"))
 
     # Attach onboarding PDF for new users
     pdf_path = None

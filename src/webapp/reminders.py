@@ -51,7 +51,7 @@ def _send_reminder(user, smtp_user, smtp_pass, app_url, config):
     cafe = user["cafe_name"]
     email = user["email"]
 
-    from .auth import unsubscribe_footer
+    from .auth import plain_to_html
 
     body = (
         f"Hey {cafe} team!\n\n"
@@ -63,9 +63,9 @@ def _send_reminder(user, smtp_user, smtp_pass, app_url, config):
         f"— The PulpIQ Team\n"
         f"hello@trypulp.co"
     )
-    body += unsubscribe_footer(user["id"])
+    html_body = plain_to_html(body, user_id=user["id"])
 
-    msg = MIMEText(body, "plain")
+    msg = MIMEText(html_body, "html")
     msg["Subject"] = f"{cafe} — time to check this week's numbers"
     msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = email

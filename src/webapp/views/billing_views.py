@@ -138,10 +138,10 @@ def _send_welcome_email(user):
         f"hello@trypulp.co"
     )
 
-    from ..auth import unsubscribe_footer
-    body += unsubscribe_footer(user["id"])
+    from ..auth import plain_to_html
+    html_body = plain_to_html(body, user_id=user["id"])
 
-    msg = MIMEText(body, "plain")
+    msg = MIMEText(html_body, "html")
     msg["Subject"] = f"Welcome to PulpIQ Pro, {cafe}!"
     msg["From"] = f"PulpIQ <{smtp_user}>"
     msg["To"] = email
