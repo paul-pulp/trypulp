@@ -15,7 +15,7 @@ from datetime import datetime, timedelta
 # Maps normalized (lowercase, stripped, common variations) to our canonical names.
 # Left side = things cafes/POS systems actually export. Right side = what we need.
 COLUMN_ALIASES = {
-    # date
+    # ── date ──────────────────────────────────────────────────────────────
     "date": "date",
     "sale date": "date",
     "transaction date": "date",
@@ -24,7 +24,10 @@ COLUMN_ALIASES = {
     "order_date": "date",
     "created at": "date",
     "created date": "date",
-    # time
+    "sent date": "date",              # Toast
+    "business date": "date",          # Toast
+    "closed": "date",                 # generic POS
+    # ── time ──────────────────────────────────────────────────────────────
     "time": "time",
     "sale time": "time",
     "transaction time": "time",
@@ -32,25 +35,32 @@ COLUMN_ALIASES = {
     "order time": "time",
     "order_time": "time",
     "hour": "time",
-    # datetime (will be split into date + time during auto-fix)
+    "sent time": "time",              # Toast
+    # ── datetime (split into date + time during auto-fix) ─────────────────
     "datetime": "datetime",
     "date time": "datetime",
     "timestamp": "datetime",
     "transaction datetime": "datetime",
     "created_at": "datetime",
     "order datetime": "datetime",
-    # item
+    "completed at": "datetime",       # Lightspeed
+    "closed at": "datetime",          # generic POS
+    "opened at": "datetime",          # generic POS
+    # ── item ──────────────────────────────────────────────────────────────
     "item": "item",
     "item name": "item",
     "product": "item",
     "product name": "item",
-    "menu item": "item",
+    "menu item": "item",              # Toast
+    "menu selection": "item",         # Toast
     "description": "item",
     "item description": "item",
     "sku name": "item",
-    "line item": "item",
+    "line item": "item",              # Lightspeed
     "name": "item",
-    # quantity
+    "lineitem name": "item",          # Shopify POS
+    "variant": "item",                # Shopify POS
+    # ── quantity ──────────────────────────────────────────────────────────
     "quantity": "quantity",
     "qty": "quantity",
     "units": "quantity",
@@ -59,7 +69,11 @@ COLUMN_ALIASES = {
     "qty sold": "quantity",
     "number sold": "quantity",
     "num": "quantity",
-    # price
+    "item qty": "quantity",           # TouchBistro
+    "lineitem quantity": "quantity",  # Shopify POS
+    "sold": "quantity",
+    "items sold": "quantity",
+    # ── price (line-item total / sale amount — NOT unit price) ────────────
     "price": "price",
     "total": "price",
     "amount": "price",
@@ -70,10 +84,19 @@ COLUMN_ALIASES = {
     "gross sales": "price",
     "line total": "price",
     "subtotal": "price",
-    # "unit price" intentionally NOT mapped to price — "Total" is the correct price column
     "sale total": "price",
     "sales": "price",
-    # optional but useful
+    "net price": "price",             # Toast
+    "gross price": "price",           # Toast
+    "net amount": "price",            # Toast
+    "item total": "price",            # TouchBistro
+    "lineitem price": "price",        # Shopify POS
+    "order total": "price",
+    "item price": "price",
+    "total sales": "price",
+    "ext price": "price",             # generic POS (extended price)
+    # "unit price" intentionally NOT mapped — "Total" is the correct price column
+    # ── category (optional) ───────────────────────────────────────────────
     "category": "category",
     "type": "category",
     "item category": "category",
@@ -81,31 +104,62 @@ COLUMN_ALIASES = {
     "group": "category",
     "item type": "category",
     "department": "category",
+    "menu group": "category",         # Toast
+    "menu subgroup": "category",      # Toast
+    "dining option": "category",      # Toast
+    "revenue center": "category",     # Toast
+    # ── payment method (optional) ─────────────────────────────────────────
     "payment method": "payment_method",
     "payment_method": "payment_method",
     "payment type": "payment_method",
     "tender": "payment_method",
     "tender type": "payment_method",
     "payment": "payment_method",
+    "financial status": "payment_method",  # Shopify POS
+    # ── location (optional) ───────────────────────────────────────────────
     "location": "location",
     "store": "location",
     "store name": "location",
     "outlet": "location",
     "branch": "location",
-    # transaction ID (not used in analysis but helps identify rows)
+    "restaurant": "location",         # Toast
+    # ── transaction ID (not used in analysis) ─────────────────────────────
     "transaction id": "transaction_id",
     "order id": "transaction_id",
     "receipt": "transaction_id",
     "receipt number": "transaction_id",
     "order number": "transaction_id",
     "trans id": "transaction_id",
+    "check #": "transaction_id",      # Toast
+    "check number": "transaction_id", # Toast
+    "tab name": "transaction_id",     # Toast
+    "ticket": "transaction_id",
+    "ticket number": "transaction_id",
+    # ── skip (recognized but deliberately ignored) ────────────────────────
+    "tax": "skip",
+    "tax amount": "skip",
+    "tip": "skip",
+    "tip amount": "skip",
+    "gratuity": "skip",
+    "discount": "skip",
+    "discount amount": "skip",
+    "void": "skip",
+    "voided": "skip",
+    "void reason": "skip",
+    "server": "skip",                 # Toast
+    "server name": "skip",
+    "unit price": "skip",
+    "unit cost": "skip",
+    "cost": "skip",
+    "modifier": "skip",
+    "modifiers": "skip",
 }
 
 REQUIRED_COLUMNS = ["date", "time", "item", "quantity", "price"]
 OPTIONAL_COLUMNS = ["category", "payment_method", "location"]
 
 # Columns that are recognized but not required for analysis
-KNOWN_EXTRA_COLUMNS = ["datetime", "transaction_id"]
+KNOWN_EXTRA_COLUMNS = ["datetime", "transaction_id", "skip"]
 
 # ── Thresholds ──────────────────────────────────────────────────────────────
 MIN_PRICE = 0.50
@@ -252,6 +306,8 @@ def validate_file(csv_path):
         normalized = _normalize(raw_col)
         if normalized in COLUMN_ALIASES:
             canonical = COLUMN_ALIASES[normalized]
+            if canonical == "skip":
+                continue  # recognized but deliberately ignored
             column_map[raw_col] = canonical
 
     result.column_map = column_map

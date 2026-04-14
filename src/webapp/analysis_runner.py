@@ -4,6 +4,7 @@ Calls customer_intelligence and waste_analysis, serializes pandas output to JSON
 """
 
 import sys
+import json as _json
 from pathlib import Path
 
 import pandas as pd
@@ -17,7 +18,7 @@ if _ANALYSIS_DIR not in sys.path:
 import csv
 import tempfile
 
-from validate_data import validate_file
+from validate_data import validate_file, COLUMN_ALIASES, _normalize
 from customer_intelligence import run as run_customer
 from waste_analysis import run as run_waste
 
@@ -86,6 +87,112 @@ def _write_cleaned_csv(original_path, column_map):
     return tmp.name
 
 
+def _ai_map_columns(csv_path):
+    """Use Claude API to map unrecognized CSV columns. Returns column_map dict or None."""
+    try:
+        from flask import current_app
+        api_key = current_app.config.get("ANTHROPIC_API_KEY", "")
+    except RuntimeError:
+        api_key = ""
+
+    if not api_key:
+        print("[AI-MAP] No ANTHROPIC_API_KEY — skipping AI column mapping", flush=True)
+        return None
+
+    # Read headers + first 3 rows
+    try:
+        try:
+            with open(csv_path, "r", encoding="utf-8-sig") as f:
+                sample = f.read(4096)
+        except UnicodeDecodeError:
+            with open(csv_path, "r", encoding="latin-1") as f:
+                sample = f.read(4096)
+
+        try:
+            dialect = csv.Sniffer().sniff(sample)
+            delimiter = dialect.delimiter
+        except csv.Error:
+            delimiter = ","
+
+        try:
+            with open(csv_path, "r", encoding="utf-8-sig") as f:
+                reader = csv.DictReader(f, delimiter=delimiter)
+                headers = reader.fieldnames or []
+                sample_rows = []
+                for i, row in enumerate(reader):
+                    sample_rows.append(dict(row))
+                    if i >= 2:
+                        break
+        except UnicodeDecodeError:
+            with open(csv_path, "r", encoding="latin-1") as f:
+                reader = csv.DictReader(f, delimiter=delimiter)
+                headers = reader.fieldnames or []
+                sample_rows = []
+                for i, row in enumerate(reader):
+                    sample_rows.append(dict(row))
+                    if i >= 2:
+                        break
+
+        if not headers:
+            return None
+    except Exception as e:
+        print(f"[AI-MAP] Failed to read CSV for AI mapping: {e}", flush=True)
+        return None
+
+    prompt = (
+        "You are a CSV column mapper for cafe POS systems.\n"
+        "Given these column headers and sample rows, map each column to exactly one of:\n"
+        "date, time, datetime, item, quantity, price, category, payment_method, location, transaction_id, skip\n\n"
+        "Rules:\n"
+        '- "price" = the line-item total or sale amount (NOT unit price, tax, tip, or discount)\n'
+        '- "skip" = columns not useful for sales analysis (tax, tip, discount, server name, etc.)\n'
+        "- Every column must be mapped to exactly one value\n\n"
+        f"Headers: {headers}\n"
+    )
+    for i, row in enumerate(sample_rows):
+        vals = [row.get(h, "") for h in headers]
+        prompt += f"Row {i + 1}: {vals}\n"
+    prompt += "\nRespond with ONLY a JSON object mapping column names to canonical names. No explanation."
+
+    try:
+        import anthropic
+        client = anthropic.Anthropic(api_key=api_key)
+        response = client.messages.create(
+            model="claude-haiku-4-5-20251001",
+            max_tokens=512,
+            messages=[{"role": "user", "content": prompt}],
+        )
+        text = response.content[0].text.strip()
+        # Extract JSON (handle markdown code blocks)
+        if text.startswith("```"):
+            text = text.split("\n", 1)[1].rsplit("```", 1)[0].strip()
+        mapping = _json.loads(text)
+
+        # Validate: only accept known canonical names
+        valid_names = {"date", "time", "datetime", "item", "quantity", "price",
+                       "category", "payment_method", "location", "transaction_id", "skip"}
+        column_map = {}
+        for col, canonical in mapping.items():
+            canonical = canonical.strip().lower()
+            if canonical in valid_names and canonical != "skip":
+                column_map[col] = canonical
+
+        print(f"[AI-MAP] AI mapped {len(column_map)} columns: {column_map}", flush=True)
+        return column_map if column_map else None
+
+    except Exception as e:
+        print(f"[AI-MAP] AI column mapping failed: {e}", flush=True)
+        return None
+
+
+def _is_column_mapping_error(errors):
+    """Check if validation errors are about missing columns (vs empty file etc)."""
+    for err in errors:
+        if "price" in err.lower() and "column" in err.lower():
+            return True
+    return False
+
+
 def run_analysis(csv_path, cost_overrides=None):
     """Run validation + analysis on a CSV file.
 
@@ -102,12 +209,34 @@ def run_analysis(csv_path, cost_overrides=None):
 
     # Only block on truly unrecoverable errors (empty file, unreadable, no price column)
     if not validation.is_valid:
-        return {
-            "customer": {},
-            "waste": {},
-            "errors": validation.errors,
-            "warnings": validation.warnings,
-        }
+        # If it's a column mapping issue, try AI fallback
+        if _is_column_mapping_error(validation.errors):
+            ai_map = _ai_map_columns(csv_path)
+            if ai_map:
+                # Re-run validation with AI-provided column names injected as aliases
+                for col_name, canonical in ai_map.items():
+                    normalized = _normalize(col_name)
+                    if normalized not in COLUMN_ALIASES:
+                        COLUMN_ALIASES[normalized] = canonical
+                validation = validate_file(csv_path)
+
+        if not validation.is_valid:
+            # Improve error message with the actual columns found
+            raw_cols = validation.stats.get("raw_columns", [])
+            if raw_cols:
+                friendly_error = (
+                    f"We found these columns in your file: {', '.join(raw_cols)}.\n"
+                    f"We need a column with sale amounts (like 'Total', 'Net Sales', 'Price').\n"
+                    f"If your file uses a different name, email hello@trypulp.co and we'll add support for your POS system."
+                )
+                validation.errors = [friendly_error]
+
+            return {
+                "customer": {},
+                "waste": {},
+                "errors": validation.errors,
+                "warnings": validation.warnings,
+            }
 
     # Step 1b: Write cleaned CSV if auto-fixes were applied
     analysis_path = csv_path
