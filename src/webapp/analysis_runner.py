@@ -87,6 +87,53 @@ def _write_cleaned_csv(original_path, column_map):
     return tmp.name
 
 
+# ── AI column mapping with token management ──────────────────────────────────
+
+# In-memory cache: frozenset of header names → column_map dict
+# Avoids repeat API calls when the same POS format is uploaded multiple times.
+_ai_cache = {}
+
+# Simple monthly token counter (resets on month change)
+_token_usage = {"month": None, "input": 0, "output": 0, "calls": 0}
+
+# Default cap: 50,000 input tokens/month (~$0.01 on Haiku, ~250 uploads)
+AI_MONTHLY_TOKEN_CAP = 50_000
+
+
+def _check_token_budget():
+    """Return True if we're within the monthly token budget."""
+    from datetime import datetime
+    current_month = datetime.utcnow().strftime("%Y-%m")
+    if _token_usage["month"] != current_month:
+        # New month — reset counters
+        _token_usage["month"] = current_month
+        _token_usage["input"] = 0
+        _token_usage["output"] = 0
+        _token_usage["calls"] = 0
+    return _token_usage["input"] < AI_MONTHLY_TOKEN_CAP
+
+
+def _record_token_usage(response):
+    """Record input/output tokens from an API response."""
+    usage = getattr(response, "usage", None)
+    if usage:
+        _token_usage["input"] += getattr(usage, "input_tokens", 0)
+        _token_usage["output"] += getattr(usage, "output_tokens", 0)
+        _token_usage["calls"] += 1
+        print(
+            f"[AI-MAP] Tokens this call: {getattr(usage, 'input_tokens', 0)} in / "
+            f"{getattr(usage, 'output_tokens', 0)} out | "
+            f"Month total: {_token_usage['input']} in / {_token_usage['output']} out / "
+            f"{_token_usage['calls']} calls",
+            flush=True,
+        )
+
+
+def get_ai_usage_stats():
+    """Return current month's AI token usage (for admin visibility)."""
+    return dict(_token_usage)
+
+
 def _ai_map_columns(csv_path):
     """Use Claude API to map unrecognized CSV columns. Returns column_map dict or None."""
     try:
@@ -139,6 +186,21 @@ def _ai_map_columns(csv_path):
         print(f"[AI-MAP] Failed to read CSV for AI mapping: {e}", flush=True)
         return None
 
+    # Check cache — same header set means same POS format, reuse the mapping
+    cache_key = frozenset(h.strip().lower() for h in headers)
+    if cache_key in _ai_cache:
+        print(f"[AI-MAP] Cache hit — reusing mapping for {len(headers)} columns", flush=True)
+        return _ai_cache[cache_key]
+
+    # Check monthly token budget
+    if not _check_token_budget():
+        print(
+            f"[AI-MAP] Monthly token cap reached ({_token_usage['input']}/{AI_MONTHLY_TOKEN_CAP}) "
+            f"— skipping AI call",
+            flush=True,
+        )
+        return None
+
     prompt = (
         "You are a CSV column mapper for cafe POS systems.\n"
         "Given these column headers and sample rows, map each column to exactly one of:\n"
@@ -162,6 +224,10 @@ def _ai_map_columns(csv_path):
             max_tokens=512,
             messages=[{"role": "user", "content": prompt}],
         )
+
+        # Track token usage
+        _record_token_usage(response)
+
         text = response.content[0].text.strip()
         # Extract JSON (handle markdown code blocks)
         if text.startswith("```"):
@@ -178,6 +244,11 @@ def _ai_map_columns(csv_path):
                 column_map[col] = canonical
 
         print(f"[AI-MAP] AI mapped {len(column_map)} columns: {column_map}", flush=True)
+
+        # Cache the result for this header format
+        if column_map:
+            _ai_cache[cache_key] = column_map
+
         return column_map if column_map else None
 
     except Exception as e:

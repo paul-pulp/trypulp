@@ -94,6 +94,15 @@ def create_app():
             return jsonify({"status": "ok", "file": os.path.basename(path)})
         return jsonify({"status": "error", "message": "backup failed"}), 500
 
+    @app.route("/admin/ai-usage")
+    def admin_ai_usage():
+        denied = _check_admin_auth()
+        if denied:
+            return denied
+        from flask import jsonify
+        from .analysis_runner import get_ai_usage_stats
+        return jsonify(get_ai_usage_stats())
+
     @app.route("/admin/users")
     def admin_users():
         denied = _check_admin_auth()
