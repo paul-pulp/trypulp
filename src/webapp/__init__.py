@@ -26,6 +26,7 @@ def create_app():
         STRIPE_PUBLISHABLE_KEY=os.environ.get("STRIPE_PUBLISHABLE_KEY", ""),
         STRIPE_PRICE_ID=os.environ.get("STRIPE_PRICE_ID", ""),
         ANTHROPIC_API_KEY=os.environ.get("ANTHROPIC_API_KEY", ""),
+        AI_MAP_MODE=os.environ.get("AI_MAP_MODE", "fallback"),  # "fallback" or "always"
     )
 
     os.makedirs(app.instance_path, exist_ok=True)

@@ -275,13 +275,30 @@ def run_analysis(csv_path, cost_overrides=None):
             "warnings": list[str],
         }
     """
+    # Check if AI-only mode is enabled (for testing)
+    ai_mode = "fallback"
+    try:
+        from flask import current_app
+        ai_mode = current_app.config.get("AI_MAP_MODE", "fallback")
+    except RuntimeError:
+        pass
+
+    if ai_mode == "always":
+        # Bypass static aliases — go straight to AI mapping
+        print("[AI-MAP] Mode=always — bypassing static aliases, using AI for column mapping", flush=True)
+        ai_map = _ai_map_columns(csv_path)
+        if ai_map:
+            for col_name, canonical in ai_map.items():
+                normalized = _normalize(col_name)
+                COLUMN_ALIASES[normalized] = canonical
+
     # Step 1: Validate (with auto-fixes)
     validation = validate_file(csv_path)
 
     # Only block on truly unrecoverable errors (empty file, unreadable, no price column)
     if not validation.is_valid:
         # If it's a column mapping issue, try AI fallback
-        if _is_column_mapping_error(validation.errors):
+        if ai_mode != "always" and _is_column_mapping_error(validation.errors):
             ai_map = _ai_map_columns(csv_path)
             if ai_map:
                 # Re-run validation with AI-provided column names injected as aliases
