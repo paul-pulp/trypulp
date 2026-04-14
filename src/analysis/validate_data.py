@@ -165,9 +165,9 @@ KNOWN_EXTRA_COLUMNS = ["datetime", "transaction_id", "skip"]
 MIN_PRICE = 0.50
 MAX_PRICE = 200.00
 MAX_QUANTITY = 100
-MIN_DAYS_USABLE = 7
-MIN_DAYS_RECOMMENDED = 30
-IDEAL_DAYS = 90
+MIN_DAYS_USABLE = 3
+MIN_DAYS_RECOMMENDED = 7
+IDEAL_DAYS = 14
 
 
 def _normalize(col_name):
@@ -594,20 +594,19 @@ def validate_file(csv_path):
             result.warn(
                 f"Only {date_range_days} day{'s' if date_range_days != 1 else ''} of data "
                 f"({min_date.date()} to {max_date.date()}). "
-                f"Results will be rough estimates. For better accuracy, export 30+ days."
+                f"We recommend at least 7 days (one full week) for accurate results."
             )
         elif date_range_days < MIN_DAYS_RECOMMENDED:
             result.warn(
                 f"{date_range_days} days of data ({min_date.date()} to {max_date.date()}). "
-                f"We recommend {MIN_DAYS_RECOMMENDED}+ days for reliable patterns"
+                f"For the best weekly report, export a full 7 days."
             )
         elif date_range_days < IDEAL_DAYS:
             result.note(
-                f"{date_range_days} days of data — good enough to start. "
-                f"{IDEAL_DAYS} days would capture seasonal patterns"
+                f"{date_range_days} days of data — great, that's a full week."
             )
         else:
-            result.note(f"{date_range_days} days of data — excellent range")
+            result.note(f"{date_range_days} days of data — covers more than a week, nice.")
 
         # Check for gaps (missing days)
         if unique_dates < date_range_days * 0.7:
